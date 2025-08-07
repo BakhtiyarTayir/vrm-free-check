@@ -1,0 +1,148 @@
+/* VRM Check Plugin - Admin Styles */
+
+.vrm-check-admin-page {
+    max-width: 1200px;
+    margin: 20px 0;
+}
+
+.vrm-check-admin-header {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.vrm-check-admin-header h1 {
+    margin: 0 0 10px 0;
+    color: #23282d;
+}
+
+.vrm-check-admin-header p {
+    margin: 0;
+    color: #646970;
+}
+
+.vrm-check-admin-content {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    padding: 20px;
+}
+
+.vrm-check-form-table {
+    width: 100%;
+}
+
+.vrm-check-form-table th {
+    width: 200px;
+    padding: 20px 10px 20px 0;
+    vertical-align: top;
+    font-weight: 600;
+}
+
+.vrm-check-form-table td {
+    padding: 15px 10px 20px 0;
+}
+
+.vrm-check-form-table input[type="text"],
+.vrm-check-form-table input[type="number"],
+.vrm-check-form-table select {
+    width: 400px;
+    max-width: 100%;
+}
+
+.vrm-check-form-table .description {
+    color: #646970;
+    font-style: italic;
+    margin-top: 5px;
+}
+
+.vrm-check-submit-wrapper {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #ccd0d4;
+}
+
+.vrm-check-status-indicator {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.vrm-check-status-indicator.connected {
+    background-color: #46b450;
+}
+
+.vrm-check-status-indicator.disconnected {
+    background-color: #dc3232;
+}
+
+.vrm-check-test-button {
+    margin-left: 10px;
+}
+
+.vrm-check-test-result {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.vrm-check-test-result.success {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+}
+
+.vrm-check-test-result.error {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+}
+
+.vrm-check-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.vrm-check-stat-card {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    padding: 20px;
+    text-align: center;
+}
+
+.vrm-check-stat-number {
+    font-size: 2em;
+    font-weight: bold;
+    color: #0073aa;
+    margin-bottom: 5px;
+}
+
+.vrm-check-stat-label {
+    color: #646970;
+    font-size: 0.9em;
+}
+
+@media (max-width: 768px) {
+    .vrm-check-form-table th,
+    .vrm-check-form-table td {
+        display: block;
+        width: 100%;
+    }
+    
+    .vrm-check-form-table th {
+        padding-bottom: 5px;
+    }
+    
+    .vrm-check-form-table input[type="text"],
+    .vrm-check-form-table input[type="number"],
+    .vrm-check-form-table select {
+        width: 100%;
+    }
+}

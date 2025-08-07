@@ -1,0 +1,1164 @@
+/* VRM Check Plugin Styles */
+
+/* Main container */
+.vrm-check-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.vrm-check-form-wrapper {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    border: 1px solid #e1e5e9;
+}
+
+/* Header */
+.vrm-check-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.vrm-check-title {
+    color: #1a202c;
+    margin: 0 0 10px 0;
+    line-height: 1.2;
+    color: #212529;
+    margin-bottom: 4px;
+}
+
+.vrm-check-subtitle {
+    font-size: 1.1rem;
+    color: #718096;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Form Styles */
+.vrm-check-form {
+    margin-bottom: 30px;
+}
+
+.vrm-input-group {
+    margin-bottom: 20px;
+}
+
+.vrm-input-wrapper {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.vrm-input {
+    flex: 1;
+    padding: 16px 20px;
+    font-size: 1.1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background: #ffffff;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.vrm-input:focus {
+    outline: none;
+    border-color: #3182ce;
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+}
+
+.vrm-submit-btn {
+    padding: 16px 32px;
+    background: linear-gradient(135deg, #3182ce 0%, #2c5aa0 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 160px;
+    position: relative;
+}
+
+.vrm-submit-btn:hover:not(.loading) {
+    background: linear-gradient(135deg, #2c5aa0 0%, #2a4d8d 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+}
+
+.vrm-submit-btn.loading {
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+.vrm-btn-loading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Example VRM */
+.vrm-example {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: #718096;
+}
+
+.vrm-example-text {
+    font-weight: 500;
+}
+
+.vrm-example-btn {
+    background: #f7fafc;
+    border: 1px solid #e2e8f0;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #3182ce;
+}
+
+.vrm-example-btn:hover {
+    background: #edf2f7;
+    border-color: #cbd5e0;
+}
+
+/* Features */
+.vrm-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    padding: 20px 0;
+    border-top: 1px solid #e2e8f0;
+}
+
+.vrm-feature-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #4a5568;
+    font-size: 0.95rem;
+}
+
+.vrm-feature-item i {
+    color: #38a169;
+    font-size: 1.1rem;
+}
+
+/* Results Styles */
+.vrm-check-results {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 30px;
+    margin-top: 30px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.vrm-results-container {
+    max-width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+}
+
+/* Vehicle Identity Section */
+.vrm-section {
+    background: #ffffff;
+    border-radius: 8px;
+    margin-bottom: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    height: fit-content;
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+    .vrm-results-container {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .vrm-section {
+        margin-bottom: 15px;
+    }
+    
+    .vrm-section:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.vrm-section-title {
+    color: #2c5aa0;
+    margin: 0;
+    padding: 15px 20px;
+    font-size: 18px!important;
+    font-weight: 600;
+}
+
+.vrm-info-table {
+    padding: 0;
+}
+
+.vrm-info-row {
+    display: flex;
+    border-bottom: 1px solid #e9ecef;
+    min-height: 50px;
+    align-items: center;
+}
+
+.vrm-info-row:last-child {
+    border-bottom: none;
+}
+
+.vrm-info-label {
+    flex: 0 0 150px;
+    padding: 15px 20px;
+    background: #f8f9fa;
+    border-right: 1px solid #e9ecef;
+    font-weight: 500;
+    color: #495057;
+}
+
+.vrm-info-value {
+    flex: 1;
+    padding: 15px 20px;
+    color: #212529;
+}
+
+.vrm-registration {
+    font-weight: bold;
+    color: #2c5aa0;
+    font-size: 16px;
+}
+
+.vrm-model-main, .vrm-year-main, .vrm-v5c-main {
+    font-weight: 600;
+    color: #2c5aa0;
+    margin-bottom: 4px;
+}
+
+.vrm-model-sub, .vrm-year-sub, .vrm-v5c-sub {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+/* Legal Checks Section */
+.vrm-checks-list {
+    padding: 20px;
+}
+
+.vrm-check-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 15px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.vrm-check-item:last-child {
+    border-bottom: none;
+}
+
+.vrm-check-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-weight: bold;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.vrm-check-valid {
+    background: #28a745;
+    color: white;
+}
+
+.vrm-check-info {
+    background: #17a2b8;
+    color: white;
+}
+
+.vrm-check-content {
+    flex: 1;
+}
+
+
+
+.vrm-check-status {
+    color: #2c5aa0;
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+.vrm-check-detail {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.vrm-check-action {
+    margin-top: 5px;
+}
+
+.vrm-check-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.vrm-check-link:hover {
+    text-decoration: underline;
+}
+
+.vrm-insurance-quote {
+    margin-top: 8px;
+}
+
+.vrm-quote-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+/* Vehicle Specifications Section */
+.vrm-specs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    padding: 20px;
+}
+
+.vrm-spec-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.vrm-spec-item:last-child {
+    border-bottom: none;
+}
+
+.vrm-spec-label {
+    font-weight: 500;
+    color: #495057;
+}
+
+.vrm-spec-value {
+    font-weight: 600;
+    color: #212529;
+}
+
+.vrm-spec-main {
+    font-weight: 600;
+    color: #2c5aa0;
+    margin-bottom: 4px;
+}
+
+.vrm-spec-sub {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+/* Written Off Section */
+.vrm-warning-box {
+    padding: 20px;
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 4px;
+    margin: 0;
+}
+
+.vrm-warning-box p {
+    margin: 0 0 10px 0;
+    color: #856404;
+}
+
+.vrm-warning-box p:last-child {
+    margin-bottom: 0;
+}
+
+.vrm-example-data {
+    font-weight: bold;
+    color: #dc3545;
+}
+
+/* Disclaimer */
+.vrm-disclaimer {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.vrm-disclaimer p {
+    margin: 0 0 5px 0;
+}
+
+.vrm-disclaimer p:last-child {
+    margin-bottom: 0;
+}
+
+/* Error Styles */
+.vrm-check-error {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 4px;
+    border: 1px solid #f5c6cb;
+    margin: 20px 0;
+}
+
+/* Loading Styles */
+.vrm-loading {
+    text-align: center;
+    padding: 40px;
+    color: #6c757d;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .vrm-check-container {
+        padding: 10px;
+    }
+    
+    .vrm-check-form-wrapper {
+        padding: 20px;
+    }
+    
+    .vrm-input-wrapper {
+        flex-direction: column;
+    }
+    
+    .vrm-info-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .vrm-info-label {
+        flex: none;
+        border-right: none;
+        border-bottom: 1px solid #e9ecef;
+        padding: 10px 15px;
+    }
+    
+    .vrm-info-value {
+        padding: 10px 15px;
+    }
+    
+    .vrm-specs-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.vehicle-specs {
+    border-right: none;
+}
+
+.vehicle-identity h3,
+.legal-checks h3,
+.vehicle-specs h3 {
+    background: #f8fafc;
+    margin: 0;
+    padding: 15px 20px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2d3748;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* Identity Grid */
+.identity-grid {
+    padding: 20px;
+}
+
+.identity-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+    gap: 10px;
+}
+
+.identity-item:last-child {
+    border-bottom: none;
+}
+
+.identity-label {
+    font-weight: 400;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.4;
+    flex-shrink: 0;
+}
+
+.identity-value {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 14px;
+    line-height: 1.4;
+    text-align: right;
+}
+
+.identity-detail {
+    font-weight: 400;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.4;
+    text-align: right;
+    margin-top: 2px;
+}
+
+/* Legal Checks */
+.legal-checks {
+    padding: 0;
+}
+
+.check-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 12px 20px;
+    border-bottom: 1px solid #f1f5f9;
+    gap: 12px;
+}
+
+.check-item:last-child {
+    border-bottom: none;
+}
+
+.check-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.check-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.check-icon.success {
+    background: #10b981;
+    color: white;
+}
+
+.check-icon.danger {
+    background: #ef4444;
+    color: white;
+}
+
+.check-icon.warning {
+    background: #f59e0b;
+    color: white;
+}
+
+.check-icon.info {
+    background: #3b82f6;
+    color: white;
+    font-weight: normal;
+}
+
+.check-label span {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 14px;
+}
+
+.check-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    text-align: right;
+}
+
+.check-status {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.check-message {
+    font-weight: 400;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.check-action {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.check-link {
+    color: #2563eb;
+    text-decoration: underline;
+}
+
+.check-link:hover {
+    color: #1d4ed8;
+}
+
+.insurance-quote-section {
+    margin-top: 8px;
+}
+
+.get-quote-btn {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.get-quote-btn:hover {
+    background: #2563eb;
+}
+
+/* Vehicle Specifications */
+.specs-grid {
+    padding: 20px;
+}
+
+.spec-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+    gap: 10px;
+}
+
+.spec-item:last-child {
+    border-bottom: none;
+}
+
+.spec-label {
+    font-weight: 400;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.4;
+    flex-shrink: 0;
+}
+
+.spec-value {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 14px;
+    line-height: 1.4;
+    text-align: right;
+}
+
+.spec-detail {
+    font-weight: 400;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.4;
+    text-align: right;
+    margin-top: 2px;
+}
+
+/* Legacy Three Column Layout */
+.vrm-check-three-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 30px;
+    padding: 20px;
+}
+
+.vrm-column {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.vrm-column-header {
+    background: #f8fafc;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.vrm-column-header h3 {
+    color: #2d3748;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.vrm-column-content {
+    padding: 20px;
+}
+
+/* Sections */
+.vrm-check-sections {
+    padding: 0;
+}
+
+.vrm-section {
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.vrm-section:last-child {
+    border-bottom: none;
+}
+
+.vrm-section h3 {
+    background: #f8fafc;
+    margin: 0;
+    padding: 20px 30px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2d3748;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.vrm-section-content {
+    padding: 25px 30px;
+}
+
+/* Data Grid */
+.vrm-data-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+.vrm-data-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.vrm-data-item:last-child {
+    border-bottom: none;
+}
+
+.vrm-label {
+    font-weight: 400;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.vrm-value {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 14px;
+    line-height: 1.4;
+    text-align: right;
+}
+
+.vrm-value-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+}
+
+.vrm-value-highlight {
+    color: #2563eb;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.vrm-value-note {
+    font-weight: 400;
+    color: #64748b;
+    font-size: 12px;
+    margin-top: 2px;
+    display: block;
+}
+
+/* Legal Checks - New Layout */
+.vrm-legal-check-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+    gap: 12px;
+}
+
+.vrm-legal-check-item:last-child {
+    border-bottom: none;
+}
+
+.vrm-legal-status-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.vrm-legal-status-icon.tax-valid,
+.vrm-legal-status-icon.mot-valid {
+    background: #10b981;
+    color: white;
+}
+
+.vrm-legal-status-icon.info-icon {
+    background: #3b82f6;
+    color: white;
+}
+
+.vrm-legal-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+}
+
+.vrm-legal-title {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.vrm-legal-date {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.vrm-legal-note {
+    font-weight: 400;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.vrm-legal-link {
+    color: #2563eb;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.4;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.vrm-legal-link:hover {
+    color: #1d4ed8;
+}
+
+/* Legacy Legal Checks */
+.vrm-legal-checks {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.vrm-legal-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 20px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.vrm-legal-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.vrm-legal-icon.tax-icon,
+.vrm-legal-icon.mot-icon {
+    background: #c6f6d5;
+    color: #38a169;
+}
+
+.vrm-legal-icon.stolen-icon,
+.vrm-legal-icon.insurance-icon {
+    background: #bee3f8;
+    color: #3182ce;
+}
+
+.vrm-legal-content h4 {
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2d3748;
+}
+
+.vrm-legal-status {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #718096;
+}
+
+/* Warning Section */
+.vrm-section.vrm-warning {
+    background: #fed7d7;
+    border-color: #fc8181;
+}
+
+.vrm-section.vrm-warning h3 {
+    background: #fc8181;
+    color: white;
+}
+
+.vrm-warning-content {
+    color: #c53030;
+    font-weight: 600;
+}
+
+/* Footer */
+.vrm-check-footer {
+    padding: 20px 30px;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+}
+
+.vrm-disclaimer {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #718096;
+    text-align: center;
+    line-height: 1.5;
+}
+
+/* Error Styles */
+.vrm-check-error {
+    background: #fed7d7;
+    border: 1px solid #fc8181;
+    border-radius: 8px;
+    padding: 15px 20px;
+    margin-top: 15px;
+}
+
+.vrm-error-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #c53030;
+    font-weight: 500;
+}
+
+.vrm-error-content i {
+    font-size: 1.2rem;
+}
+
+/* Icons */
+.vrm-icon-check::before {
+    content: "✓";
+}
+
+.vrm-icon-warning::before {
+    content: "⚠";
+}
+
+.vrm-icon-info::before {
+    content: "ℹ";
+}
+
+/* Spinner */
+.vrm-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #ffffff;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .vrm-check-container {
+        padding: 15px;
+    }
+    
+    .vrm-check-form-wrapper {
+        padding: 25px 20px;
+    }
+    
+    .vrm-check-title {
+        font-size: 2rem;
+    }
+    
+    .vrm-input-wrapper {
+        flex-direction: column;
+    }
+    
+    .vrm-input {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    .vrm-submit-btn {
+        width: 100%;
+        padding: 15px;
+        font-size: 16px;
+    }
+    
+    /* Three column layout becomes single column on mobile */
+    .results-container {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+    
+    .vehicle-identity,
+    .legal-checks,
+    .vehicle-specs {
+        border-right: none;
+        border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .vehicle-specs {
+        border-bottom: none;
+    }
+    
+    .identity-grid,
+    .specs-grid {
+        padding: 15px;
+    }
+    
+    .check-item {
+        padding: 12px 15px;
+    }
+    
+    .vrm-check-three-columns {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 10px;
+    }
+    
+    .vrm-column-header {
+        padding: 12px 15px;
+    }
+    
+    .vrm-column-header h3 {
+        font-size: 1rem;
+    }
+    
+    .vrm-column-content {
+        padding: 15px;
+    }
+    
+    .vrm-data-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .vrm-legal-checks {
+        grid-template-columns: 1fr;
+    }
+    
+    .vrm-legal-item {
+        padding: 15px;
+    }
+    
+    .vrm-legal-icon {
+        width: 40px;
+        height: 40px;
+        margin-right: 15px;
+        font-size: 20px;
+    }
+    
+    .vrm-features {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .vrm-section-content {
+        padding: 20px 15px;
+    }
+    
+    .vrm-check-header h2 {
+        padding: 15px 20px;
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+    /* Tablet view - keep three columns but reduce gap */
+    .results-container {
+        gap: 0;
+    }
+    
+    .identity-grid,
+    .specs-grid {
+        padding: 15px;
+    }
+    
+    .check-item {
+        padding: 12px 15px;
+    }
+    
+    .vrm-check-three-columns {
+        gap: 15px;
+        padding: 15px;
+    }
+    
+    .vrm-column-content {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .vrm-features {
+        grid-template-columns: 1fr;
+    }
+    
+    .vrm-check-title {
+        font-size: 1.8rem;
+    }
+    
+    .vrm-legal-item {
+        padding: 15px;
+    }
+}
