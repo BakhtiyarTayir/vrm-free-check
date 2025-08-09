@@ -11,6 +11,15 @@ if (!isset($data) || empty($data)) {
     return;
 }
 
+// ОТЛАДОЧНЫЙ ВЫВОД ДАННЫХ ИЗ API (для тестирования)
+echo '<div style="background: #f0f0f0; border: 2px solid #333; padding: 20px; margin: 20px 0; font-family: monospace;">';
+echo '<h3 style="color: #d63384; margin-top: 0;">🔍 ОТЛАДКА: Все данные из API</h3>';
+echo '<pre style="background: white; padding: 15px; border-radius: 5px; overflow-x: auto; font-size: 12px;">';
+echo htmlspecialchars(print_r($data, true));
+echo '</pre>';
+echo '<p style="color: #666; font-size: 12px; margin-bottom: 0;"><strong>Примечание:</strong> Этот блок показывает все данные, полученные из API vehicledataglobal.com</p>';
+echo '</div>';
+
 // Функция для вычисления возраста
 function calculate_age($year) {
     if (empty($year)) return '';
@@ -245,9 +254,128 @@ function calculate_time_ago($date_string) {
     <!-- Written Off Check -->
     <div class="vrm-section vrm-written-off" style="margin-top: 20px;">
         <h2 class="vrm-section-title">Written Off Check</h2>
-        <div class="vrm-warning-box">
-            <p>More than 25% of vehicles checked this month were written off.</p>
-            <p class="vrm-example-data">Example Data ⚠</p>
+        
+        <div class="vrm-written-off-content">
+            <p class="vrm-written-off-info">More than 25% of vehicles checked this month were written off.</p>
+            <p class="vrm-example-data" style="color: #dc3545; font-weight: bold; margin: 10px 0;">Example Data ⚠</p>
+            
+            <div class="vrm-written-off-table">
+                <div class="vrm-table-header">
+                    <div class="vrm-table-col">Details</div>
+                    <div class="vrm-table-col">Cause</div>
+                    <div class="vrm-table-col">Damage</div>
+                </div>
+                <div class="vrm-table-row">
+                    <div class="vrm-table-col">Cat D on 19 April 2017</div>
+                    <div class="vrm-table-col">Accident</div>
+                    <div class="vrm-table-col">Front nearside</div>
+                </div>
+            </div>
+            
+            <p class="vrm-check-info" style="margin: 15px 0; color: #666;">Check if a vehicle is written off from £1.99.</p>
+            
+            <button class="vrm-check-now-btn" style="background-color: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; cursor: pointer;">Check Now</button>
+        </div>
+    </div>
+    
+    <!-- Vehicle Performance and Economy Section -->
+    <div class="vrm-section vrm-performance-economy" style="margin-top: 30px;">
+        <div class="vrm-performance-grid">
+            <!-- Performance Block -->
+            <div class="vrm-performance-block">
+                <h3 class="vrm-block-title">Performance</h3>
+                <div class="vrm-performance-items">
+                    <div class="vrm-performance-item">
+                        <div class="vrm-performance-label">BHP</div>
+                        <div class="vrm-performance-value"><?php echo esc_html($data['bhp'] ?? 'N/A'); ?></div>
+                    </div>
+                    <div class="vrm-performance-item">
+                        <div class="vrm-performance-label">Top Speed</div>
+                        <div class="vrm-performance-value"><?php echo esc_html($data['top_speed_mph'] ?? 'N/A'); ?></div>
+                    </div>
+                    <div class="vrm-performance-item">
+                        <div class="vrm-performance-label">0-60 MPH</div>
+                        <div class="vrm-performance-value"><?php echo esc_html($data['zero_to_sixty'] ?? 'N/A'); ?></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fuel Economy Block -->
+            <div class="vrm-performance-block">
+                <h3 class="vrm-block-title">Fuel Economy</h3>
+                <div class="vrm-performance-items">
+                    <div class="vrm-performance-item">
+                        <div class="vrm-performance-label">Urban</div>
+                        <div class="vrm-performance-value"><?php echo esc_html($data['urban_mpg'] ?? 'N/A'); ?></div>
+                    </div>
+                    <div class="vrm-performance-item">
+                        <div class="vrm-performance-label">Extra-Urban</div>
+                        <div class="vrm-performance-value"><?php echo esc_html($data['extra_urban_mpg'] ?? 'N/A'); ?></div>
+                    </div>
+                    <div class="vrm-performance-item">
+                        <div class="vrm-performance-label">Combined</div>
+                        <div class="vrm-performance-value"><?php echo esc_html($data['combined_mpg'] ?? 'N/A'); ?></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fuel Costs Block -->
+            <div class="vrm-performance-block">
+                <h3 class="vrm-block-title">Fuel Costs</h3>
+                <div class="vrm-performance-items">
+                    <div class="vrm-performance-item">
+                        <div class="vrm-performance-label">1 Mile</div>
+                        <div class="vrm-performance-value">£0.21</div>
+                    </div>
+                    <div class="vrm-performance-item">
+                        <div class="vrm-performance-label">100 Miles</div>
+                        <div class="vrm-performance-value">£20.98</div>
+                    </div>
+                    <div class="vrm-performance-item">
+                        <div class="vrm-performance-label">12,000 Miles</div>
+                        <div class="vrm-performance-value">£2,518</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Running Costs Block -->
+            <div class="vrm-performance-block">
+                <h3 class="vrm-block-title">Running Costs</h3>
+                <div class="vrm-performance-items">
+                    <div class="vrm-performance-item">
+                        <div class="vrm-performance-label">Tax (12 months)*</div>
+                        <div class="vrm-performance-value">£265</div>
+                    </div>
+                    <div class="vrm-performance-item">
+                        <div class="vrm-performance-label">Tax (6 months)*</div>
+                        <div class="vrm-performance-value">£145.75</div>
+                    </div>
+                    <div class="vrm-performance-item">
+                        <div class="vrm-performance-label">Insurance Group</div>
+                        <div class="vrm-performance-value">45E</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recommended Block -->
+            <div class="vrm-recommended-block">
+                <h3 class="vrm-block-title">Recommended</h3>
+                <div class="vrm-recommended-content">
+                    <h4 class="vrm-recommended-title">Resto Revival</h4>
+                    <p class="vrm-recommended-description">Captivating stories behind unique and fascinating cars, celebrating the passion of true petrol heads!</p>
+                    
+                    <div class="vrm-recommended-image">
+                        <img src="https://images.unsplash.com/photo-1494976688153-ca3ce29d8df4?w=400&h=200&fit=crop&auto=format" alt="Classic Car" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;">
+                        <div class="vrm-play-button">▶</div>
+                    </div>
+                    
+                    <button class="vrm-youtube-btn">Watch Now on YouTube</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="vrm-tax-disclaimer">
+            <p style="font-size: 12px; color: #666; margin-top: 15px;">*Road tax costs are indicative. You should check with the seller or book at the <a href="#" style="color: #007cba;">vehicle tax rates</a> table to confirm tax costs.</p>
         </div>
     </div>
     
