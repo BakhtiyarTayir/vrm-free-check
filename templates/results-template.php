@@ -319,6 +319,28 @@ function calculate_time_ago($date_string) {
                 </div>
             </div>
             
+                        <!-- Recommended Block -->
+            <div class="vrm-recommended-block">
+                <h3 class="vrm-block-title">Recommended</h3>
+                <div class="vrm-recommended-content">
+                    <h4 class="vrm-recommended-title">Resto Revival</h4>
+                    <p class="vrm-recommended-description">Captivating stories behind unique and fascinating cars, celebrating the passion of true petrol heads!</p>
+                    
+                    <div class="vrm-recommended-video">
+                        <iframe src="https://www.youtube.com/embed/YBIZnrdUS4k" 
+                                width="100%" 
+                                height="150" 
+                                style="border-radius: 8px; border: none;" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                    
+                    <button class="vrm-youtube-btn">Watch Now on YouTube</button>
+                </div>
+            </div>
+
             <!-- Fuel Costs Block -->
             <div class="vrm-performance-block">
                 <h3 class="vrm-block-title">Fuel Costs</h3>
@@ -357,25 +379,203 @@ function calculate_time_ago($date_string) {
                 </div>
             </div>
             
-            <!-- Recommended Block -->
-            <div class="vrm-recommended-block">
-                <h3 class="vrm-block-title">Recommended</h3>
-                <div class="vrm-recommended-content">
-                    <h4 class="vrm-recommended-title">Resto Revival</h4>
-                    <p class="vrm-recommended-description">Captivating stories behind unique and fascinating cars, celebrating the passion of true petrol heads!</p>
-                    
-                    <div class="vrm-recommended-image">
-                        <img src="https://images.unsplash.com/photo-1494976688153-ca3ce29d8df4?w=400&h=200&fit=crop&auto=format" alt="Classic Car" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;">
-                        <div class="vrm-play-button">▶</div>
-                    </div>
-                    
-                    <button class="vrm-youtube-btn">Watch Now on YouTube</button>
-                </div>
-            </div>
+
         </div>
         
         <div class="vrm-tax-disclaimer">
             <p style="font-size: 12px; color: #666; margin-top: 15px;">*Road tax costs are indicative. You should check with the seller or book at the <a href="#" style="color: #007cba;">vehicle tax rates</a> table to confirm tax costs.</p>
+        </div>
+        
+        <!-- Two Column Section -->
+        <div class="vrm-two-column-section" style="margin-top: 30px;">
+            <div class="vrm-two-column-container">
+                <!-- Left Column -->
+                <div class="vrm-column vrm-column-left">
+                    <div class="vrm-column-content">
+                        <!-- Car Finance Claim Block -->
+                        <div class="car-finance-claim">
+                            <div class="claim-header">
+                                <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . '../assets/images/alert.svg'); ?>" alt="Claim" class="claim-icon-svg">
+                                <h3 class="claim-title">Car Finance Claim</h3>
+                            </div>
+                            
+                            <h4 class="claim-question">Have you had a car on finance between 2008-2021?</h4>
+                            
+                            <p class="claim-description">
+                                You may be able to reclaim £1000s in recovered interest payments due 
+                                to potential hidden commission paid. Find out if you are eligible.
+                            </p>
+                            
+                            <a href="https://pcp.claim.co.uk/new/" class="claim-button" target="_blank">
+                                → Start your claim at claim.co.uk
+                            </a>
+                            
+                            <p class="claim-disclaimer">
+                                 Car Finance (HP/PCP) claims are regulated by the FCA. You do not 
+                                 need to use a claims management company such as partners to make 
+                                 a claim. You have the right to complain directly to the lender and/or use 
+                                 the Financial Ombudsman Service to seek redress for free.
+                             </p>
+                         </div>
+                         
+                         <!-- Additional Check Sections -->
+                         <div class="vehicle-checks">
+                             <!-- Diesel Claim -->
+                             <div class="check-item">
+                                 <div class="check-header">
+                                     <span class="check-icon">✓</span>
+                                     <h4 class="check-title">Diesel Claim</h4>
+                                 </div>
+                                 <p class="check-description">
+                                     It doesn't look like this vehicle has been affected by the diesel emissions scandal.
+                                 </p>
+                             </div>
+                             
+                             <!-- Exported -->
+                             <div class="check-item">
+                                 <div class="check-header">
+                                     <span class="check-icon">✓</span>
+                                     <h4 class="check-title">Exported</h4>
+                                 </div>
+                                 <p class="check-description">
+                                     This vehicle has not been marked as exported.
+                                 </p>
+                             </div>
+                             
+                             <!-- Recalls -->
+                             <div class="check-item">
+                                 <div class="check-header">
+                                     <span class="check-icon">✓</span>
+                                     <h4 class="check-title">Recalls</h4>
+                                 </div>
+                                 <p class="check-description">
+                                     No safety recalls found for this vehicle.
+                                 </p>
+                             </div>
+                             
+                             <!-- ULEZ Compliance -->
+                             <div class="check-item">
+                                 <div class="check-header">
+                                     <span class="check-icon">✓</span>
+                                     <h4 class="check-title">ULEZ Compliance</h4>
+                                 </div>
+                                 <p class="check-description">
+                                     This vehicle meets the ULEZ standards. Cars that meet Euro 4 
+                                     standards don't need to pay the daily charge when driving in the ULEZ 
+                                     zone. Other charges (e.g. congestion charge) may still apply. You can 
+                                     confirm the current status on the TfL website.
+                                 </p>
+                                 <a href="#" class="check-link">Check ULEZ status on TFL</a>
+                             </div>
+                         </div>
+                         
+                         <!-- Hidden History Block -->
+                         <div class="hidden-history-block">
+                             <div class="hidden-history-header">
+                                <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . '../assets/images/alert.svg'); ?>" alt="Alert" class="issue-icon-svg">
+                                <h3 class="hidden-history-title">Hidden History</h3>
+                             </div>
+                             
+                             <p class="hidden-history-intro">
+                                 Nearly a <strong>quarter</strong> of vehicles we check reveal <strong>one or more issues</strong>.
+                             </p>
+                             
+                             <div class="hidden-history-issues">
+                                 <div class="history-issue">
+                                     <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . '../assets/images/info.svg'); ?>" alt="Info" class="issue-icon-svg">
+                                     <span class="issue-text">Outstanding Finance</span>
+                                 </div>
+                                 <div class="history-issue">
+                                     <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . '../assets/images/info.svg'); ?>" alt="Info" class="issue-icon-svg">
+                                     <span class="issue-text">Written Off</span>
+                                 </div>
+                                 <div class="history-issue">
+                                     <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . '../assets/images/info.svg'); ?>" alt="Info" class="issue-icon-svg">
+                                     <span class="issue-text">Stolen</span>
+                                 </div>
+                                 <div class="history-issue">
+                                     <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . '../assets/images/info.svg'); ?>" alt="Info" class="issue-icon-svg">
+                                     <span class="issue-text">Plate Changes</span>
+                                 </div>
+                             </div>
+                             
+                             <p class="hidden-history-cta">
+                                 Get a history check to check this vehicle for hidden history.
+                             </p>
+                             
+                             <button class="hidden-history-button">Get a Full Check</button>
+                         </div>
+                    </div>
+                </div>
+                
+                <!-- Right Column -->
+                <div class="vrm-column vrm-column-right">
+                    <div class="vrm-column-content">
+                        <!-- Mileage Issues Block -->
+                        <div class="mileage-issues-block">
+                            <div class="mileage-issues-header">
+                                <span class="mileage-issues-icon">✗</span>
+                                <h3 class="mileage-issues-title">Mileage Issues</h3>
+                            </div>
+                            
+                            <p class="mileage-issues-description">
+                                The odometer reading reduced by -19646 miles between 13/09/2023 and 23/09/2024.
+                            </p>
+                            
+                            <div class="mileage-issues-links">
+                                <a href="#" class="mileage-issue-link">Should I buy a car that shows a mileage issue?</a>
+                                <a href="#" class="mileage-issue-link">How do I correct a mistake in the mileage history?</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Hidden Mileage Issues Block -->
+                        <div class="hidden-mileage-issues-block">
+                            <div class="hidden-mileage-issues-header">
+                                <span class="hidden-mileage-issues-icon">⚠</span>
+                                <h3 class="hidden-mileage-issues-title">Hidden Mileage Issues</h3>
+                            </div>
+                            
+                            <p class="hidden-mileage-issues-description">
+                                This mileage check only includes data from the DVSA recorded during MOT tests.
+                            </p>
+                            
+                            <p class="hidden-mileage-issues-description">
+                                Buy a full report to check mileage readings from the DVLA, Retailers / Garages & Leasing / Hire Companies.
+                            </p>
+                            
+                            <button class="hidden-mileage-issues-button">Get a History Check</button>
+                        </div>
+                        
+                        <!-- Mileage Data Block -->
+                        <div class="mileage-data-block">
+                            <div class="mileage-data-table">
+                                <div class="mileage-data-row">
+                                    <span class="mileage-data-label">Est. Current Mileage</span>
+                                    <span class="mileage-data-value">32,962 miles</span>
+                                </div>
+                                <div class="mileage-data-row">
+                                    <span class="mileage-data-label">Mileage Last Year</span>
+                                    <span class="mileage-data-value">0 miles</span>
+                                </div>
+                                <div class="mileage-data-row">
+                                    <span class="mileage-data-label">Average Mileage</span>
+                                    <span class="mileage-data-value">4300 p/year</span>
+                                </div>
+                                <div class="mileage-data-row">
+                                    <span class="mileage-data-label">Status</span>
+                                    <span class="mileage-data-value status-below">below average</span>
+                                </div>
+                                <div class="mileage-data-row">
+                                    <span class="mileage-data-label">Last MOT Mileage</span>
+                                    <span class="mileage-data-value">32962 miles on<br>23 Sep 2024</span>
+                                </div>
+                            </div>
+                            
+                            <button class="mileage-data-button">View Mileage History</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     
