@@ -1981,3 +1981,47 @@ h4.claim-question {
 .mileage-issues-block p {
     margin-bottom: 20px;
 }
+
+.check-footer-fixed {
+    z-index: 999;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    background-color: rgba(255,255,255,.95);
+    margin: auto;
+    text-align: center;
+    border-top: 1px solid#dbeaf4;
+    padding-bottom: -webkit-calc(env(safe-area-inset-bottom));
+    padding-bottom: -moz-calc(env(safe-area-inset-bottom));
+    padding-bottom: calc(env(safe-area-inset-bottom));
+    padding-bottom: 20px;
+}
+ul.check-footer-fixed-list {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+}
+
+.check-footer-fixed .container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+.check-footer-fixed-list  .vrm-chech-footer-list-item  p{
+    color: #ccc!important;
+}
+.check-footer-fixed-list li p {
+    margin-bottom: 0;
+}
+.check-footer-fixed-list  li.active p{
+    color: #046bd2!important;
+}
+.check-footer-fixed-list li img {
+    width: 26px;
+}
+
+.check-footer-fixed-list li a {
+    text-decoration: none!important;
+    font-size: 16px;
+}

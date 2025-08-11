@@ -366,11 +366,11 @@ function calculate_time_ago($date_string) {
                 <div class="vrm-performance-items">
                     <div class="vrm-performance-item">
                         <div class="vrm-performance-label">Tax (12 months)*</div>
-                        <div class="vrm-performance-value">£265</div>
+                        <div class="vrm-performance-value">£<?php echo esc_html($data['ved_twelve_months'] ?? 'N/A'); ?></div>
                     </div>
                     <div class="vrm-performance-item">
                         <div class="vrm-performance-label">Tax (6 months)*</div>
-                        <div class="vrm-performance-value">£145.75</div>
+                        <div class="vrm-performance-value">£<?php echo esc_html($data['ved_six_months'] ?? 'N/A'); ?></div>
                     </div>
                     <div class="vrm-performance-item">
                         <div class="vrm-performance-label">Insurance Group</div>
@@ -512,6 +512,7 @@ function calculate_time_ago($date_string) {
                 <div class="vrm-column vrm-column-right">
                     <div class="vrm-column-content">
                         <!-- Mileage Issues Block -->
+                        <?php if (!empty($data['has_mileage_issues']) && $data['has_mileage_issues']): ?>
                         <div class="mileage-issues-block">
                             <div class="mileage-issues-header">
                                 <span class="mileage-issues-icon">✗</span>
@@ -519,7 +520,7 @@ function calculate_time_ago($date_string) {
                             </div>
                             
                             <p class="mileage-issues-description">
-                                The odometer reading reduced by -19646 miles between 13/09/2023 and 23/09/2024.
+                                <?php echo esc_html($data['mileage_issue_description'] ?? 'N/A'); ?>
                             </p>
                             
                             <div class="mileage-issues-links">
@@ -527,6 +528,7 @@ function calculate_time_ago($date_string) {
                                 <a href="#" class="mileage-issue-link">How do I correct a mistake in the mileage history?</a>
                             </div>
                         </div>
+                        <?php endif; ?>
                         
                         <!-- Hidden Mileage Issues Block -->
                         <div class="hidden-mileage-issues-block">
@@ -551,15 +553,15 @@ function calculate_time_ago($date_string) {
                             <div class="mileage-data-table">
                                 <div class="mileage-data-row">
                                     <span class="mileage-data-label">Est. Current Mileage</span>
-                                    <span class="mileage-data-value">32,962 miles</span>
+                                    <span class="mileage-data-value"><?php echo esc_html($data['current_mileage'] ?? '32,962 miles'); ?></span>
                                 </div>
                                 <div class="mileage-data-row">
                                     <span class="mileage-data-label">Mileage Last Year</span>
-                                    <span class="mileage-data-value">0 miles</span>
+                                    <span class="mileage-data-value"><?php echo esc_html($data['mileage_last_year'] ?? '0 miles'); ?></span>
                                 </div>
                                 <div class="mileage-data-row">
                                     <span class="mileage-data-label">Average Mileage</span>
-                                    <span class="mileage-data-value">4300 p/year</span>
+                                    <span class="mileage-data-value"><?php echo esc_html($data['average_mileage'] ?? '4300 p/year'); ?></span>
                                 </div>
                                 <div class="mileage-data-row">
                                     <span class="mileage-data-label">Status</span>
@@ -567,7 +569,7 @@ function calculate_time_ago($date_string) {
                                 </div>
                                 <div class="mileage-data-row">
                                     <span class="mileage-data-label">Last MOT Mileage</span>
-                                    <span class="mileage-data-value">32962 miles on<br>23 Sep 2024</span>
+                                    <span class="mileage-data-value"><?php echo esc_html($data['estimated_mileage'] ?? '32962 miles'); ?> on<br><?php echo esc_html($data['mileage_date'] ?? '23 Sep 2024'); ?></span>
                                 </div>
                             </div>
                             
@@ -585,4 +587,34 @@ function calculate_time_ago($date_string) {
         <p>Data sourced from DVLA and other official databases. Last updated: <?php echo esc_html(current_time('j M Y, H:i')); ?></p>
     </div>
     
+</div>
+<div class="check-footer-fixed">
+    <div class="container">
+        <ul class="check-footer-fixed-list">
+            <li class="vrm-chech-footer-list-item active">
+                <a href="#">
+                    <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . '../assets/images/vehicle-selected.svg'); ?>" alt="Vehicle Selected">
+                    <p class="vrm-code"><?php echo esc_html($data['vrm'] ?? 'N/A'); ?></p>
+                </a>
+            </li>
+            <li class="vrm-chech-footer-list-item">
+                <a href="#">
+                    <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . '../assets/images/mot-selected.svg'); ?>" alt="Mot Selected">
+                    <p class="mot-code">Mot History</p>
+                </a>
+            </li>
+            <li class="vrm-chech-footer-list-item">
+                <a href="#">
+                    <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . '../assets/images/mileage-selected.svg'); ?>" alt="Mileage Selected">
+                    <p class="mileage-code">Mileage History</p>
+                </a>
+            </li>
+            <li class="vrm-chech-footer-list-item">
+                <a href="#">
+                    <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . '../assets/images/history-selected.svg'); ?>" alt="Contact Selected">
+                    <p class="contact-code">Buy check</p>
+                </a>
+            </li>
+        </ul>
+    </div>
 </div>

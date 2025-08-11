@@ -218,6 +218,10 @@ class ApiClient {
             'co2_emissions' => $this->format_co2_emissions($vehicle_status['VehicleExciseDutyDetails']['DvlaCo2'] ?? $emissions['ManufacturerCo2'] ?? ''),
             'tax_band' => $vehicle_status['VehicleExciseDutyDetails']['DvlaCo2Band'] ?? 'N/A',
             
+            // VED Tax Rates (VedRate -> ved_six_months, ved_twelve_months)
+            'ved_six_months' => $vehicle_status['VehicleExciseDutyDetails']['VedRate']['Standard']['SixMonths'] ?? 'N/A',
+            'ved_twelve_months' => $vehicle_status['VehicleExciseDutyDetails']['VedRate']['Standard']['TwelveMonths'] ?? 'N/A',
+            
             // Gross Vehicle Weight (GrossVehicleWeightKg -> revenue_weight)
             'revenue_weight' => $this->format_weight($weights['GrossVehicleWeightKg'] ?? ''),
             'type_approval' => $model_classification['TypeApprovalCategory'] ?? 'N/A',
@@ -327,6 +331,8 @@ class ApiClient {
             'body_type' => 'N/A',
             'co2_emissions' => 'N/A',
             'tax_band' => 'N/A',
+            'ved_six_months' => 'N/A',
+            'ved_twelve_months' => 'N/A',
             'revenue_weight' => 'N/A',
             'type_approval' => 'N/A',
             'euro_status' => 'N/A',
@@ -344,13 +350,23 @@ class ApiClient {
      */
     private function transform_mileage_data($mileage_api_data) {
         if (empty($mileage_api_data)) {
-            return array('estimated_mileage' => 'N/A');
+            return array(
+                'estimated_mileage' => 'N/A',
+                'current_mileage' => 'N/A',
+                'mileage_last_year' => '0 miles',
+                'average_mileage' => 'N/A'
+            );
         }
         
         $mileage_details = $mileage_api_data['Results']['MileageCheckDetails'] ?? array();
         
         if (empty($mileage_details['MileageResultList']) || !is_array($mileage_details['MileageResultList'])) {
-            return array('estimated_mileage' => 'N/A');
+            return array(
+                'estimated_mileage' => 'N/A',
+                'current_mileage' => 'N/A',
+                'mileage_last_year' => '0 miles',
+                'average_mileage' => 'N/A'
+            );
         }
         
         // Получаем список записей о пробеге
@@ -376,6 +392,80 @@ class ApiClient {
             }
         }
         
+        // Рассчитываем пробег за последний год
+        $current_year = date('Y');
+        $last_year = $current_year - 1;
+        
+        $current_year_mileage = null;
+        $last_year_mileage = null;
+        
+        foreach ($mileage_list as $record) {
+            if (!empty($record['DateRecorded']) && !empty($record['Mileage'])) {
+                try {
+                    $record_date = new \DateTime($record['DateRecorded']);
+                    $record_year = $record_date->format('Y');
+                    
+                    if ($record_year == $current_year && $current_year_mileage === null) {
+                        $current_year_mileage = $record['Mileage'];
+                    }
+                    if ($record_year == $last_year) {
+                        $last_year_mileage = $record['Mileage'];
+                    }
+                } catch (\Exception $e) {
+                    continue;
+                }
+            }
+        }
+        
+        // Вычисляем пробег за последний год
+        $mileage_last_year = '0 miles';
+        if ($current_year_mileage !== null && $last_year_mileage !== null) {
+            $yearly_mileage = $current_year_mileage - $last_year_mileage;
+            if ($yearly_mileage > 0) {
+                $mileage_last_year = number_format($yearly_mileage) . ' miles';
+            }
+        }
+        
+        // Получаем среднегодовой пробег из API
+        $average_mileage = 'N/A';
+        if (!empty($mileage_details['CalculatedAverageAnnualMileage'])) {
+            $average_mileage = number_format($mileage_details['CalculatedAverageAnnualMileage']) . ' p/year';
+        }
+        
+        // Анализируем аномалии пробега
+        $mileage_anomaly_detected = !empty($mileage_details['MileageAnomalyDetected']) ? $mileage_details['MileageAnomalyDetected'] : false;
+        $mileage_issue_description = '';
+        $has_mileage_issues = false;
+        
+        if ($mileage_anomaly_detected && count($mileage_list) >= 2) {
+            // Сортируем записи по дате для анализа
+            usort($mileage_list, function($a, $b) {
+                try {
+                    $date_a = new \DateTime($a['DateRecorded']);
+                    $date_b = new \DateTime($b['DateRecorded']);
+                    return $date_a <=> $date_b;
+                } catch (\Exception $e) {
+                    return 0;
+                }
+            });
+            
+            // Ищем случаи уменьшения пробега
+            for ($i = 1; $i < count($mileage_list); $i++) {
+                $prev_record = $mileage_list[$i - 1];
+                $curr_record = $mileage_list[$i];
+                
+                if ($curr_record['Mileage'] < $prev_record['Mileage']) {
+                    $mileage_reduction = $prev_record['Mileage'] - $curr_record['Mileage'];
+                    $prev_date = $this->format_date($prev_record['DateRecorded']);
+                    $curr_date = $this->format_date($curr_record['DateRecorded']);
+                    
+                    $mileage_issue_description = "The odometer reading reduced by " . number_format($mileage_reduction) . " miles between " . $prev_date . " and " . $curr_date . ".";
+                    $has_mileage_issues = true;
+                    break; // Берем первый найденный случай
+                }
+            }
+        }
+        
         // Форматируем результат
         if ($latest_mileage_record !== null) {
             $mileage = number_format($latest_mileage_record['Mileage']);
@@ -384,12 +474,24 @@ class ApiClient {
             
             return array(
                 'estimated_mileage' => $mileage . ' miles',
+                'current_mileage' => $mileage . ' miles',
                 'mileage_date' => $date_recorded,
-                'mileage_source' => $data_source
+                'mileage_source' => $data_source,
+                'mileage_last_year' => $mileage_last_year,
+                'average_mileage' => $average_mileage,
+                'has_mileage_issues' => $has_mileage_issues,
+                'mileage_issue_description' => $mileage_issue_description
             );
         }
         
-        return array('estimated_mileage' => 'N/A');
+        return array(
+            'estimated_mileage' => 'N/A',
+            'current_mileage' => 'N/A',
+            'mileage_last_year' => '0 miles',
+            'average_mileage' => $average_mileage,
+            'has_mileage_issues' => $has_mileage_issues,
+            'mileage_issue_description' => $mileage_issue_description
+        );
     }
     
     /**
