@@ -1,0 +1,1453 @@
+/**
+ * Premium VRM Check Plugin Styles
+ * Стили для премиум версии плагина
+ */
+
+/* Premium Results Container */
+.vrm-check-premium-results {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    line-height: 1.6;
+}
+
+/* Report Header */
+.premium-report-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 30px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.report-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    margin: 0 0 10px 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.report-id {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+/* Main Report Content */
+.premium-report-content {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 0.8fr;
+    gap: 30px;
+    margin-bottom: 40px;
+    padding: 30px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Vehicle Image Section */
+.vehicle-image-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.vehicle-main-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+/* Vehicle Info Section */
+.vehicle-info-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 15px;
+}
+
+.result-status {
+    margin-bottom: 20px;
+}
+
+.result-status.warning {
+    background: #ff6600;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.status-text {
+    letter-spacing: 0.5px;
+}
+
+.vehicle-details {
+    padding: 0;
+}
+
+.vehicle-title {
+    font-size: 1.1rem;
+    color: #333;
+    margin: 0 0 15px 0;
+    font-weight: 600;
+}
+
+.vehicle-make {
+    font-size: 1.1rem;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.vehicle-model {
+    font-size: 1rem;
+    color: #333;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+/* Registration Section */
+.vehicle-registration-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 15px;
+}
+
+.registration-info h4 {
+    font-size: 1rem;
+    color: #333;
+    margin: 0 0 8px 0;
+    font-weight: 600;
+}
+
+.year-value, .registration-value {
+    font-size: 1rem;
+    color: #333;
+    font-weight: 400;
+    margin-bottom: 20px;
+}
+
+/* Premium Features Section */
+.premium-features-section {
+    margin-bottom: 40px;
+    padding: 40px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e9ecef;
+}
+
+.premium-features-section h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin-bottom: 40px;
+    font-weight: 800;
+    position: relative;
+}
+
+.premium-features-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(135deg, #3498db 0%, #2ecc71 100%);
+    border-radius: 2px;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.feature-item {
+    text-align: center;
+    padding: 30px 25px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border: 2px solid #e9ecef;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(52, 152, 219, 0.1), transparent);
+    transition: left 0.6s ease;
+}
+
+.feature-item:hover::before {
+    left: 100%;
+}
+
+.feature-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    border-color: #3498db;
+    background: white;
+}
+
+.feature-icon {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.feature-item:hover .feature-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.feature-item h3 {
+    font-size: 1.4rem;
+    color: #2c3e50;
+    margin: 0 0 15px 0;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.feature-item p {
+    color: #7f8c8d;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Upgrade Section */
+.premium-upgrade-section {
+    text-align: center;
+    padding: 50px 40px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.premium-upgrade-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.upgrade-content {
+    position: relative;
+    z-index: 1;
+}
+
+.upgrade-content h2 {
+    font-size: 2.8rem;
+    margin: 0 0 20px 0;
+    font-weight: 800;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.upgrade-content p {
+    font-size: 1.3rem;
+    margin: 0 0 35px 0;
+    opacity: 0.95;
+    line-height: 1.7;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.upgrade-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-upgrade-premium, .btn-learn-more {
+    padding: 18px 35px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-upgrade-premium {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+    color: white;
+    box-shadow: 0 6px 12px rgba(46, 204, 113, 0.3);
+}
+
+.btn-upgrade-premium:hover {
+    background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(46, 204, 113, 0.4);
+}
+
+.btn-learn-more {
+    background: transparent;
+    color: white;
+    border: 3px solid white;
+    box-shadow: 0 6px 12px rgba(255, 255, 255, 0.2);
+}
+
+.btn-learn-more:hover {
+    background: white;
+    color: #667eea;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .premium-report-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+    }
+    
+    .vehicle-registration-section {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 768px) {
+    .vrm-check-premium-results {
+        padding: 15px;
+    }
+    
+    .premium-report-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 25px;
+        text-align: center;
+    }
+    
+    .report-title {
+        font-size: 2.2rem;
+    }
+    
+    .premium-features-section {
+        padding: 25px 20px;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .premium-upgrade-section {
+        padding: 35px 25px;
+    }
+    
+    .upgrade-content h2 {
+        font-size: 2.2rem;
+    }
+    
+    .upgrade-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn-upgrade-premium, .btn-learn-more {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .report-title {
+        font-size: 1.8rem;
+    }
+    
+    .premium-features-section h2 {
+        font-size: 2rem;
+    }
+    
+    .upgrade-content h2 {
+        font-size: 1.8rem;
+    }
+    
+    .upgrade-content p {
+        font-size: 1.1rem;
+    }
+    
+    .summary-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .summary-value {
+        align-self: flex-end;
+    }
+    
+    .checks-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .checks-column:first-child .check-row {
+        border-right: none;
+    }
+    
+    .description-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .description-column:first-child .description-row {
+        border-right: none;
+    }
+}
+
+/* Vehicle Description Block */
+.vehicle-description-block {
+    margin-bottom: 30px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.description-header {
+    background: #8a9ba8;
+    padding: 15px 20px;
+    margin: 0;
+}
+
+.description-title {
+    color: white!important;
+    font-size: 15px!important;
+    font-weight: 700!important;
+    margin: 0!important;
+    text-transform: none;
+}
+
+.description-content {
+    background: white;
+    border: 1px solid #e9ecef;
+}
+
+.description-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+}
+
+.description-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.description-column:first-child .description-row {
+    border-right: 1px solid #f1f3f4;
+}
+
+.description-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    border-bottom: 1px solid #f1f3f4;
+    min-height: 50px;
+}
+
+.description-row:last-child {
+    border-bottom: none;
+}
+
+.description-label {
+    font-weight: 500;
+    color: #495057;
+    font-size: 14px;
+    flex: 1;
+}
+
+.description-value {
+    font-weight: 600;
+    color: #212529;
+    font-size: 14px;
+    text-align: right;
+    flex: 1;
+}
+
+/* Manual Checks and Keeper Information Container */
+.manual-keeper-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+/* Your Manual Checks Block */
+.manual-checks-block {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.manual-checks-header {
+    background: #8a9ba8;
+    padding: 15px 20px;
+    margin: 0;
+}
+
+.manual-checks-title {
+    color: white!important;
+    font-size: 15px!important;
+    font-weight: 700!important;
+    margin: 0!important;
+    text-transform: none;
+}
+
+.manual-checks-content {
+    background: white;
+    border: 1px solid #e9ecef;
+    padding: 20px;
+}
+
+.manual-checks-info {
+    color: #6c757d;
+    font-style: italic;
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.manual-check-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.manual-check-row:last-of-type {
+    border-bottom: none;
+    margin-bottom: 20px;
+}
+
+.manual-check-label {
+    font-weight: 500;
+    color: #495057;
+    font-size: 14px;
+}
+
+.manual-check-value {
+    font-weight: 600;
+    color: #212529;
+    font-size: 14px;
+}
+
+.vin-check-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #f1f3f4;
+}
+
+.vin-check-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #212529;
+    margin: 0 0 10px 0;
+}
+
+.vin-check-description {
+    color: #495057;
+    font-size: 14px;
+    line-height: 1.4;
+    margin-bottom: 15px;
+}
+
+.vin-input-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.vin-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #f8f9fa;
+}
+
+.vin-check-button {
+    padding: 8px 20px;
+    background: #8a9ba8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.vin-check-button:hover {
+    background: #7a8a96;
+}
+
+.vin-result {
+    margin-top: 10px;
+}
+
+.vin-success {
+    color: #28a745;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Keeper Information Block */
+.keeper-info-block {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.keeper-info-header {
+    background: #8a9ba8;
+    padding: 15px 20px;
+    margin: 0;
+}
+
+.keeper-info-title {
+    color: white!important;
+    font-size: 15px!important;
+    font-weight: 700!important;
+    margin: 0!important;
+    text-transform: none;
+}
+
+.keeper-info-content {
+    background: white;
+    border: 1px solid #e9ecef;
+}
+
+.keeper-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.keeper-info-row:last-child {
+    border-bottom: none;
+}
+
+.keeper-info-label {
+    font-weight: 500;
+    color: #495057;
+    font-size: 14px;
+}
+
+.keeper-info-value {
+    font-weight: 600;
+    color: #212529;
+    font-size: 14px;
+}
+
+/* Responsive Design for Manual Checks and Keeper Info */
+@media (max-width: 768px) {
+    .manual-keeper-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .vin-input-container {
+        flex-direction: column;
+    }
+    
+    .vin-check-button {
+        align-self: flex-start;
+    }
+}
+
+/* Animation Classes */
+.fade-in {
+    animation: fadeIn 0.6s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.slide-up {
+    animation: slideUp 0.8s ease-out;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Premium Badge */
+.premium-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 8px rgba(243, 156, 18, 0.3);
+}
+
+/* Report Summary Block */
+.report-summary-block {
+    margin-bottom: 30px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.summary-header {
+    background: #8a9ba8;
+    padding: 15px 20px;
+    margin: 0;
+}
+
+.summary-title {
+    color: white!important;
+    font-size: 15px!important;
+    font-weight: 700!important;
+    margin: 0!important;
+    text-transform: none;
+}
+
+.summary-content {
+    background: white;
+    border: 1px solid #e9ecef;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.summary-row:last-child {
+    border-bottom: none;
+}
+
+.summary-label {
+    font-size: 0.95rem;
+    color: #333;
+    font-weight: 500;
+}
+
+.summary-value {
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.summary-info {
+    font-weight: 600;
+    color: #333;
+}
+
+/* All Checks Block Styles */
+.all-checks-block {
+    background-color: #ffffff;
+    border-radius: 8px;
+    margin-top: 20px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.checks-header {
+    background-color: #8a9ba8;
+    padding: 12px 20px;
+}
+
+.checks-title {
+    color: #ffffff!important;
+    font-size: 15px!important;
+    font-weight: 700!important;
+    margin: 0!important;
+}
+
+/* Universal gray title class */
+.title-gray {
+    color: #ffffff!important;
+    font-size: 15px!important;
+    font-weight: 700!important;
+    margin: 0!important;
+}
+
+.checks-content {
+    padding: 0;
+}
+
+.checks-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.checks-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.check-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    border-bottom: 1px solid #e5e5e5;
+    min-height: 48px;
+}
+
+.check-row:last-child {
+    border-bottom: none;
+}
+
+.checks-column:first-child .check-row {
+    border-right: 1px solid #e5e5e5;
+}
+
+.check-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.check-name {
+    color: #333333;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.check-info {
+    color: #999999;
+    font-size: 12px;
+    cursor: help;
+}
+
+.check-status {
+    display: flex;
+    align-items: center;
+}
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    min-width: 50px;
+}
+
+.status-no {
+    background-color: #28a745;
+    color: #ffffff;
+}
+
+.status-fail {
+    background-color: #dc3545;
+    color: #ffffff;
+}
+
+.status-yes {
+    background-color: #ffc107;
+    color: #000000;
+}
+
+.status-valid {
+    background-color: #28a745;
+    color: #ffffff;
+}
+
+.status-pass {
+    background-color: #28a745;
+    color: #ffffff;
+}
+
+.check-number {
+    color: #333333;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Loading Animation */
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .premium-report-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        text-align: center;
+    }
+    
+    .report-title {
+        font-size: 2rem;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .upgrade-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn-upgrade-premium, .btn-learn-more {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .summary-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .summary-value {
+        align-self: flex-end;
+    }
+    
+    .checks-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .checks-column:first-child .check-row {
+        border-right: none;
+    }
+    
+    .mot-roadtax-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .mot-block, .roadtax-block {
+        margin-bottom: 20px;
+    }
+    
+    .stolen-check-block {
+        margin-top: 15px;
+    }
+    
+    .stolen-content {
+        padding: 15px;
+    }
+    
+    .stolen-row {
+        padding: 10px 0;
+    }
+    
+    .written-off-block {
+        margin-top: 15px;
+    }
+    
+    .written-off-description {
+        padding: 10px 15px 0;
+    }
+    
+    .written-off-content {
+        padding: 15px;
+    }
+    
+    .written-off-row {
+        padding: 10px 0;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .written-off-label {
+        margin-bottom: 5px;
+        flex: none;
+    }
+    
+    .written-off-value {
+        text-align: left;
+        flex: none;
+        width: 100%;
+    }
+    
+    .salvage-history-block {
+        margin-top: 15px;
+    }
+    
+    .salvage-history-description {
+        padding: 10px 15px 0;
+    }
+    
+    .salvage-history-content {
+        padding: 15px;
+    }
+    
+    .salvage-history-row {
+        padding: 10px 0;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .salvage-history-label {
+        margin-bottom: 5px;
+        flex: none;
+    }
+    
+    .salvage-history-value {
+        text-align: left;
+        flex: none;
+        width: 100%;
+    }
+    
+    .salvage-history-footer {
+        padding: 10px 15px;
+        text-align: left;
+    }
+    
+    .important-checks-block {
+        margin-top: 15px;
+    }
+    
+    .important-checks-content {
+        padding: 15px;
+    }
+    
+    .important-checks-row {
+        padding: 10px 0;
+    }
+    
+    .outstanding-finance-block {
+        margin-top: 15px;
+    }
+    
+    .outstanding-finance-content {
+        padding: 15px;
+    }
+    
+    .outstanding-finance-row {
+        padding: 10px 0;
+    }
+}
+
+/* MOT and Road Tax Blocks */
+.mot-roadtax-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.mot-block, .roadtax-block {
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.mot-header, .roadtax-header {
+    background-color: #28a745;
+    padding: 15px 20px;
+    color: #ffffff;
+}
+
+.mot-title, .roadtax-title {
+    margin: 0 !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+}
+
+.title-green {
+    color: #ffffff !important;
+    background-color: #28a745 !important;
+}
+
+.mot-content, .roadtax-content {
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.mot-row, .roadtax-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.mot-row:last-child, .roadtax-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.mot-label, .roadtax-label {
+    font-size: 14px;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.mot-value, .roadtax-value {
+    font-size: 14px;
+    color: #333333;
+    font-weight: 600;
+}
+
+/* Stolen Check Block */
+.stolen-check-block {
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.stolen-header {
+    background-color: #28a745;
+    padding: 15px 20px;
+    color: #ffffff;
+}
+
+.stolen-title {
+    margin: 0 !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+}
+
+.stolen-content {
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.stolen-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.stolen-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.stolen-label {
+    font-size: 14px;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.stolen-value {
+    font-size: 14px;
+    color: #333333;
+    font-weight: 600;
+}
+
+/* Written Off Block */
+.written-off-block {
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.written-off-header {
+    background-color: #dc3545;
+    padding: 15px 20px;
+    color: #ffffff;
+}
+
+.written-off-title {
+    margin: 0 !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+}
+
+.written-off-description {
+    padding: 15px 20px 0;
+    background-color: #ffffff;
+}
+
+.written-off-description p {
+    margin: 0;
+    font-size: 14px;
+    color: #6c757d;
+    font-style: italic;
+}
+
+.written-off-content {
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.written-off-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.written-off-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.written-off-label {
+    font-size: 14px;
+    color: #6c757d;
+    font-weight: 500;
+    flex: 0 0 40%;
+}
+
+.written-off-value {
+    font-size: 14px;
+    color: #333333;
+    font-weight: 600;
+    text-align: right;
+    flex: 1;
+    line-height: 1.4;
+}
+
+/* Salvage History Block */
+.salvage-history-block {
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.salvage-history-header {
+    background-color: #dc3545;
+    padding: 15px 20px;
+    color: #ffffff;
+}
+
+.salvage-history-title {
+    margin: 0 !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+}
+
+.salvage-history-description {
+    padding: 15px 20px 0;
+    background-color: #ffffff;
+}
+
+.salvage-history-description p {
+    margin: 0;
+    font-size: 14px;
+    color: #6c757d;
+    font-style: italic;
+}
+
+.salvage-history-content {
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.salvage-history-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.salvage-history-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.salvage-history-label {
+    font-size: 14px;
+    color: #6c757d;
+    font-weight: 500;
+    flex: 0 0 40%;
+}
+
+.salvage-history-value {
+    font-size: 14px;
+    color: #333333;
+    font-weight: 600;
+    text-align: right;
+    flex: 1;
+    line-height: 1.4;
+}
+
+.salvage-history-footer {
+    padding: 15px 20px;
+    background-color: #ffffff;
+    text-align: right;
+    border-top: 1px solid #e9ecef;
+}
+
+/* Important Checks Block */
+.important-checks-block {
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.important-checks-header {
+    background-color: #28a745;
+    padding: 15px 20px;
+    color: #ffffff;
+}
+
+.important-checks-title {
+    margin: 0 !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+}
+
+.important-checks-content {
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.important-checks-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.important-checks-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.important-checks-label {
+    font-size: 14px;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.important-checks-value {
+    font-size: 14px;
+    color: #333333;
+    font-weight: 600;
+}
+
+/* Outstanding Finance Block */
+.outstanding-finance-block {
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.outstanding-finance-header {
+    background-color: #dc3545;
+    padding: 15px 20px;
+    color: #ffffff;
+}
+
+.outstanding-finance-title {
+    margin: 0 !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+}
+
+.outstanding-finance-description {
+    padding: 15px 20px 0;
+    background-color: #ffffff;
+}
+
+.outstanding-finance-description p {
+    margin: 0;
+    font-size: 14px;
+    color: #6c757d;
+    font-style: italic;
+}
+
+.outstanding-finance-content {
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.outstanding-finance-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.outstanding-finance-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.outstanding-finance-label {
+    font-size: 14px;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.outstanding-finance-value {
+    font-size: 14px;
+    color: #333333;
+    font-weight: 600;
+}
