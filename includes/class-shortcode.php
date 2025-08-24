@@ -9,6 +9,7 @@ class Shortcode {
     
     public function __construct() {
         add_shortcode('vrm_check', array($this, 'render_form'));
+        add_shortcode('vrm_check_premium', array($this, 'render_premium_template'));
         add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
     }
     
@@ -17,7 +18,7 @@ class Shortcode {
             'title' => __('Free Car Check', 'vrm-check-plugin'),
             'placeholder' => __('Enter registration number', 'vrm-check-plugin'),
             'button_text' => __('Check Vehicle', 'vrm-check-plugin'),
-            'show_example' => 'yes'
+            'show_example' => 'no'
         ), $atts);
         
         ob_start();
@@ -98,12 +99,49 @@ class Shortcode {
          return ob_get_clean();
      }
      
+     public function render_premium_template($atts) {
+         $atts = shortcode_atts(array(
+             'vrm' => 'BL66VPO',
+             'make' => 'Volkswagen',
+             'model' => 'Tiguan R-Line Tech Tdi S-A',
+             'year' => '2020',
+             'image' => 'Volkswagen.png'
+         ), $atts);
+         
+         // Подготовка данных для шаблона
+         $data = array(
+             'vrm' => $atts['vrm'],
+             'make' => $atts['make'],
+             'model' => $atts['model'],
+             'year' => $atts['year'],
+             'image' => $atts['image']
+         );
+         
+         ob_start();
+         
+         // Подключаем премиум шаблон
+         $template_path = VRM_CHECK_PLUGIN_PATH . 'templates/premium-results-template.php';
+         if (file_exists($template_path)) {
+             include $template_path;
+         } else {
+             echo '<div class="vrm-error">Premium template not found.</div>';
+         }
+         
+         return ob_get_clean();
+     }
+     
      public function enqueue_scripts() {
          // Only enqueue on pages that contain the shortcode
          global $post;
-         if (is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'vrm_check')) {
+         if (is_a($post, 'WP_Post') && (has_shortcode($post->post_content, 'vrm_check') || has_shortcode($post->post_content, 'vrm_check_premium'))) {
              wp_enqueue_style('vrm-check-style', VRM_CHECK_PLUGIN_URL . 'assets/css/vrm-check-style.css', array(), VRM_CHECK_PLUGIN_VERSION);
-         wp_enqueue_script('vrm-check-script', VRM_CHECK_PLUGIN_URL . 'assets/js/vrm-check-script.js', array('jquery'), VRM_CHECK_PLUGIN_VERSION, true);
+             
+             // Enqueue premium styles for premium shortcode
+             if (has_shortcode($post->post_content, 'vrm_check_premium')) {
+                 wp_enqueue_style('vrm-check-premium-style', VRM_CHECK_PLUGIN_URL . 'assets/css/premium-style.css', array(), VRM_CHECK_PLUGIN_VERSION);
+             }
+             
+             wp_enqueue_script('vrm-check-script', VRM_CHECK_PLUGIN_URL . 'assets/js/vrm-check-script.js', array('jquery'), VRM_CHECK_PLUGIN_VERSION, true);
              
              // Localize script for AJAX
              wp_localize_script('vrm-check-script', 'vrm_check_ajax', array(

@@ -13,35 +13,39 @@ if (!isset($data) || empty($data)) {
 
 
 // Функция для вычисления возраста
-function calculate_age($year) {
-    if (empty($year)) return '';
-    $current_year = date('Y');
-    $age_years = $current_year - $year;
-    $age_months = date('n') - 1; // Примерно
-    
-    if ($age_months < 0) {
-        $age_years--;
-        $age_months += 12;
+if (!function_exists('calculate_age')) {
+    function calculate_age($year) {
+        if (empty($year)) return '';
+        $current_year = date('Y');
+        $age_years = $current_year - $year;
+        $age_months = date('n') - 1; // Примерно
+        
+        if ($age_months < 0) {
+            $age_years--;
+            $age_months += 12;
+        }
+        
+        return $age_years . ' years ' . $age_months . ' months old';
     }
-    
-    return $age_years . ' years ' . $age_months . ' months old';
 }
 
 // Функция для вычисления времени с даты
-function calculate_time_ago($date_string) {
-    if (empty($date_string)) return '';
-    
-    try {
-        $date = new DateTime($date_string);
-        $now = new DateTime();
-        $diff = $now->diff($date);
+if (!function_exists('calculate_time_ago')) {
+    function calculate_time_ago($date_string) {
+        if (empty($date_string)) return '';
         
-        $years = $diff->y;
-        $months = $diff->m;
-        
-        return $years . ' years ' . $months . ' months ago';
-    } catch (Exception $e) {
-        return '';
+        try {
+            $date = new DateTime($date_string);
+            $now = new DateTime();
+            $diff = $now->diff($date);
+            
+            $years = $diff->y;
+            $months = $diff->m;
+            
+            return $years . ' years ' . $months . ' months ago';
+        } catch (Exception $e) {
+            return '';
+        }
     }
 }
 ?>
