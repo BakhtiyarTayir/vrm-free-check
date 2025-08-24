@@ -11,14 +11,6 @@ if (!isset($data) || empty($data)) {
     return;
 }
 
-// ОТЛАДОЧНЫЙ ВЫВОД ДАННЫХ ИЗ API (для тестирования)
-echo '<div style="background: #f0f0f0; border: 2px solid #333; padding: 20px; margin: 20px 0; font-family: monospace;">';
-echo '<h3 style="color: #d63384; margin-top: 0;">🔍 ОТЛАДКА: Все данные из API</h3>';
-echo '<pre style="background: white; padding: 15px; border-radius: 5px; overflow-x: auto; font-size: 12px;">';
-echo htmlspecialchars(print_r($data, true));
-echo '</pre>';
-echo '<p style="color: #666; font-size: 12px; margin-bottom: 0;"><strong>Примечание:</strong> Этот блок показывает все данные, полученные из API vehicledataglobal.com</p>';
-echo '</div>';
 
 // Функция для вычисления возраста
 function calculate_age($year) {
@@ -55,7 +47,9 @@ function calculate_time_ago($date_string) {
 ?>
 
 <div class="vrm-check-results">
-    <div class="vrm-results-container">
+    <!-- Vehicle Details Page -->
+    <div id="vehicle-details-page" class="page-content active">
+        <div class="vrm-results-container">
         
         <!-- Vehicle Identity Section -->
         <div class="vrm-section vrm-vehicle-identity">
@@ -579,42 +573,885 @@ function calculate_time_ago($date_string) {
                 </div>
             </div>
         </div>
+        </div>
+        
+        <!-- Additional Information -->
+        <div class="vrm-disclaimer">
+            <p><strong>Important:</strong> This information is provided for reference only. Always verify details with official sources before making any decisions.</p>
+            <p>Data sourced from DVLA and other official databases. Last updated: <?php echo esc_html(current_time('j M Y, H:i')); ?></p>
+        </div>
     </div>
     
-    <!-- Additional Information -->
-    <div class="vrm-disclaimer">
-        <p><strong>Important:</strong> This information is provided for reference only. Always verify details with official sources before making any decisions.</p>
-        <p>Data sourced from DVLA and other official databases. Last updated: <?php echo esc_html(current_time('j M Y, H:i')); ?></p>
+    <!-- MOT History Page -->
+    <div id="mot-history-page" class="page-content">
+        <div class="mot-history-container">
+            <!-- MOT History Details Section -->
+            <div class="mot-history-details">
+                
+                <h2 class="mot-history-title">MOT Summary</h2>
+                <?php 
+                $mot_details = $data['mot_history_details'] ?? array();
+                $test_history = $mot_details['test_history'] ?? array();
+                ?>
+                
+                <?php if (!empty($test_history)): ?>
+                    <!-- MOT Statistics Summary -->
+                    <div class="mot-summary-layout">
+                        <!-- Left Column - MOT Statistics Cards -->
+                        <div class="mot-summary-cards">
+                            <div class="mot-summary-grid">
+                                <!-- Total Tests -->
+                                <div class="mot-summary-card">
+                                    <div class="mot-summary-icon success">✓</div>
+                                    <div class="mot-summary-content">
+                                        <div class="mot-summary-label">Total Tests</div>
+                                        <div class="mot-summary-value"><?php echo esc_html($mot_details['total_tests'] ?? '0'); ?></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Passed -->
+                                <div class="mot-summary-card">
+                                    <div class="mot-summary-icon success">✓</div>
+                                    <div class="mot-summary-content">
+                                        <div class="mot-summary-label">Passed</div>
+                                        <div class="mot-summary-value"><?php echo esc_html($mot_details['passed_tests'] ?? '0'); ?></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Failed -->
+                                <div class="mot-summary-card">
+                                    <div class="mot-summary-icon error">✗</div>
+                                    <div class="mot-summary-content">
+                                        <div class="mot-summary-label">Failed</div>
+                                        <div class="mot-summary-value"><?php echo esc_html($mot_details['failed_tests'] ?? '0'); ?></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Pass Rate -->
+                                <div class="mot-summary-card">
+                                    <div class="mot-summary-icon warning">⚠</div>
+                                    <div class="mot-summary-content">
+                                        <div class="mot-summary-label">Pass Rate</div>
+                                        <div class="mot-summary-value"><?php echo esc_html($mot_details['pass_rate'] ?? '0%'); ?></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Latest Mileage -->
+                                <div class="mot-summary-card">
+                                    <div class="mot-summary-icon warning">⚠</div>
+                                    <div class="mot-summary-content">
+                                        <div class="mot-summary-label">Latest Mileage</div>
+                                        <div class="mot-summary-value"><?php echo esc_html($mot_details['latest_mileage'] ?? 'N/A'); ?></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Avg Annual Mileage -->
+                                <div class="mot-summary-card">
+                                    <div class="mot-summary-icon warning">⚠</div>
+                                    <div class="mot-summary-content">
+                                        <div class="mot-summary-label">Avg Annual Mileage</div>
+                                        <div class="mot-summary-value"><?php echo esc_html($mot_details['average_annual_mileage'] ?? 'N/A'); ?></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <!-- Right Column - Book MOT Section -->
+                        <div class="mot-book-section">
+                            <div class="mot-book-card">
+                                <p class="mot-book-text">Book an MOT or service with free collection and delivery across the UK</p>
+                                <button class="mot-book-button">Book an MOT</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Vehicle Information -->
+                    <div class="mot-vehicle-info">
+                        <h3 class="mot-history-details-title">MOT History</h3>
+                        <div class="mot-vehicle-grid">
+                            <div class="mot-vehicle-item">
+                                <span class="mot-vehicle-label">Make:</span>
+                                <span class="mot-vehicle-value"><?php echo esc_html($mot_details['make'] ?? 'N/A'); ?></span>
+                            </div>
+                            <div class="mot-vehicle-item">
+                                <span class="mot-vehicle-label">Model:</span>
+                                <span class="mot-vehicle-value"><?php echo esc_html($mot_details['model'] ?? 'N/A'); ?></span>
+                            </div>
+                            <div class="mot-vehicle-item">
+                                <span class="mot-vehicle-label">Fuel Type:</span>
+                                <span class="mot-vehicle-value"><?php echo esc_html($mot_details['fuel_type'] ?? 'N/A'); ?></span>
+                            </div>
+                            <div class="mot-vehicle-item">
+                                <span class="mot-vehicle-label">Colour:</span>
+                                <span class="mot-vehicle-value"><?php echo esc_html($mot_details['colour'] ?? 'N/A'); ?></span>
+                            </div>
+                            <div class="mot-vehicle-item">
+                                <span class="mot-vehicle-label">Vehicle Age:</span>
+                                <span class="mot-vehicle-value"><?php echo esc_html($mot_details['vehicle_age_years'] ?? '0'); ?> years</span>
+                            </div>
+                            <div class="mot-vehicle-item">
+                                <span class="mot-vehicle-label">MOT Status:</span>
+                                <span class="mot-vehicle-value mot-status-<?php echo strtolower($mot_details['mot_status'] ?? 'unknown'); ?>">
+                                    <?php echo esc_html($mot_details['mot_status'] ?? 'Unknown'); ?>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- MOT Test History Table Format -->
+                    <div class="mot-history-table-container">
+                        <?php foreach ($test_history as $test): ?>
+                            <div class="mot-test-section">
+                                <!-- Section Header -->
+                                <div class="mot-section-header">
+                                    <div class="mot-header-date">
+                                        <span class="mot-check-icon">✓</span>
+                                        <?php echo esc_html($test['test_date_formatted'] ?? 'N/A'); ?>
+                                    </div>
+                                    <div class="mot-header-status <?php echo $test['test_passed'] ? 'pass' : 'fail'; ?>">
+                                        <?php echo $test['test_passed'] ? 'Pass' : 'Fail'; ?>
+                                    </div>
+                                </div>
+                                
+                                <!-- Details Table -->
+                                <table class="mot-details-table">
+                                    <tbody>
+                                        <tr>
+                                            <td class="mot-table-label">Test Date</td>
+                                            <td class="mot-table-value mot-date-value"><?php echo esc_html($test['test_date_formatted'] ?? 'N/A'); ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="mot-table-label">Mileage</td>
+                                            <td class="mot-table-value mot-mileage-value"><?php echo esc_html($test['odometer_formatted'] ?? 'N/A'); ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="mot-table-label">Result</td>
+                                            <td class="mot-table-value">
+                                                <?php if ($test['test_passed']): ?>
+                                                    <span class="mot-result-pass"><span class="mot-check-icon">✓</span> Passed</span>
+                                                <?php else: ?>
+                                                    <span class="mot-result-fail"><span class="mot-cross-icon">✗</span> Failed</span>
+                                                <?php endif; ?>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="mot-table-label">Test Results</td>
+                                            <td class="mot-table-value">
+                                                <?php if ($test['test_passed']): ?>
+                                                    <div class="mot-test-passed">
+                                                        <span class="mot-check-icon">✓</span>
+                                                        Vehicle passed MOT with no advisory notices.
+                                                    </div>
+                                                <?php else: ?>
+                                                    <?php if (!empty($test['annotations'])): ?>
+                                                        <div class="mot-test-annotations">
+                                                            <?php foreach ($test['annotations'] as $annotation): ?>
+                                                                <div class="mot-annotation <?php echo esc_attr($annotation['type_class']); ?> severity-<?php echo esc_attr($annotation['severity']); ?>">
+                                                                    <span class="annotation-type"><?php echo esc_html($annotation['type']); ?>:</span>
+                                                                    <span class="annotation-text"><?php echo esc_html($annotation['text']); ?></span>
+                                                                    <?php if ($annotation['is_dangerous']): ?>
+                                                                        <span class="annotation-dangerous">⚠ DANGEROUS</span>
+                                                                    <?php endif; ?>
+                                                                </div>
+                                                            <?php endforeach; ?>
+                                                        </div>
+                                                    <?php else: ?>
+                                                        <div class="mot-test-failed">
+                                                            <span class="mot-cross-icon">✗</span>
+                                                            Vehicle failed MOT test.
+                                                        </div>
+                                                    <?php endif; ?>
+                                                <?php endif; ?>
+                                                
+                                                <?php if (!empty($test['test_number'])): ?>
+                                                    <div class="mot-test-number">Test Number: <?php echo esc_html($test['test_number']); ?></div>
+                                                <?php endif; ?>
+                                                
+                                                <?php if ($test['is_retest']): ?>
+                                                    <div class="mot-retest-indicator">🔄 Retest</div>
+                                                <?php endif; ?>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    
+                    <!-- Collapse All Test Results Link -->
+                    <div class="mot-collapse-section">
+                        <a href="#" class="mot-collapse-link" onclick="toggleAllTestResults(); return false;">
+                            Collapse All Test Results
+                        </a>
+                    </div>
+                    
+                <?php else: ?>
+                    <div class="mot-no-data">
+                        <p>No MOT history data available for this vehicle.</p>
+                    </div>
+                <?php endif; ?>
+            </div>
+            
+            <style>
+            .mot-history-details {
+                margin-top: 30px;
+                background: #fff;
+                border-radius: 8px;
+                padding: 20px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            
+            .mot-history-details-title {
+                color: #1e3a8a;
+                font-size: 24px;
+                font-weight: 600;
+                margin-bottom: 20px;
+                border-bottom: 2px solid #e5e7eb;
+                padding-bottom: 10px;
+            }
+            
+            .mot-history-table-container {
+                margin-bottom: 20px;
+            }
+            
+            .mot-test-section {
+                background: #fff;
+                border-radius: 8px;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                margin-bottom: 15px;
+                overflow: hidden;
+                border: 1px solid #e5e7eb;
+            }
+            
+            .mot-section-header {
+                background: #f8fafc;
+                padding: 15px 20px;
+                border-bottom: 1px solid #e5e7eb;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .mot-header-date {
+                font-weight: 600;
+                color: #374151;
+                font-size: 16px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            
+            .mot-header-status {
+                font-weight: 600;
+                font-size: 14px;
+                padding: 4px 12px;
+                border-radius: 20px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+            
+            .mot-header-status.pass {
+                background: #dcfce7;
+                color: #166534;
+            }
+            
+            .mot-header-status.fail {
+                background: #fee2e2;
+                color: #dc2626;
+            }
+            
+            .mot-details-table {
+                width: 100%;
+                border-collapse: collapse;
+                background: #fff;
+            }
+            
+            .mot-details-table td {
+                padding: 15px 20px;
+                border-bottom: 1px solid #f3f4f6;
+                vertical-align: top;
+            }
+            
+            .mot-details-table tr:last-child td {
+                border-bottom: none;
+            }
+            
+            .mot-table-label {
+                font-weight: 600;
+                color: #374151;
+                width: 120px;
+                min-width: 120px;
+            }
+            
+            .mot-table-value {
+                color: #1f2937;
+            }
+            
+            .mot-date-value {
+                color: #2563eb;
+                font-weight: 500;
+            }
+            
+            .mot-mileage-value {
+                color: #2563eb;
+                font-weight: 500;
+            }
+            
+            .mot-test-date {
+                font-weight: 500;
+                color: #1f2937;
+                white-space: nowrap;
+            }
+            
+            .mot-test-mileage {
+                font-weight: 500;
+                color: #2563eb;
+            }
+            
+            .mot-result-pass {
+                color: #059669;
+                font-weight: 600;
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+            }
+            
+            .mot-result-fail {
+                color: #dc2626;
+                font-weight: 600;
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+            }
+            
+            .mot-test-details {
+                width: 100%;
+            }
+            
+            .mot-check-icon {
+                color: #059669;
+                font-size: 18px;
+                margin-right: 5px;
+            }
+            
+            .mot-test-passed {
+                color: #059669;
+                font-style: italic;
+                margin-bottom: 8px;
+            }
+            
+            .mot-test-failed {
+                color: #dc2626;
+                font-weight: 500;
+                margin-bottom: 8px;
+            }
+            
+            .mot-test-annotations {
+                margin-bottom: 10px;
+            }
+            
+            .mot-annotation {
+                margin-bottom: 8px;
+                padding: 8px 12px;
+                border-radius: 6px;
+                font-size: 13px;
+                line-height: 1.4;
+            }
+            
+            .mot-annotation.advisory {
+                background: #fef3c7;
+                border-left: 4px solid #f59e0b;
+            }
+            
+            .mot-annotation.dangerous {
+                background: #fee2e2;
+                border-left: 4px solid #dc2626;
+            }
+            
+            .mot-annotation.minor {
+                background: #dbeafe;
+                border-left: 4px solid #3b82f6;
+            }
+            
+            .annotation-type {
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 11px;
+                letter-spacing: 0.5px;
+            }
+            
+            .annotation-text {
+                display: block;
+                margin-top: 4px;
+                color: #374151;
+            }
+            
+            .annotation-dangerous {
+                color: #dc2626;
+                font-weight: 600;
+                font-size: 11px;
+                margin-left: 8px;
+            }
+            
+            .mot-test-number {
+                font-size: 12px;
+                color: #6b7280;
+                margin-top: 8px;
+            }
+            
+            .mot-expiry-date {
+                font-size: 12px;
+                color: #059669;
+                margin-top: 4px;
+                font-weight: 500;
+            }
+            
+            .mot-collapse-section {
+                text-align: center;
+                margin-top: 20px;
+                padding-top: 15px;
+                border-top: 1px solid #e5e7eb;
+            }
+            
+            .mot-collapse-link {
+                color: #2563eb;
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 14px;
+            }
+            
+            .mot-collapse-link:hover {
+                text-decoration: underline;
+            }
+            
+            .mot-no-data {
+                text-align: center;
+                padding: 40px 20px;
+                color: #6b7280;
+                font-style: italic;
+            }
+            
+            @media (max-width: 768px) {
+                .mot-section-header {
+                    padding: 12px 15px;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 10px;
+                }
+                
+                .mot-details-table td {
+                    padding: 12px 15px;
+                }
+                
+                .mot-table-label {
+                    width: 100px;
+                    min-width: 100px;
+                    font-size: 14px;
+                }
+                
+                .mot-table-value {
+                    font-size: 14px;
+                }
+            }
+            </style>
+            
+            <script>
+            function toggleAllTestResults() {
+                const annotations = document.querySelectorAll('.mot-test-annotations');
+                const link = document.querySelector('.mot-collapse-link');
+                
+                if (link.textContent.includes('Collapse')) {
+                    annotations.forEach(annotation => {
+                        annotation.style.display = 'none';
+                    });
+                    link.textContent = 'Expand All Test Results';
+                } else {
+                    annotations.forEach(annotation => {
+                        annotation.style.display = 'block';
+                    });
+                    link.textContent = 'Collapse All Test Results';
+                }
+            }
+            </script>
+        </div>
+    </div>
+    
+    <!-- Mileage History Page -->
+    <div id="mileage-history-page" class="page-content">
+        <div class="mileage-history-container">
+            <h2 class="mileage-history-title">Mileage History</h2>
+            
+            <!-- Mileage Chart -->
+            <div class="mileage-chart-container">
+                <h3 class="mileage-chart-title">Mileage Chart</h3>
+                <div class="mileage-chart" id="mileageChart">
+                    <?php if (!empty($data['mileage_chart_data']) && is_array($data['mileage_chart_data'])): ?>
+                        <?php 
+                        $chart_data = $data['mileage_chart_data'];
+                        $max_mileage = 0;
+                        
+                        // Находим максимальное значение для масштабирования
+                        foreach ($chart_data as $item) {
+                            if ($item['mileage'] > $max_mileage) {
+                                $max_mileage = $item['mileage'];
+                            }
+                        }
+                        
+                        $current_year = date('Y');
+                        ?>
+                        
+                        <div class="chart-bars">
+                            <?php foreach ($chart_data as $item): ?>
+                                <?php 
+                                $height_percentage = $max_mileage > 0 ? ($item['mileage'] / $max_mileage) * 100 : 0;
+                                $is_current_year = ($item['year'] == $current_year);
+                                $bar_class = $is_current_year ? 'chart-bar current-year' : 'chart-bar';
+                                ?>
+                                <div class="chart-bar-container">
+                                    <div class="<?php echo $bar_class; ?>" style="height: <?php echo $height_percentage; ?>%;">
+                                        <span class="bar-value"><?php echo number_format($item['mileage']); ?></span>
+                                    </div>
+                                    <span class="bar-year"><?php echo esc_html($item['year']); ?></span>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php else: ?>
+                        <div class="no-chart-data">
+                            <p>No mileage data available for chart</p>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <!-- Mileage Issues Block -->
+                <?php if (!empty($data['has_mileage_issues']) && $data['has_mileage_issues']): ?>
+                <div class="mileage-issues-block">
+                    <div class="mileage-issues-header">
+                        <span class="mileage-issues-icon">✗</span>
+                        <h3 class="mileage-issues-title">Mileage Issues</h3>
+                    </div>
+                    
+                    <p class="mileage-issues-description">
+                        <?php echo esc_html($data['mileage_issue_description'] ?? 'N/A'); ?>
+                    </p>
+                    
+                    <div class="mileage-issues-links">
+                        <a href="#" class="mileage-issue-link">Should I buy a car that shows a mileage issue?</a>
+                        <a href="#" class="mileage-issue-link">How do I correct a mistake in the mileage history?</a>
+                    </div>
+                </div>
+                <?php endif; ?>
+                
+                <!-- Hidden Mileage Issues Block -->
+                <div class="hidden-mileage-issues-block">
+                    <div class="hidden-mileage-issues-header">
+                        <span class="hidden-mileage-issues-icon">⚠</span>
+                        <h3 class="hidden-mileage-issues-title">Hidden Mileage Issues</h3>
+                    </div>
+                    
+                    <p class="hidden-mileage-issues-description">
+                        This mileage check only includes data from the DVSA recorded during MOT tests.
+                    </p>
+                    
+                    <p class="hidden-mileage-issues-description">
+                        Buy a full report to check mileage readings from the DVLA, Retailers / Garages & Leasing / Hire Companies.
+                    </p>
+                    
+                    <button class="hidden-mileage-issues-button">Get a History Check</button>
+                </div>
+                
+                <!-- Mileage Data Block -->
+                <div class="mileage-data-block">
+                    <div class="mileage-data-table">
+                        <div class="mileage-data-row">
+                            <span class="mileage-data-label">Est. Current Mileage</span>
+                            <span class="mileage-data-value"><?php echo esc_html($data['current_mileage'] ?? '32,962 miles'); ?></span>
+                        </div>
+                        <div class="mileage-data-row">
+                            <span class="mileage-data-label">Mileage Last Year</span>
+                            <span class="mileage-data-value"><?php echo esc_html($data['mileage_last_year'] ?? '0 miles'); ?></span>
+                        </div>
+                        <div class="mileage-data-row">
+                            <span class="mileage-data-label">Average Mileage</span>
+                            <span class="mileage-data-value"><?php echo esc_html($data['average_mileage'] ?? '4300 p/year'); ?></span>
+                        </div>
+                        <div class="mileage-data-row">
+                            <span class="mileage-data-label">Status</span>
+                            <span class="mileage-data-value status-below">below average</span>
+                        </div>
+                        <div class="mileage-data-row">
+                            <span class="mileage-data-label">Last MOT Mileage</span>
+                            <span class="mileage-data-value"><?php echo esc_html($data['estimated_mileage'] ?? '32962 miles'); ?> on<br><?php echo esc_html($data['mileage_date'] ?? '23 Sep 2024'); ?></span>
+                        </div>
+                    </div>
+                    
+                    <button class="mileage-data-button">View Mileage History</button>
+                </div>
+                <!-- Mileage History Table -->
+                <div class="mileage-history-table">
+                    <h3 class="mileage-history-table-title">Mileage History</h3>
+                    <div class="mileage-table-container">
+                        <table class="mileage-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Mileage</th>
+                                    <th>+/-</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (!empty($data['mileage_history']) && is_array($data['mileage_history'])): ?>
+                                    <?php foreach ($data['mileage_history'] as $index => $record): ?>
+                                        <?php 
+                                        $change_class = '';
+                                        $change_value = $record['change'] ?? 0;
+                                        if ($change_value < 0) {
+                                            $change_class = 'negative-change';
+                                        } elseif ($change_value > 0) {
+                                            $change_class = 'positive-change';
+                                        }
+                                        ?>
+                                        <tr class="<?php echo $change_class; ?>">
+                                            <td><?php echo esc_html($record['date'] ?? 'N/A'); ?></td>
+                                            <td><?php echo esc_html($record['mileage'] ?? 'N/A'); ?></td>
+                                            <td class="change-value"><?php echo esc_html($record['change_display'] ?? 'N/A'); ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <!-- Default data from screenshot -->
+                                    <tr>
+                                        <td>19 Dec 2019</td>
+                                        <td>22308 miles</td>
+                                        <td class="positive-change">+22308</td>
+                                    </tr>
+                                    <tr>
+                                        <td>19 Dec 2019</td>
+                                        <td>22310 miles</td>
+                                        <td class="positive-change">+2</td>
+                                    </tr>
+                                    <tr>
+                                        <td>22 Sep 2020</td>
+                                        <td>22913 miles</td>
+                                        <td class="positive-change">+603</td>
+                                    </tr>
+                                    <tr>
+                                        <td>25 Aug 2021</td>
+                                        <td>30745 miles</td>
+                                        <td class="positive-change">+7832</td>
+                                    </tr>
+                                    <tr>
+                                        <td>31 Aug 2022</td>
+                                        <td>40012 miles</td>
+                                        <td class="positive-change">+9267</td>
+                                    </tr>
+                                    <tr>
+                                        <td>13 Sep 2023</td>
+                                        <td>52608 miles</td>
+                                        <td class="positive-change">+12596</td>
+                                    </tr>
+                                    <tr class="negative-change">
+                                        <td>23 Sep 2024</td>
+                                        <td>32962 miles</td>
+                                        <td class="change-value">-19646</td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Additional Mileage Data Block -->
+                <div class="additional-mileage-data">
+                    <div class="additional-mileage-header">
+                        <span class="info-icon">ℹ</span>
+                        <h4 class="additional-mileage-title">Additional Mileage Data</h4>
+                    </div>
+                    
+                    <div class="carly-scanner-info">
+                        <h5 class="carly-scanner-title">Detect Mileage Fraud With a Carly Scanner</h5>
+                        
+                        <p class="carly-scanner-description">
+                            A Carly Scanner completes a check on the vehicles ECU by connecting to the OBD2 port.
+                        </p>
+                        
+                        <div class="carly-scanner-features">
+                            <div class="feature-item">
+                                <span class="feature-icon">ℹ</span>
+                                <span class="feature-text">Find out if the vehicles odometer has been manipulated</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">ℹ</span>
+                                <span class="feature-text">Detect odometer discrepancies on both digital and mechanical odometers</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">ℹ</span>
+                                <span class="feature-text">Check for fault codes and other potential mechanical issues</span>
+                            </div>
+                        </div>
+                        
+                        <p class="carly-scanner-footer">
+                            Complete a used car check with a Carly scanner to access additional data that isn't included on a vehicle history check.
+                        </p>
+                        
+                        <button class="carly-scanner-button">Check Now</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
     
 </div>
 <div class="check-footer-fixed">
     <div class="container">
         <ul class="check-footer-fixed-list">
-            <li class="vrm-chech-footer-list-item active">
-                <a href="#">
+            <li class="vrm-chech-footer-list-item active" data-page="vehicle-details">
+                <a href="#" onclick="switchPage('vehicle-details-page'); return false;">
                     <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . '../assets/images/vehicle-selected.svg'); ?>" alt="Vehicle Selected">
-                    <p class="vrm-code"><?php echo esc_html($data['vrm'] ?? 'N/A'); ?></p>
+                    <p class="vrm-code"><?php echo esc_html($data['registration'] ?? $vrm); ?></p>
                 </a>
             </li>
-            <li class="vrm-chech-footer-list-item">
-                <a href="#">
-                    <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . '../assets/images/mot-selected.svg'); ?>" alt="Mot Selected">
+            <li class="vrm-chech-footer-list-item" data-page="mot-history">
+                <a href="#" onclick="switchPage('mot-history-page'); return false;">
+                    <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . '../assets/images/mot.svg'); ?>" alt="Mot Selected">
                     <p class="mot-code">Mot History</p>
                 </a>
             </li>
-            <li class="vrm-chech-footer-list-item">
-                <a href="#">
-                    <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . '../assets/images/mileage-selected.svg'); ?>" alt="Mileage Selected">
+            <li class="vrm-chech-footer-list-item" data-page="mileage-history">
+                <a href="#" onclick="switchPage('mileage-history-page'); return false;">
+                    <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . '../assets/images/mileage.svg'); ?>" alt="Mileage Selected">
                     <p class="mileage-code">Mileage History</p>
                 </a>
             </li>
             <li class="vrm-chech-footer-list-item">
                 <a href="#">
-                    <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . '../assets/images/history-selected.svg'); ?>" alt="Contact Selected">
-                    <p class="contact-code">Buy check</p>
+                    <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . '../assets/images/history.svg'); ?>" alt="Contact Selected">
+                    <p class="contact-code" style="color:red!important">Buy check</p>
                 </a>
             </li>
         </ul>
     </div>
 </div>
+
+
+<script>
+function updateMenuImages() {
+    const menuItems = document.querySelectorAll('.vrm-chech-footer-list-item');
+    const pluginUrl = '<?php echo esc_url(plugin_dir_url(__FILE__) . "../assets/images/"); ?>';
+    
+    menuItems.forEach(item => {
+        const img = item.querySelector('img');
+        const dataPage = item.getAttribute('data-page');
+        
+        if (img && dataPage) {
+            if (item.classList.contains('active')) {
+                // Set selected image for active item
+                switch(dataPage) {
+                    case 'vehicle-details':
+                        img.src = pluginUrl + 'vehicle-selected.svg';
+                        break;
+                    case 'mot-history':
+                        img.src = pluginUrl + 'mot-selected.svg';
+                        break;
+                    case 'mileage-history':
+                        img.src = pluginUrl + 'mileage-selected.svg';
+                        break;
+                    default:
+                        img.src = pluginUrl + 'history-selected.svg';
+                        break;
+                }
+            } else {
+                // Set normal image for inactive items
+                switch(dataPage) {
+                    case 'vehicle-details':
+                        img.src = pluginUrl + 'vehicle.svg';
+                        break;
+                    case 'mot-history':
+                        img.src = pluginUrl + 'mot.svg';
+                        break;
+                    case 'mileage-history':
+                        img.src = pluginUrl + 'mileage.svg';
+                        break;
+                    default:
+                        img.src = pluginUrl + 'history.svg';
+                        break;
+                }
+            }
+        }
+    });
+}
+
+function switchPage(pageId) {
+    // Hide all pages
+    const pages = document.querySelectorAll('.page-content');
+    pages.forEach(page => {
+        page.classList.remove('active');
+    });
+    
+    // Show selected page
+    const targetPage = document.getElementById(pageId);
+    if (targetPage) {
+        targetPage.classList.add('active');
+    }
+    
+    // Update menu active state
+    const menuItems = document.querySelectorAll('.vrm-chech-footer-list-item');
+    menuItems.forEach(item => {
+        item.classList.remove('active');
+    });
+    
+    // Set active menu item based on page
+    if (pageId === 'vehicle-details-page') {
+        const vehicleMenuItem = document.querySelector('[data-page="vehicle-details"]');
+        if (vehicleMenuItem) {
+            vehicleMenuItem.classList.add('active');
+        }
+    } else if (pageId === 'mot-history-page') {
+        const motMenuItem = document.querySelector('[data-page="mot-history"]');
+        if (motMenuItem) {
+            motMenuItem.classList.add('active');
+        }
+    } else if (pageId === 'mileage-history-page') {
+        const mileageMenuItem = document.querySelector('[data-page="mileage-history"]');
+        if (mileageMenuItem) {
+            mileageMenuItem.classList.add('active');
+        }
+    }
+    
+    // Update images after changing active states
+    updateMenuImages();
+}
+
+function setActiveMenuItem(clickedItem) {
+    // Remove active class from all menu items
+    const menuItems = document.querySelectorAll('.vrm-chech-footer-list-item');
+    menuItems.forEach(item => {
+        item.classList.remove('active');
+    });
+    
+    // Add active class to clicked item
+    clickedItem.classList.add('active');
+    
+    // Update images
+    updateMenuImages();
+    
+    // Switch to corresponding page
+    const dataPage = clickedItem.getAttribute('data-page');
+    if (dataPage) {
+        switchPage(dataPage + '-page');
+    }
+}
+
+// Initialize page on load
+document.addEventListener('DOMContentLoaded', function() {
+    // Add click event listeners to menu items
+    const menuItems = document.querySelectorAll('.vrm-chech-footer-list-item');
+    menuItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            setActiveMenuItem(this);
+        });
+    });
+    
+    // Make sure vehicle details page is active by default
+    switchPage('vehicle-details-page');
+});
+</script>

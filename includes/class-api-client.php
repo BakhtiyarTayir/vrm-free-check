@@ -44,13 +44,24 @@ class ApiClient {
         // Делаем запрос к MileageFinanceDetails API
         $mileage_response = $this->make_api_request($vrm, 'MileageFinanceDetails');
         
-        // Трансформируем данные
-        return $this->transform_response(
+        // Обрабатываем MOT данные через новый метод
+        $mot_history_data = $this->transform_mot_history_data($mot_response);
+        
+        // Трансформируем основные данные
+        $main_data = $this->transform_response(
             $mot_response['data'], 
             $tax_response['success'] ? $tax_response['data'] : null,
             $vehicle_details_response['success'] ? $vehicle_details_response['data'] : null,
             $mileage_response['success'] ? $mileage_response['data'] : null
         );
+        
+        // Объединяем основные данные с детальными MOT данными
+        if ($main_data['success'] && $mot_history_data['success']) {
+            $main_data['data']['mot_history_details'] = $mot_history_data['data'];
+            $main_data['data']['mot_raw_data'] = $mot_history_data['raw_data'];
+        }
+        
+        return $main_data;
     }
     
     private function make_api_request($vrm, $package_name = 'MotHistoryDetails') {
@@ -123,9 +134,10 @@ class ApiClient {
         $tax_data = $this->transform_tax_data($tax_api_data);
         $vehicle_details_data = $this->transform_vehicle_details_data($vehicle_details_api_data);
         $mileage_data = $this->transform_mileage_data($mileage_api_data);
+        $mot_statistics = $this->transform_mot_statistics($mot_api_data);
         
         // Объединяем все данные
-        $combined_data = array_merge($mot_data, $tax_data, $vehicle_details_data, $mileage_data);
+        $combined_data = array_merge($mot_data, $tax_data, $vehicle_details_data, $mileage_data, $mot_statistics);
         
         return array(
             'success' => true,
@@ -466,6 +478,40 @@ class ApiClient {
             }
         }
         
+        // Подготавливаем данные для графика пробега
+        $mileage_chart_data = array();
+        $yearly_mileage = array();
+        
+        // Группируем данные по годам
+        foreach ($mileage_list as $record) {
+            if (!empty($record['DateRecorded']) && !empty($record['Mileage'])) {
+                try {
+                    $record_date = new \DateTime($record['DateRecorded']);
+                    $year = $record_date->format('Y');
+                    
+                    // Берем последнее (максимальное) значение пробега для каждого года
+                    if (!isset($yearly_mileage[$year]) || $record['Mileage'] > $yearly_mileage[$year]['mileage']) {
+                        $yearly_mileage[$year] = array(
+                            'year' => $year,
+                            'mileage' => $record['Mileage'],
+                            'date' => $record['DateRecorded']
+                        );
+                    }
+                } catch (\Exception $e) {
+                    continue;
+                }
+            }
+        }
+        
+        // Сортируем по годам и формируем финальный массив для графика
+        ksort($yearly_mileage);
+        foreach ($yearly_mileage as $year_data) {
+            $mileage_chart_data[] = array(
+                'year' => $year_data['year'],
+                'mileage' => $year_data['mileage']
+            );
+        }
+        
         // Форматируем результат
         if ($latest_mileage_record !== null) {
             $mileage = number_format($latest_mileage_record['Mileage']);
@@ -480,7 +526,8 @@ class ApiClient {
                 'mileage_last_year' => $mileage_last_year,
                 'average_mileage' => $average_mileage,
                 'has_mileage_issues' => $has_mileage_issues,
-                'mileage_issue_description' => $mileage_issue_description
+                'mileage_issue_description' => $mileage_issue_description,
+                'mileage_chart_data' => $mileage_chart_data
             );
         }
         
@@ -490,7 +537,8 @@ class ApiClient {
             'mileage_last_year' => '0 miles',
             'average_mileage' => $average_mileage,
             'has_mileage_issues' => $has_mileage_issues,
-            'mileage_issue_description' => $mileage_issue_description
+            'mileage_issue_description' => $mileage_issue_description,
+            'mileage_chart_data' => $mileage_chart_data
         );
     }
     
@@ -536,6 +584,98 @@ class ApiClient {
         return $weight;
     }
     
+    /**
+     * Обрабатывает статистику MOT истории
+     */
+    private function transform_mot_statistics($mot_api_data) {
+        if (empty($mot_api_data)) {
+            return array(
+                'mot_tests_passed' => '0',
+                'mot_tests_advisory' => '0',
+                'mot_tests_failed' => '0',
+                'mot_pass_rate' => '0%',
+                'mot_total_advised' => '0',
+                'mot_total_failed' => '0'
+            );
+        }
+        
+        $mot_details = $mot_api_data['Results']['MotHistoryDetails'] ?? array();
+        
+        if (empty($mot_details['MotTestDetailsList']) || !is_array($mot_details['MotTestDetailsList'])) {
+            return array(
+                'mot_tests_passed' => '0',
+                'mot_tests_advisory' => '0',
+                'mot_tests_failed' => '0',
+                'mot_pass_rate' => '0%',
+                'mot_total_advised' => '0',
+                'mot_total_failed' => '0'
+            );
+        }
+        
+        $test_list = $mot_details['MotTestDetailsList'];
+        
+        $tests_passed = 0;
+        $tests_failed = 0;
+        $tests_advisory = 0;
+        $total_advised = 0;
+        $total_failed = 0;
+        
+        foreach ($test_list as $test) {
+            if (isset($test['TestPassed'])) {
+                if ($test['TestPassed'] === true) {
+                    $tests_passed++;
+                } else {
+                    $tests_failed++;
+                }
+            }
+            
+            // Подсчитываем количество предупреждений и неудач
+            if (!empty($test['AnnotationList']) && is_array($test['AnnotationList'])) {
+                foreach ($test['AnnotationList'] as $annotation) {
+                    if (isset($annotation['Type'])) {
+                        if ($annotation['Type'] === 'Advisory') {
+                            $total_advised++;
+                        } elseif ($annotation['Type'] === 'Fail') {
+                            $total_failed++;
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Подсчитываем количество тестов с предупреждениями
+        foreach ($test_list as $test) {
+            if (!empty($test['AnnotationList']) && is_array($test['AnnotationList'])) {
+                $has_advisory = false;
+                foreach ($test['AnnotationList'] as $annotation) {
+                    if (isset($annotation['Type']) && $annotation['Type'] === 'Advisory') {
+                        $has_advisory = true;
+                        break;
+                    }
+                }
+                if ($has_advisory) {
+                    $tests_advisory++;
+                }
+            }
+        }
+        
+        // Вычисляем процент прохождения
+        $total_tests = $tests_passed + $tests_failed;
+        $pass_rate = '0%';
+        if ($total_tests > 0) {
+            $pass_rate = round(($tests_passed / $total_tests) * 100) . '%';
+        }
+        
+        return array(
+            'mot_tests_passed' => (string)$tests_passed,
+            'mot_tests_advisory' => (string)$tests_advisory,
+            'mot_tests_failed' => (string)$tests_failed,
+            'mot_pass_rate' => $pass_rate,
+            'mot_total_advised' => (string)$total_advised,
+            'mot_total_failed' => (string)$total_failed
+        );
+    }
+
     /**
      * Форматирует дату в читаемый формат
      */
@@ -644,5 +784,380 @@ class ApiClient {
         }
         
         return $co2_value . ' g/km';
+    }
+    
+    /**
+     * Обрабатывает полный ответ MOT API и возвращает структурированные данные
+     * Аналогично transform_response, но специально для MOT данных
+     */
+    public function transform_mot_history_data($mot_response) {
+        if (!$mot_response['success'] || empty($mot_response['data'])) {
+            return array(
+                'success' => false,
+                'error' => 'MOT data not available',
+                'data' => array()
+            );
+        }
+        
+        $mot_api_data = $mot_response['data'];
+        
+        // Извлекаем основные данные
+        $mot_details = $mot_api_data['Results']['MotHistoryDetails'] ?? array();
+        
+        if (empty($mot_details)) {
+            return array(
+                'success' => false,
+                'error' => 'MOT history details not found',
+                'data' => array()
+            );
+        }
+        
+        // Обрабатываем основную информацию об автомобиле
+        $vehicle_info = $this->extract_mot_vehicle_info($mot_details);
+        
+        // Обрабатываем историю тестов
+        $test_history = $this->extract_mot_test_history($mot_details);
+        
+        // Обрабатываем статистику
+        $statistics = $this->extract_mot_statistics_detailed($mot_details);
+        
+        // Обрабатываем информацию о датах
+        $date_info = $this->extract_mot_date_info($mot_details);
+        
+        // Обрабатываем информацию о пробеге
+        $mileage_info = $this->extract_mot_mileage_info($mot_details);
+        
+        // Объединяем все данные
+        $processed_data = array_merge(
+            $vehicle_info,
+            $test_history,
+            $statistics,
+            $date_info,
+            $mileage_info
+        );
+        
+        return array(
+            'success' => true,
+            'data' => $processed_data,
+            'raw_data' => $mot_api_data // Сохраняем исходные данные для отладки
+        );
+    }
+    
+    /**
+     * Извлекает основную информацию об автомобиле из MOT данных
+     */
+    private function extract_mot_vehicle_info($mot_details) {
+        return array(
+            'vrm' => $mot_details['Vrm'] ?? 'N/A',
+            'make' => $mot_details['Make'] ?? 'N/A',
+            'model' => $mot_details['Model'] ?? 'N/A',
+            'fuel_type' => $mot_details['FuelType'] ?? 'N/A',
+            'colour' => $mot_details['Colour'] ?? 'N/A',
+            'update_timestamp' => $mot_details['UpdateTimeStamp'] ?? '',
+            'update_timestamp_formatted' => $this->format_date($mot_details['UpdateTimeStamp'] ?? ''),
+        );
+    }
+    
+    /**
+     * Извлекает и обрабатывает историю MOT тестов
+     */
+    private function extract_mot_test_history($mot_details) {
+        $test_list = $mot_details['MotTestDetailsList'] ?? array();
+        
+        if (empty($test_list) || !is_array($test_list)) {
+            return array(
+                'test_history' => array(),
+                'total_tests' => 0,
+                'latest_test' => array()
+            );
+        }
+        
+        $processed_tests = array();
+        
+        foreach ($test_list as $test) {
+            $processed_test = array(
+                'test_date' => $test['TestDate'] ?? '',
+                'test_date_formatted' => $this->format_date($test['TestDate'] ?? ''),
+                'test_passed' => $test['TestPassed'] ?? false,
+                'test_result_text' => ($test['TestPassed'] ?? false) ? 'Pass' : 'Fail',
+                'expiry_date' => $test['ExpiryDate'] ?? '',
+                'expiry_date_formatted' => $this->format_date($test['ExpiryDate'] ?? ''),
+                'odometer_reading' => $test['OdometerReading'] ?? '',
+                'odometer_unit' => $test['OdometerUnit'] ?? 'mi',
+                'odometer_formatted' => $this->format_odometer($test['OdometerReading'] ?? '', $test['OdometerUnit'] ?? 'mi'),
+                'odometer_result_type' => $test['OdometerResultType'] ?? '',
+                'test_number' => $test['TestNumber'] ?? '',
+                'days_since_last_test' => $test['DaysSinceLastTest'] ?? null,
+                'days_since_last_pass' => $test['DaysSinceLastPass'] ?? null,
+                'days_out_of_mot' => $test['DaysOutOfMot'] ?? null,
+                'is_retest' => $test['IsRetest'] ?? false,
+                'extension_information' => $test['ExtensionInformation'] ?? null,
+                'annotations' => $this->process_test_annotations($test['AnnotationList'] ?? array()),
+                'has_annotations' => !empty($test['AnnotationList']),
+                'annotation_count' => count($test['AnnotationList'] ?? array())
+            );
+            
+            $processed_tests[] = $processed_test;
+        }
+        
+        return array(
+            'test_history' => $processed_tests,
+            'total_tests' => count($processed_tests),
+            'latest_test' => !empty($processed_tests) ? $processed_tests[0] : array()
+        );
+    }
+    
+    /**
+     * Обрабатывает аннотации теста (ошибки, предупреждения)
+     */
+    private function process_test_annotations($annotations) {
+        if (empty($annotations) || !is_array($annotations)) {
+            return array();
+        }
+        
+        $processed_annotations = array();
+        
+        foreach ($annotations as $annotation) {
+            $processed_annotation = array(
+                'type' => $annotation['Type'] ?? '',
+                'text' => $annotation['Text'] ?? '',
+                'is_dangerous' => $annotation['IsDangerous'] ?? false,
+                'type_class' => strtolower($annotation['Type'] ?? ''),
+                'severity' => $this->get_annotation_severity($annotation)
+            );
+            
+            $processed_annotations[] = $processed_annotation;
+        }
+        
+        return $processed_annotations;
+    }
+    
+    /**
+     * Определяет серьезность аннотации
+     */
+    private function get_annotation_severity($annotation) {
+        if ($annotation['IsDangerous'] ?? false) {
+            return 'dangerous';
+        }
+        
+        $type = strtolower($annotation['Type'] ?? '');
+        
+        switch ($type) {
+            case 'fail':
+                return 'fail';
+            case 'advisory':
+                return 'advisory';
+            case 'minor':
+                return 'minor';
+            default:
+                return 'unknown';
+        }
+    }
+    
+    /**
+     * Извлекает детальную статистику MOT
+     */
+    private function extract_mot_statistics_detailed($mot_details) {
+        $test_list = $mot_details['MotTestDetailsList'] ?? array();
+        
+        if (empty($test_list) || !is_array($test_list)) {
+            return array(
+                'total_tests' => 0,
+                'passed_tests' => 0,
+                'failed_tests' => 0,
+                'pass_rate' => '0%',
+                'total_annotations' => 0,
+                'dangerous_annotations' => 0,
+                'advisory_annotations' => 0,
+                'fail_annotations' => 0
+            );
+        }
+        
+        $total_tests = count($test_list);
+        $passed_tests = 0;
+        $failed_tests = 0;
+        $total_annotations = 0;
+        $dangerous_annotations = 0;
+        $advisory_annotations = 0;
+        $fail_annotations = 0;
+        
+        foreach ($test_list as $test) {
+            if ($test['TestPassed'] ?? false) {
+                $passed_tests++;
+            } else {
+                $failed_tests++;
+            }
+            
+            if (!empty($test['AnnotationList']) && is_array($test['AnnotationList'])) {
+                foreach ($test['AnnotationList'] as $annotation) {
+                    $total_annotations++;
+                    
+                    if ($annotation['IsDangerous'] ?? false) {
+                        $dangerous_annotations++;
+                    }
+                    
+                    $type = strtolower($annotation['Type'] ?? '');
+                    switch ($type) {
+                        case 'advisory':
+                            $advisory_annotations++;
+                            break;
+                        case 'fail':
+                            $fail_annotations++;
+                            break;
+                    }
+                }
+            }
+        }
+        
+        $pass_rate = $total_tests > 0 ? round(($passed_tests / $total_tests) * 100) . '%' : '0%';
+        
+        return array(
+            'total_tests' => $total_tests,
+            'passed_tests' => $passed_tests,
+            'failed_tests' => $failed_tests,
+            'pass_rate' => $pass_rate,
+            'total_annotations' => $total_annotations,
+            'dangerous_annotations' => $dangerous_annotations,
+            'advisory_annotations' => $advisory_annotations,
+            'fail_annotations' => $fail_annotations
+        );
+    }
+    
+    /**
+     * Извлекает информацию о датах из MOT данных
+     */
+    private function extract_mot_date_info($mot_details) {
+        return array(
+            'first_used_date' => $mot_details['FirstUsedDate'] ?? '',
+            'first_used_date_formatted' => $this->format_date($mot_details['FirstUsedDate'] ?? ''),
+            'latest_test_date' => $mot_details['LatestTestDate'] ?? '',
+            'latest_test_date_formatted' => $this->format_date($mot_details['LatestTestDate'] ?? ''),
+            'mot_due_date' => $mot_details['MotDueDate'] ?? '',
+            'mot_due_date_formatted' => $this->format_date($mot_details['MotDueDate'] ?? ''),
+            'days_since_last_mot' => $mot_details['DaysSinceLastMot'] ?? null,
+            'mot_status' => $this->get_mot_status($mot_details['MotDueDate'] ?? ''),
+            'vehicle_age' => $this->calculate_vehicle_age($mot_details['FirstUsedDate'] ?? ''),
+            'vehicle_age_years' => $this->calculate_vehicle_age_years($mot_details['FirstUsedDate'] ?? '')
+        );
+    }
+    
+    /**
+     * Извлекает информацию о пробеге из MOT данных
+     */
+    private function extract_mot_mileage_info($mot_details) {
+        $test_list = $mot_details['MotTestDetailsList'] ?? array();
+        
+        if (empty($test_list) || !is_array($test_list)) {
+            return array(
+                'latest_mileage' => 'N/A',
+                'mileage_history' => array(),
+                'average_annual_mileage' => 'N/A'
+            );
+        }
+        
+        $mileage_history = array();
+        $latest_mileage = 'N/A';
+        
+        foreach ($test_list as $test) {
+            if (!empty($test['OdometerReading'])) {
+                $mileage_entry = array(
+                    'date' => $test['TestDate'] ?? '',
+                    'mileage' => $test['OdometerReading'],
+                    'unit' => $test['OdometerUnit'] ?? 'mi',
+                    'formatted' => $this->format_odometer($test['OdometerReading'], $test['OdometerUnit'] ?? 'mi')
+                );
+                
+                $mileage_history[] = $mileage_entry;
+            }
+        }
+        
+        if (!empty($mileage_history)) {
+            $latest_mileage = $mileage_history[0]['formatted'];
+        }
+        
+        $average_annual_mileage = $this->calculate_average_annual_mileage($mileage_history, $mot_details['FirstUsedDate'] ?? '');
+        
+        return array(
+            'latest_mileage' => $latest_mileage,
+            'mileage_history' => $mileage_history,
+            'average_annual_mileage' => $average_annual_mileage
+        );
+    }
+    
+    /**
+     * Форматирует показания одометра
+     */
+    private function format_odometer($reading, $unit = 'mi') {
+        if (empty($reading)) {
+            return 'N/A';
+        }
+        
+        return number_format($reading) . ' ' . $unit;
+    }
+    
+    /**
+     * Определяет статус MOT
+     */
+    private function get_mot_status($due_date) {
+        if (empty($due_date)) {
+            return 'Unknown';
+        }
+        
+        try {
+            $due = new \DateTime($due_date);
+            $now = new \DateTime();
+            
+            if ($due > $now) {
+                return 'Valid';
+            } else {
+                return 'Expired';
+            }
+        } catch (\Exception $e) {
+            return 'Unknown';
+        }
+    }
+    
+    /**
+     * Вычисляет возраст автомобиля в годах
+     */
+    private function calculate_vehicle_age_years($first_used_date) {
+        if (empty($first_used_date)) {
+            return 0;
+        }
+        
+        try {
+            $date = new \DateTime($first_used_date);
+            $now = new \DateTime();
+            $diff = $now->diff($date);
+            return $diff->y;
+        } catch (\Exception $e) {
+            return 0;
+        }
+    }
+    
+    /**
+     * Вычисляет средний годовой пробег
+     */
+    private function calculate_average_annual_mileage($mileage_history, $first_used_date) {
+        if (empty($mileage_history) || empty($first_used_date)) {
+            return 'N/A';
+        }
+        
+        try {
+            $first_used = new \DateTime($first_used_date);
+            $now = new \DateTime();
+            $years = $now->diff($first_used)->y;
+            
+            if ($years <= 0) {
+                return 'N/A';
+            }
+            
+            $latest_mileage = $mileage_history[0]['mileage'] ?? 0;
+            $average = round($latest_mileage / $years);
+            
+            return number_format($average) . ' mi/year';
+        } catch (\Exception $e) {
+            return 'N/A';
+        }
     }
 }
