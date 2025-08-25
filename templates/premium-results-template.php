@@ -11,6 +11,14 @@ if (!isset($data) || empty($data)) {
     return;
 }
 
+// Отладочный вывод полученных данных
+echo '<div style="background: #f0f0f0; padding: 20px; margin: 20px 0; border: 1px solid #ccc; font-family: monospace; white-space: pre-wrap; overflow-x: auto;">';
+echo '<h3>Отладочная информация - полученные данные:</h3>';
+echo '<pre>';
+print_r($data);
+echo '</pre>';
+echo '</div>';
+
 // Функция для вычисления возраста
 if (!function_exists('calculate_age')) {
     function calculate_age($year) {
@@ -68,16 +76,11 @@ if (!function_exists('calculate_time_ago')) {
         </div>
         
         <div class="vehicle-info-section">
-            <div class="report-result">
-                <div class="result-status warning">
-                    <span class="status-text">WARNING</span>
-                </div>
-            </div>
             
             <div class="vehicle-details">
                 <h3 class="vehicle-title">Vehicle Make and Model</h3>
-                <div class="vehicle-make"><?php echo esc_html($data['make']); ?></div>
-                <div class="vehicle-model"><?php echo esc_html($data['model']); ?></div>
+                <div class="vehicle-make"><?php echo esc_html($data['VehicleDetails']['VehicleIdentification']['DvlaMake'] ?? 'N/A'); ?></div>
+                <div class="vehicle-model"><?php echo esc_html($data['VehicleDetails']['VehicleIdentification']['DvlaModel'] ?? 'N/A'); ?></div>
             </div>
         </div>
         
@@ -130,7 +133,13 @@ if (!function_exists('calculate_time_ago')) {
                             <span class="check-info">ⓘ</span>
                         </div>
                         <div class="check-status">
-                            <span class="status-badge status-no">No</span>
+                            <?php 
+                            $imported_status = isset($data['premium_checks']['imported']['status']) ? $data['premium_checks']['imported']['status'] : 'unknown';
+                            $imported_message = isset($data['premium_checks']['imported']['message']) ? $data['premium_checks']['imported']['message'] : 'Данные недоступны';
+                            $status_class = $imported_status === 'pass' ? 'status-no' : ($imported_status === 'warning' ? 'status-yes' : 'status-unknown');
+                            $status_text = $imported_status === 'pass' ? 'No' : ($imported_status === 'warning' ? 'Yes' : 'Unknown');
+                            ?>
+                            <span class="status-badge <?php echo esc_attr($status_class); ?>" title="<?php echo esc_attr($imported_message); ?>"><?php echo esc_html($status_text); ?></span>
                         </div>
                     </div>
                     
@@ -140,7 +149,13 @@ if (!function_exists('calculate_time_ago')) {
                             <span class="check-info">ⓘ</span>
                         </div>
                         <div class="check-status">
-                            <span class="status-badge status-no">No</span>
+                            <?php 
+                            $exported_status = isset($data['premium_checks']['exported']['status']) ? $data['premium_checks']['exported']['status'] : 'unknown';
+                            $exported_message = isset($data['premium_checks']['exported']['message']) ? $data['premium_checks']['exported']['message'] : 'Данные недоступны';
+                            $status_class = $exported_status === 'pass' ? 'status-no' : ($exported_status === 'warning' ? 'status-yes' : 'status-unknown');
+                            $status_text = $exported_status === 'pass' ? 'No' : ($exported_status === 'warning' ? 'Yes' : 'Unknown');
+                            ?>
+                            <span class="status-badge <?php echo esc_attr($status_class); ?>" title="<?php echo esc_attr($exported_message); ?>"><?php echo esc_html($status_text); ?></span>
                         </div>
                     </div>
                     
@@ -150,7 +165,13 @@ if (!function_exists('calculate_time_ago')) {
                             <span class="check-info">ⓘ</span>
                         </div>
                         <div class="check-status">
-                            <span class="status-badge status-no">No</span>
+                            <?php 
+                            $scrapped_status = isset($data['premium_checks']['scrapped']['status']) ? $data['premium_checks']['scrapped']['status'] : 'unknown';
+                            $scrapped_message = isset($data['premium_checks']['scrapped']['message']) ? $data['premium_checks']['scrapped']['message'] : 'Данные недоступны';
+                            $status_class = $scrapped_status === 'pass' ? 'status-no' : ($scrapped_status === 'fail' ? 'status-fail' : 'status-unknown');
+                            $status_text = $scrapped_status === 'pass' ? 'No' : ($scrapped_status === 'fail' ? 'Yes' : 'Unknown');
+                            ?>
+                            <span class="status-badge <?php echo esc_attr($status_class); ?>" title="<?php echo esc_attr($scrapped_message); ?>"><?php echo esc_html($status_text); ?></span>
                         </div>
                     </div>
                     
@@ -160,7 +181,13 @@ if (!function_exists('calculate_time_ago')) {
                             <span class="check-info">ⓘ</span>
                         </div>
                         <div class="check-status">
-                            <span class="status-badge status-no">No</span>
+                            <?php 
+                            $unscrapped_status = isset($data['premium_checks']['unscrapped']['status']) ? $data['premium_checks']['unscrapped']['status'] : 'unknown';
+                            $unscrapped_message = isset($data['premium_checks']['unscrapped']['message']) ? $data['premium_checks']['unscrapped']['message'] : 'Данные недоступны';
+                            $status_class = $unscrapped_status === 'pass' ? 'status-no' : ($unscrapped_status === 'fail' ? 'status-fail' : 'status-unknown');
+                            $status_text = $unscrapped_status === 'pass' ? 'No' : ($unscrapped_status === 'fail' ? 'Yes' : 'Unknown');
+                            ?>
+                            <span class="status-badge <?php echo esc_attr($status_class); ?>" title="<?php echo esc_attr($unscrapped_message); ?>"><?php echo esc_html($status_text); ?></span>
                         </div>
                     </div>
                     
@@ -170,7 +197,13 @@ if (!function_exists('calculate_time_ago')) {
                             <span class="check-info">ⓘ</span>
                         </div>
                         <div class="check-status">
-                            <span class="status-badge status-no">No</span>
+                            <?php 
+                            $safety_recalls_status = isset($data['premium_checks']['safety_recalls']['status']) ? $data['premium_checks']['safety_recalls']['status'] : 'unknown';
+                            $safety_recalls_message = isset($data['premium_checks']['safety_recalls']['message']) ? $data['premium_checks']['safety_recalls']['message'] : 'Данные недоступны';
+                            $status_class = $safety_recalls_status === 'pass' ? 'status-no' : ($safety_recalls_status === 'fail' ? 'status-fail' : 'status-unknown');
+                            $status_text = $safety_recalls_status === 'pass' ? 'No' : ($safety_recalls_status === 'fail' ? 'Yes' : 'Unknown');
+                            ?>
+                            <span class="status-badge <?php echo esc_attr($status_class); ?>" title="<?php echo esc_attr($safety_recalls_message); ?>"><?php echo esc_html($status_text); ?></span>
                         </div>
                     </div>
                     
@@ -180,7 +213,11 @@ if (!function_exists('calculate_time_ago')) {
                             <span class="check-info">ⓘ</span>
                         </div>
                         <div class="check-status">
-                            <span class="check-number">2</span>
+                            <?php 
+                            $previous_keepers_count = isset($data['premium_checks']['previous_keepers']['count']) ? $data['premium_checks']['previous_keepers']['count'] : 0;
+                            $previous_keepers_message = isset($data['premium_checks']['previous_keepers']['message']) ? $data['premium_checks']['previous_keepers']['message'] : 'Данные недоступны';
+                            ?>
+                            <span class="check-number" title="<?php echo esc_attr($previous_keepers_message); ?>"><?php echo esc_html($previous_keepers_count); ?></span>
                         </div>
                     </div>
                     
@@ -190,7 +227,11 @@ if (!function_exists('calculate_time_ago')) {
                             <span class="check-info">ⓘ</span>
                         </div>
                         <div class="check-status">
-                            <span class="check-number">1</span>
+                            <?php 
+                            $plate_changes_count = isset($data['premium_checks']['plate_changes']['count']) ? $data['premium_checks']['plate_changes']['count'] : 0;
+                            $plate_changes_message = isset($data['premium_checks']['plate_changes']['message']) ? $data['premium_checks']['plate_changes']['message'] : 'Данные недоступны';
+                            ?>
+                            <span class="check-number" title="<?php echo esc_attr($plate_changes_message); ?>"><?php echo esc_html($plate_changes_count); ?></span>
                         </div>
                     </div>
                     
@@ -200,7 +241,13 @@ if (!function_exists('calculate_time_ago')) {
                             <span class="check-info">ⓘ</span>
                         </div>
                         <div class="check-status">
-                            <span class="status-badge status-valid">Valid</span>
+                            <?php 
+                            $mot_status = isset($data['premium_checks']['mot']['status']) ? $data['premium_checks']['mot']['status'] : 'unknown';
+                            $mot_message = isset($data['premium_checks']['mot']['message']) ? $data['premium_checks']['mot']['message'] : 'Данные недоступны';
+                            $status_class = $mot_status === 'valid' ? 'status-valid' : ($mot_status === 'invalid' ? 'status-fail' : 'status-unknown');
+                            $status_text = $mot_status === 'valid' ? 'Valid' : ($mot_status === 'invalid' ? 'Invalid' : 'Unknown');
+                            ?>
+                            <span class="status-badge <?php echo esc_attr($status_class); ?>" title="<?php echo esc_attr($mot_message); ?>"><?php echo esc_html($status_text); ?></span>
                         </div>
                     </div>
                     
@@ -210,7 +257,13 @@ if (!function_exists('calculate_time_ago')) {
                             <span class="check-info">ⓘ</span>
                         </div>
                         <div class="check-status">
-                            <span class="status-badge status-valid">Valid</span>
+                            <?php 
+                            $road_tax_status = isset($data['premium_checks']['road_tax']['status']) ? $data['premium_checks']['road_tax']['status'] : 'unknown';
+                            $road_tax_message = isset($data['premium_checks']['road_tax']['message']) ? $data['premium_checks']['road_tax']['message'] : 'Данные недоступны';
+                            $status_class = $road_tax_status === 'valid' ? 'status-valid' : ($road_tax_status === 'invalid' ? 'status-fail' : 'status-unknown');
+                            $status_text = $road_tax_status === 'valid' ? 'Valid' : ($road_tax_status === 'invalid' ? 'Invalid' : 'Unknown');
+                            ?>
+                            <span class="status-badge <?php echo esc_attr($status_class); ?>" title="<?php echo esc_attr($road_tax_message); ?>"><?php echo esc_html($status_text); ?></span>
                         </div>
                     </div>
                 </div>
@@ -223,7 +276,13 @@ if (!function_exists('calculate_time_ago')) {
                             <span class="check-info">ⓘ</span>
                         </div>
                         <div class="check-status">
-                            <span class="status-badge status-fail">Fail</span>
+                            <?php 
+                            $written_off_status = isset($data['premium_checks']['written_off']['status']) ? $data['premium_checks']['written_off']['status'] : 'unknown';
+                            $written_off_message = isset($data['premium_checks']['written_off']['message']) ? $data['premium_checks']['written_off']['message'] : 'Данные недоступны';
+                            $status_class = $written_off_status === 'pass' ? 'status-no' : ($written_off_status === 'fail' ? 'status-fail' : 'status-unknown');
+                            $status_text = $written_off_status === 'pass' ? 'Pass' : ($written_off_status === 'fail' ? 'Fail' : 'Unknown');
+                            ?>
+                            <span class="status-badge <?php echo esc_attr($status_class); ?>" title="<?php echo esc_attr($written_off_message); ?>"><?php echo esc_html($status_text); ?></span>
                         </div>
                     </div>
                     
@@ -233,7 +292,13 @@ if (!function_exists('calculate_time_ago')) {
                             <span class="check-info">ⓘ</span>
                         </div>
                         <div class="check-status">
-                            <span class="status-badge status-fail">Fail</span>
+                            <?php 
+                            $salvage_history_status = isset($data['premium_checks']['salvage_history']['status']) ? $data['premium_checks']['salvage_history']['status'] : 'unknown';
+                            $salvage_history_message = isset($data['premium_checks']['salvage_history']['message']) ? $data['premium_checks']['salvage_history']['message'] : 'Данные недоступны';
+                            $status_class = $salvage_history_status === 'pass' ? 'status-no' : ($salvage_history_status === 'fail' ? 'status-fail' : 'status-unknown');
+                            $status_text = $salvage_history_status === 'pass' ? 'Pass' : ($salvage_history_status === 'fail' ? 'Fail' : 'Unknown');
+                            ?>
+                            <span class="status-badge <?php echo esc_attr($status_class); ?>" title="<?php echo esc_attr($salvage_history_message); ?>"><?php echo esc_html($status_text); ?></span>
                         </div>
                     </div>
                     
@@ -243,7 +308,13 @@ if (!function_exists('calculate_time_ago')) {
                             <span class="check-info">ⓘ</span>
                         </div>
                         <div class="check-status">
-                            <span class="status-badge status-no">No</span>
+                            <?php 
+                            $stolen_status = isset($data['premium_checks']['stolen']['status']) ? $data['premium_checks']['stolen']['status'] : 'unknown';
+                            $stolen_message = isset($data['premium_checks']['stolen']['message']) ? $data['premium_checks']['stolen']['message'] : 'Данные недоступны';
+                            $status_class = $stolen_status === 'pass' ? 'status-no' : ($stolen_status === 'fail' ? 'status-fail' : 'status-unknown');
+                            $status_text = $stolen_status === 'pass' ? 'No' : ($stolen_status === 'fail' ? 'Yes' : 'Unknown');
+                            ?>
+                            <span class="status-badge <?php echo esc_attr($status_class); ?>" title="<?php echo esc_attr($stolen_message); ?>"><?php echo esc_html($status_text); ?></span>
                         </div>
                     </div>
                     
@@ -253,7 +324,13 @@ if (!function_exists('calculate_time_ago')) {
                             <span class="check-info">ⓘ</span>
                         </div>
                         <div class="check-status">
-                            <span class="status-badge status-no">No</span>
+                            <?php 
+                            $colour_changes_status = isset($data['premium_checks']['colour_changes']['status']) ? $data['premium_checks']['colour_changes']['status'] : 'unknown';
+                            $colour_changes_message = isset($data['premium_checks']['colour_changes']['message']) ? $data['premium_checks']['colour_changes']['message'] : 'Данные недоступны';
+                            $status_class = $colour_changes_status === 'pass' ? 'status-no' : ($colour_changes_status === 'warning' ? 'status-yes' : 'status-unknown');
+                            $status_text = $colour_changes_status === 'pass' ? 'No' : ($colour_changes_status === 'warning' ? 'Yes' : 'Unknown');
+                            ?>
+                            <span class="status-badge <?php echo esc_attr($status_class); ?>" title="<?php echo esc_attr($colour_changes_message); ?>"><?php echo esc_html($status_text); ?></span>
                         </div>
                     </div>
                     
@@ -263,7 +340,13 @@ if (!function_exists('calculate_time_ago')) {
                             <span class="check-info">ⓘ</span>
                         </div>
                         <div class="check-status">
-                            <span class="status-badge status-yes">Yes</span>
+                            <?php 
+                            $mileage_issues_status = isset($data['premium_checks']['mileage_issues']['status']) ? $data['premium_checks']['mileage_issues']['status'] : 'unknown';
+                            $mileage_issues_message = isset($data['premium_checks']['mileage_issues']['message']) ? $data['premium_checks']['mileage_issues']['message'] : 'Данные недоступны';
+                            $status_class = $mileage_issues_status === 'pass' ? 'status-no' : ($mileage_issues_status === 'warning' ? 'status-yes' : 'status-unknown');
+                            $status_text = $mileage_issues_status === 'pass' ? 'No' : ($mileage_issues_status === 'warning' ? 'Yes' : 'Unknown');
+                            ?>
+                            <span class="status-badge <?php echo esc_attr($status_class); ?>" title="<?php echo esc_attr($mileage_issues_message); ?>"><?php echo esc_html($status_text); ?></span>
                         </div>
                     </div>
                     
@@ -273,7 +356,13 @@ if (!function_exists('calculate_time_ago')) {
                             <span class="check-info">ⓘ</span>
                         </div>
                         <div class="check-status">
-                            <span class="status-badge status-no">No</span>
+                            <?php 
+                            $ex_taxi_status = isset($data['premium_checks']['ex_taxi']['status']) ? $data['premium_checks']['ex_taxi']['status'] : 'unknown';
+                            $ex_taxi_message = isset($data['premium_checks']['ex_taxi']['message']) ? $data['premium_checks']['ex_taxi']['message'] : 'Данные недоступны';
+                            $status_class = $ex_taxi_status === 'pass' ? 'status-no' : ($ex_taxi_status === 'warning' ? 'status-yes' : 'status-unknown');
+                            $status_text = $ex_taxi_status === 'pass' ? 'No' : ($ex_taxi_status === 'warning' ? 'Yes' : 'Unknown');
+                            ?>
+                            <span class="status-badge <?php echo esc_attr($status_class); ?>" title="<?php echo esc_attr($ex_taxi_message); ?>"><?php echo esc_html($status_text); ?></span>
                         </div>
                     </div>
                     
@@ -283,7 +372,13 @@ if (!function_exists('calculate_time_ago')) {
                             <span class="check-info">ⓘ</span>
                         </div>
                         <div class="check-status">
-                            <span class="status-badge status-pass">Pass</span>
+                            <?php 
+                            $vin_check_status = isset($data['premium_checks']['vin_check']['status']) ? $data['premium_checks']['vin_check']['status'] : 'unknown';
+                            $vin_check_message = isset($data['premium_checks']['vin_check']['message']) ? $data['premium_checks']['vin_check']['message'] : 'Данные недоступны';
+                            $status_class = $vin_check_status === 'pass' ? 'status-pass' : ($vin_check_status === 'fail' ? 'status-fail' : 'status-unknown');
+                            $status_text = $vin_check_status === 'pass' ? 'Pass' : ($vin_check_status === 'fail' ? 'Fail' : 'Unknown');
+                            ?>
+                            <span class="status-badge <?php echo esc_attr($status_class); ?>" title="<?php echo esc_attr($vin_check_message); ?>"><?php echo esc_html($status_text); ?></span>
                         </div>
                     </div>
                     
@@ -293,7 +388,13 @@ if (!function_exists('calculate_time_ago')) {
                             <span class="check-info">ⓘ</span>
                         </div>
                         <div class="check-status">
-                            <span class="status-badge status-fail">Fail</span>
+                            <?php 
+                            $finance_status = isset($data['premium_checks']['outstanding_finance']['status']) ? $data['premium_checks']['outstanding_finance']['status'] : 'unknown';
+                            $finance_message = isset($data['premium_checks']['outstanding_finance']['message']) ? $data['premium_checks']['outstanding_finance']['message'] : 'Данные недоступны';
+                            $status_class = $finance_status === 'pass' ? 'status-no' : ($finance_status === 'fail' ? 'status-fail' : 'status-unknown');
+                            $status_text = $finance_status === 'pass' ? 'No' : ($finance_status === 'fail' ? 'Yes' : 'Unknown');
+                            ?>
+                            <span class="status-badge <?php echo esc_attr($status_class); ?>" title="<?php echo esc_attr($finance_message); ?>"><?php echo esc_html($status_text); ?></span>
                         </div>
                     </div>
                     
@@ -303,7 +404,13 @@ if (!function_exists('calculate_time_ago')) {
                             <span class="check-info">ⓘ</span>
                         </div>
                         <div class="check-status">
-                            <span class="status-badge status-yes">Yes</span>
+                            <?php 
+                            $market_value_status = isset($data['premium_checks']['market_value']['status']) ? $data['premium_checks']['market_value']['status'] : 'unknown';
+                            $market_value_message = isset($data['premium_checks']['market_value']['message']) ? $data['premium_checks']['market_value']['message'] : 'Данные недоступны';
+                            $status_class = $market_value_status === 'available' ? 'status-yes' : ($market_value_status === 'unavailable' ? 'status-no' : 'status-unknown');
+                            $status_text = $market_value_status === 'available' ? 'Yes' : ($market_value_status === 'unavailable' ? 'No' : 'Unknown');
+                            ?>
+                            <span class="status-badge <?php echo esc_attr($status_class); ?>" title="<?php echo esc_attr($market_value_message); ?>"><?php echo esc_html($status_text); ?></span>
                         </div>
                     </div>
                 </div>

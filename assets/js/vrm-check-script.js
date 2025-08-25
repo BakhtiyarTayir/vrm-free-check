@@ -47,33 +47,94 @@ jQuery(document).ready(function($) {
         hideError();
         hideResults();
         
+        // Логируем начало AJAX запроса
+        console.log('VRM Check: Starting AJAX request', {
+            vrm: vrm,
+            timestamp: new Date().toISOString(),
+            timeout: 30000
+        });
+        
+        var startTime = Date.now();
+        
         $.ajax({
             url: vrm_check_ajax.ajax_url,
             type: 'POST',
             data: {
                 action: 'vrm_check',
                 vrm: vrm,
-                nonce: vrm_check_ajax.nonce
+                nonce: vrm_check_ajax.nonce,
+                is_premium: vrm_check_ajax.is_premium
             },
             timeout: 30000, // 30 seconds timeout
             success: function(response) {
+                var executionTime = Date.now() - startTime;
+                
+                // Логируем успешный ответ
+                console.log('VRM Check: AJAX request successful', {
+                    vrm: vrm,
+                    executionTime: executionTime + 'ms',
+                    responseSize: JSON.stringify(response).length + ' bytes',
+                    cached: response.data && response.data.cached
+                });
+                
                 if (response.success) {
                     showResults(response.data.html);
                     if (response.data.cached) {
                         console.log('Results from cache');
                     }
                 } else {
+                    // Логируем ошибку от сервера
+                    console.error('VRM Check: Server returned error', {
+                        vrm: vrm,
+                        error: response.data.message,
+                        executionTime: executionTime + 'ms'
+                    });
                     showError(response.data.message);
                 }
             },
             error: function(xhr, status, error) {
+                var executionTime = Date.now() - startTime;
+                
+                // Детальное логирование ошибок
+                var errorDetails = {
+                    vrm: vrm,
+                    status: status,
+                    error: error,
+                    executionTime: executionTime + 'ms',
+                    responseCode: xhr.status,
+                    responseText: xhr.responseText ? xhr.responseText.substring(0, 500) : 'No response text',
+                    timestamp: new Date().toISOString()
+                };
+                
+                console.error('VRM Check: AJAX request failed', errorDetails);
+                
                 if (status === 'timeout') {
+                    console.error('VRM Check: Request timed out after ' + executionTime + 'ms');
                     showError('Request timed out. Please try again.');
+                } else if (status === 'error') {
+                    console.error('VRM Check: Network error occurred', {
+                        responseCode: xhr.status,
+                        statusText: xhr.statusText
+                    });
+                    showError('An error occurred while checking the vehicle. Please try again.');
+                } else if (status === 'abort') {
+                    console.error('VRM Check: Request was aborted');
+                    showError('Request was cancelled. Please try again.');
                 } else {
+                    console.error('VRM Check: Unknown error occurred', {
+                        status: status,
+                        error: error
+                    });
                     showError('An error occurred while checking the vehicle. Please try again.');
                 }
             },
             complete: function() {
+                var executionTime = Date.now() - startTime;
+                console.log('VRM Check: AJAX request completed', {
+                    vrm: vrm,
+                    totalTime: executionTime + 'ms'
+                });
+                
                 isLoading = false;
                 hideLoading();
             }

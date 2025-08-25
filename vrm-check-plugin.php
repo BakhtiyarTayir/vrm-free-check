@@ -20,11 +20,13 @@ define('VRM_CHECK_PLUGIN_PATH', plugin_dir_path(__FILE__));
 define('VRM_CHECK_PLUGIN_VERSION', '1.0.0');
 
 // Include required files
+require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-logger.php';
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-vrm-check-plugin.php';
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-admin.php';
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-ajax.php';
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-shortcode.php';
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-api-client.php';
+require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-premium-api-client.php';
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-activator.php';
 
 // Plugin activation/deactivation hooks

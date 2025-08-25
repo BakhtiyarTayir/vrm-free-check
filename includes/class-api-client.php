@@ -13,8 +13,13 @@ class ApiClient {
     public function __construct() {
         $this->api_key = get_option('vrm_check_api_key', 'AAEF08BA-E98B-42A0-BB63-FEE0492243A7');
         $this->api_url = 'https://uk.api.vehicledataglobal.com/r2/lookup';
-
-
+    }
+    
+    /**
+     * Получить экземпляр логгера
+     */
+    private function get_logger() {
+        return Logger::get_instance();
     }
     
     public function get_vehicle_data($vrm) {
@@ -65,6 +70,13 @@ class ApiClient {
     }
     
     private function make_api_request($vrm, $package_name = 'MotHistoryDetails') {
+        // Логируем начало запроса
+        $this->get_logger()->info("Starting API request", array(
+            'vrm' => $vrm,
+            'package' => $package_name,
+            'timestamp' => current_time('c')
+        ));
+        
         // Формируем URL с параметрами
         $url = add_query_arg(array(
             'packagename' => $package_name,
@@ -81,20 +93,67 @@ class ApiClient {
             )
         );
         
+        // Логируем параметры запроса (без API ключа)
+        $this->get_logger()->debug("API request parameters", array(
+            'url' => str_replace($this->api_key, '[HIDDEN]', $url),
+            'timeout' => $args['timeout'],
+            'method' => $args['method']
+        ));
+        
+        // Засекаем время начала запроса
+        $start_time = microtime(true);
+        
         // Выполняем HTTP запрос
         $response = wp_remote_get($url, $args);
         
+        // Вычисляем время выполнения
+        $execution_time = microtime(true) - $start_time;
+        
+        // Логируем время выполнения
+        $this->get_logger()->info("API request completed", array(
+            'execution_time' => round($execution_time, 2) . ' seconds',
+            'package' => $package_name
+        ));
+        
         // Проверяем на ошибки WordPress
         if (is_wp_error($response)) {
+            $error_message = $response->get_error_message();
+            $error_code = $response->get_error_code();
+            
+            // Детальное логирование ошибки
+            $this->get_logger()->error("WordPress HTTP Error", array(
+                'error_code' => $error_code,
+                'error_message' => $error_message,
+                'execution_time' => round($execution_time, 2) . ' seconds',
+                'package' => $package_name,
+                'vrm' => $vrm
+            ));
+            
+            // Проверяем на таймаут
+            if (strpos($error_message, 'timeout') !== false || $error_code === 'http_request_timeout') {
+                return array(
+                    'success' => false,
+                    'error' => 'Request timed out. Please try again.'
+                );
+            }
+            
             return array(
                 'success' => false,
-                'error' => 'Ошибка соединения: ' . $response->get_error_message()
+                'error' => 'Ошибка соединения: ' . $error_message
             );
         }
         
         // Получаем код ответа
         $response_code = wp_remote_retrieve_response_code($response);
         if ($response_code !== 200) {
+            // Логируем ошибку HTTP кода
+            $this->get_logger()->error("HTTP Error Response", array(
+                'response_code' => $response_code,
+                'package' => $package_name,
+                'vrm' => $vrm,
+                'execution_time' => round($execution_time, 2) . ' seconds'
+            ));
+            
             return array(
                 'success' => false,
                 'error' => 'API вернул ошибку: код ' . $response_code
@@ -104,9 +163,24 @@ class ApiClient {
         // Получаем тело ответа
         $response_body = wp_remote_retrieve_body($response);
         
+        // Логируем размер ответа
+        $this->get_logger()->debug("API Response received", array(
+            'response_size' => strlen($response_body) . ' bytes',
+            'package' => $package_name,
+            'execution_time' => round($execution_time, 2) . ' seconds'
+        ));
+        
         // Парсим JSON
         $data = json_decode($response_body, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
+            // Логируем ошибку парсинга JSON
+            $this->get_logger()->error("JSON Parse Error", array(
+                'json_error' => json_last_error_msg(),
+                'response_preview' => substr($response_body, 0, 500),
+                'package' => $package_name,
+                'vrm' => $vrm
+            ));
+            
             return array(
                 'success' => false,
                 'error' => 'Ошибка парсинга JSON ответа'
@@ -116,11 +190,31 @@ class ApiClient {
         // Проверяем успешность ответа API
         if (!isset($data['ResponseInformation']['IsSuccessStatusCode']) || 
             $data['ResponseInformation']['IsSuccessStatusCode'] !== true) {
+            
+            $api_error_message = $data['ResponseInformation']['StatusMessage'] ?? 'Неизвестная ошибка';
+            
+            // Логируем ошибку API
+            $this->get_logger()->error("API Error Response", array(
+                'api_error_message' => $api_error_message,
+                'response_info' => $data['ResponseInformation'] ?? 'No response info',
+                'package' => $package_name,
+                'vrm' => $vrm,
+                'execution_time' => round($execution_time, 2) . ' seconds'
+            ));
+            
             return array(
                 'success' => false,
-                'error' => 'API вернул ошибку: ' . ($data['ResponseInformation']['StatusMessage'] ?? 'Неизвестная ошибка')
+                'error' => 'API вернул ошибку: ' . $api_error_message
             );
         }
+        
+        // Логируем успешный запрос
+        $this->get_logger()->info("API Request successful", array(
+            'package' => $package_name,
+            'vrm' => $vrm,
+            'execution_time' => round($execution_time, 2) . ' seconds',
+            'data_size' => strlen(json_encode($data)) . ' bytes'
+        ));
         
         return array(
             'success' => true,

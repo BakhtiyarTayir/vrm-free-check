@@ -280,7 +280,7 @@ if (!function_exists('calculate_time_ago')) {
             <p class="vrm-check-info" style="margin: 15px 0; color: #666;">Check if a vehicle is written off from £1.99.</p>
             
             <!-- Hidden form for data transfer -->
-            <form id="full-check-form" method="POST" action="https://motcheck.local/full-check-page/" style="display: none;">
+            <form id="full-check-form" method="POST" action="https://motcheck.local/full-check-page/" target="_blank" style="display: none;">
                 <input type="hidden" name="vrm_data" value="<?php echo esc_attr(json_encode($data)); ?>">
                 <input type="hidden" name="vrm" value="<?php echo esc_attr($vrm); ?>">
             </form>

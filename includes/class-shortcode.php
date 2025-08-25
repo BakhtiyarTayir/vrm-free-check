@@ -97,40 +97,95 @@ class Shortcode {
 
         <?php
          return ob_get_clean();
-     }
+    }
      
-     public function render_premium_template($atts) {
-         $atts = shortcode_atts(array(
-             'vrm' => 'BL66VPO',
-             'make' => 'Volkswagen',
-             'model' => 'Tiguan R-Line Tech Tdi S-A',
-             'year' => '2020',
-             'image' => 'Volkswagen.png'
-         ), $atts);
-         
-         // Подготовка данных для шаблона
-         $data = array(
-             'vrm' => $atts['vrm'],
-             'make' => $atts['make'],
-             'model' => $atts['model'],
-             'year' => $atts['year'],
-             'image' => $atts['image']
-         );
-         
-         ob_start();
-         
-         // Подключаем премиум шаблон
-         $template_path = VRM_CHECK_PLUGIN_PATH . 'templates/premium-results-template.php';
-         if (file_exists($template_path)) {
-             include $template_path;
-         } else {
-             echo '<div class="vrm-error">Premium template not found.</div>';
-         }
-         
+    public function render_premium_template($atts) {
+        $atts = shortcode_atts(array(
+            'title' => __('Premium Car Check', 'vrm-check-plugin'),
+            'placeholder' => __('Enter registration number', 'vrm-check-plugin'),
+            'button_text' => __('Check Vehicle', 'vrm-check-plugin'),
+            'show_example' => 'no'
+        ), $atts);
+        
+        ob_start();
+        ?>
+        <div class="vrm-check-container">
+            <div class="vrm-check-form-wrapper">
+                <div class="vrm-check-header">
+                    <h2 class="vrm-check-title"><?php echo esc_html($atts['title']); ?></h2>
+                    <p class="vrm-check-subtitle">
+                        <?php _e('Get instant access to vehicle information including MOT, tax status, and vehicle specifications', 'vrm-check-plugin'); ?>
+                    </p>
+                </div>
+                
+                <form id="vrm-check-form" class="vrm-check-form">
+                    <div class="vrm-input-group">
+                        <div class="vrm-input-wrapper">
+                            <input 
+                                type="text" 
+                                id="vrm-input" 
+                                name="vrm" 
+                                class="vrm-input" 
+                                placeholder="<?php echo esc_attr($atts['placeholder']); ?>"
+                                maxlength="8"
+                                required
+                            >
+                            <button type="submit" class="vrm-submit-btn">
+                                <span class="vrm-btn-text"><?php echo esc_html($atts['button_text']); ?></span>
+                                <span class="vrm-btn-loading" style="display: none;">
+                                    <i class="vrm-spinner"></i>
+                                    <?php _e('Checking...', 'vrm-check-plugin'); ?>
+                                </span>
+                            </button>
+                        </div>
+                        
+                        <?php if ($atts['show_example'] === 'yes'): ?>
+                        <div class="vrm-example">
+                            <span class="vrm-example-text"><?php _e('Example:', 'vrm-check-plugin'); ?></span>
+                            <button type="button" class="vrm-example-btn" data-vrm="BL66VPO">BL66VPO</button>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                    
+                    <?php wp_nonce_field('vrm_check_nonce', 'vrm_check_nonce'); ?>
+                </form>
+                
+                <div class="vrm-features">
+                    <div class="vrm-feature-item">
+                        <i class="vrm-icon-check"></i>
+                        <span><?php _e('MOT Status', 'vrm-check-plugin'); ?></span>
+                    </div>
+                    <div class="vrm-feature-item">
+                        <i class="vrm-icon-check"></i>
+                        <span><?php _e('Tax Information', 'vrm-check-plugin'); ?></span>
+                    </div>
+                    <div class="vrm-feature-item">
+                        <i class="vrm-icon-check"></i>
+                        <span><?php _e('Vehicle Specifications', 'vrm-check-plugin'); ?></span>
+                    </div>
+                    <div class="vrm-feature-item">
+                        <i class="vrm-icon-check"></i>
+                        <span><?php _e('Instant Results', 'vrm-check-plugin'); ?></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="vrm-check-results" class="vrm-check-results-container" style="display: none;"></div>
+            
+            <div id="vrm-check-error" class="vrm-check-error" style="display: none;">
+                <div class="vrm-error-content">
+                    <i class="vrm-icon-warning"></i>
+                    <span class="vrm-error-message"></span>
+                </div>
+            </div>
+        </div>
+        
+
+        <?php
          return ob_get_clean();
-     }
+    }
      
-     public function enqueue_scripts() {
+    public function enqueue_scripts() {
          // Only enqueue on pages that contain the shortcode
          global $post;
          if (is_a($post, 'WP_Post') && (has_shortcode($post->post_content, 'vrm_check') || has_shortcode($post->post_content, 'vrm_check_premium'))) {
@@ -143,11 +198,15 @@ class Shortcode {
              
              wp_enqueue_script('vrm-check-script', VRM_CHECK_PLUGIN_URL . 'assets/js/vrm-check-script.js', array('jquery'), VRM_CHECK_PLUGIN_VERSION, true);
              
+             // Determine if premium version is being used
+             $is_premium = has_shortcode($post->post_content, 'vrm_check_premium');
+             
              // Localize script for AJAX
              wp_localize_script('vrm-check-script', 'vrm_check_ajax', array(
                  'ajax_url' => admin_url('admin-ajax.php'),
-                 'nonce' => wp_create_nonce('vrm_check_nonce')
+                 'nonce' => wp_create_nonce('vrm_check_nonce'),
+                 'is_premium' => $is_premium
              ));
          }
-     }
+    }
 }

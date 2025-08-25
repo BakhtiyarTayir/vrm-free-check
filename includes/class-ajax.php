@@ -6,8 +6,14 @@ if (!defined('ABSPATH')) {
 }
 
 class Ajax {
+    private $api_client;
+    private $premium_api_client;
+    private $logger;
     
     public function __construct() {
+        $this->api_client = new ApiClient();
+        $this->premium_api_client = new PremiumApiClient();
+        $this->logger = Logger::get_instance();
         add_action('wp_ajax_vrm_check', array($this, 'handle_vrm_check'));
         add_action('wp_ajax_nopriv_vrm_check', array($this, 'handle_vrm_check'));
     }
@@ -36,18 +42,29 @@ class Ajax {
             ));
         }
         
-        // Make API request
-        $api_client = new ApiClient();
-        $result = $api_client->get_vehicle_data($vrm);
+        // Check if premium version is requested
+        $is_premium = isset($_POST['is_premium']) && $_POST['is_premium'];
         
-        if (!$result['success']) {
-            wp_send_json_error(array(
-                'message' => $result['error']
-            ));
+        // Make API request (basic or premium)
+        if ($is_premium) {
+            $data = $this->premium_api_client->get_vehicle_data_with_image($vrm);
+            if ($data === false) {
+                wp_send_json_error(array(
+                    'message' => 'Ошибка получения данных от премиум API'
+                ));
+            }
+            $result = array('success' => true, 'data' => $data);
+        } else {
+            $result = $this->api_client->get_vehicle_data($vrm);
+            if (!$result['success']) {
+                wp_send_json_error(array(
+                    'message' => $result['error']
+                ));
+            }
         }
         
         // Generate HTML from template
-        $html = $this->generate_results_html($result['data'], $vrm);
+        $html = $this->generate_results_html($result['data'], $vrm, $is_premium);
         
         wp_send_json_success(array(
             'html' => $html
@@ -77,11 +94,17 @@ class Ajax {
         return false;
     }
     
-    private function generate_results_html($data, $vrm) {
+    private function generate_results_html($data, $vrm, $is_premium = false) {
         ob_start();
         
-        // Include the results template
-        $template_path = VRM_CHECK_PLUGIN_PATH . 'templates/results-template.php';
+        // Choose template based on premium status
+        if ($is_premium) {
+            $template_path = VRM_CHECK_PLUGIN_PATH . 'templates/premium-results-template.php';
+        } else {
+            $template_path = VRM_CHECK_PLUGIN_PATH . 'templates/results-template.php';
+        }
+        
+        // Include the appropriate results template
         if (file_exists($template_path)) {
             include $template_path;
         } else {
