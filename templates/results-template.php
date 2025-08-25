@@ -11,6 +11,13 @@ if (!isset($data) || empty($data)) {
     return;
 }
 
+// Получаем VRM из данных или переменной
+if (!isset($vrm) && isset($data['vrm'])) {
+    $vrm = $data['vrm'];
+} elseif (!isset($vrm)) {
+    $vrm = '';
+}
+
 
 // Функция для вычисления возраста
 if (!function_exists('calculate_age')) {
@@ -272,7 +279,13 @@ if (!function_exists('calculate_time_ago')) {
             
             <p class="vrm-check-info" style="margin: 15px 0; color: #666;">Check if a vehicle is written off from £1.99.</p>
             
-            <button class="vrm-check-now-btn" style="background-color: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; cursor: pointer;">Check Now</button>
+            <!-- Hidden form for data transfer -->
+            <form id="full-check-form" method="POST" action="https://motcheck.local/full-check-page/" style="display: none;">
+                <input type="hidden" name="vrm_data" value="<?php echo esc_attr(json_encode($data)); ?>">
+                <input type="hidden" name="vrm" value="<?php echo esc_attr($vrm); ?>">
+            </form>
+            
+            <button class="vrm-check-now-btn" onclick="redirectToFullCheck()" style="background-color: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; cursor: pointer;">Check Now</button>
         </div>
     </div>
     
@@ -1458,4 +1471,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Make sure vehicle details page is active by default
     switchPage('vehicle-details-page');
 });
+
+// Function to redirect to full check page with data
+function redirectToFullCheck() {
+    const form = document.getElementById('full-check-form');
+    if (form) {
+        form.submit();
+    }
+}
 </script>

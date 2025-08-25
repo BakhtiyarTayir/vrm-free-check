@@ -53,7 +53,16 @@ if (!function_exists('calculate_time_ago')) {
     <!-- Main Report Content -->
     <div class="premium-report-content">
         <div class="vehicle-image-section">
-            <img src="<?php echo esc_url(plugin_dir_url(dirname(__FILE__)) . 'assets/images/' . esc_attr($data['image'])); ?>" 
+            <?php 
+            // Используем изображение из API, если доступно, иначе изображение по умолчанию
+            $image_url = '';
+            if (!empty($data['vehicle_image_url'])) {
+                $image_url = esc_url($data['vehicle_image_url']);
+            } else {
+                $image_url = esc_url(plugin_dir_url(dirname(__FILE__)) . 'assets/images/' . esc_attr($data['image']));
+            }
+            ?>
+            <img src="<?php echo $image_url; ?>" 
                  alt="Vehicle Image" 
                  class="vehicle-main-image" />
         </div>

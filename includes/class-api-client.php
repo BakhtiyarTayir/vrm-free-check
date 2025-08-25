@@ -366,18 +366,30 @@ class ApiClient {
                 'estimated_mileage' => 'N/A',
                 'current_mileage' => 'N/A',
                 'mileage_last_year' => '0 miles',
-                'average_mileage' => 'N/A'
+                'average_mileage' => 'N/A',
+                'vehicle_image_url' => ''
             );
         }
         
         $mileage_details = $mileage_api_data['Results']['MileageCheckDetails'] ?? array();
+        
+        // Обрабатываем изображение автомобиля
+        $vehicle_image_url = '';
+        $vehicle_image_details = $mileage_api_data['Results']['VehicleImageDetails'] ?? array();
+        if (!empty($vehicle_image_details['VehicleImageList']) && is_array($vehicle_image_details['VehicleImageList'])) {
+            $first_image = $vehicle_image_details['VehicleImageList'][0] ?? array();
+            if (!empty($first_image['ImageUrl'])) {
+                $vehicle_image_url = $first_image['ImageUrl'];
+            }
+        }
         
         if (empty($mileage_details['MileageResultList']) || !is_array($mileage_details['MileageResultList'])) {
             return array(
                 'estimated_mileage' => 'N/A',
                 'current_mileage' => 'N/A',
                 'mileage_last_year' => '0 miles',
-                'average_mileage' => 'N/A'
+                'average_mileage' => 'N/A',
+                'vehicle_image_url' => $vehicle_image_url
             );
         }
         
@@ -527,7 +539,8 @@ class ApiClient {
                 'average_mileage' => $average_mileage,
                 'has_mileage_issues' => $has_mileage_issues,
                 'mileage_issue_description' => $mileage_issue_description,
-                'mileage_chart_data' => $mileage_chart_data
+                'mileage_chart_data' => $mileage_chart_data,
+                'vehicle_image_url' => $vehicle_image_url
             );
         }
         
@@ -538,7 +551,8 @@ class ApiClient {
             'average_mileage' => $average_mileage,
             'has_mileage_issues' => $has_mileage_issues,
             'mileage_issue_description' => $mileage_issue_description,
-            'mileage_chart_data' => $mileage_chart_data
+            'mileage_chart_data' => $mileage_chart_data,
+            'vehicle_image_url' => $vehicle_image_url
         );
     }
     
