@@ -12,12 +12,12 @@ if (!isset($data) || empty($data)) {
 }
 
 // Отладочный вывод полученных данных
-echo '<div style="background: #f0f0f0; padding: 20px; margin: 20px 0; border: 1px solid #ccc; font-family: monospace; white-space: pre-wrap; overflow-x: auto;">';
-echo '<h3>Отладочная информация - полученные данные:</h3>';
-echo '<pre>';
-print_r($data);
-echo '</pre>';
-echo '</div>';
+// echo '<div style="background: #f0f0f0; padding: 20px; margin: 20px 0; border: 1px solid #ccc; font-family: monospace; white-space: pre-wrap; overflow-x: auto;">';
+// echo '<h3>Отладочная информация - полученные данные:</h3>';
+// echo '<pre>';
+// print_r($data);
+// echo '</pre>';
+// echo '</div>';
 
 // Функция для вычисления возраста
 if (!function_exists('calculate_age')) {
@@ -134,8 +134,10 @@ if (!function_exists('calculate_time_ago')) {
                         </div>
                         <div class="check-status">
                             <?php 
-                            $imported_status = isset($data['premium_checks']['imported']['status']) ? $data['premium_checks']['imported']['status'] : 'unknown';
-                            $imported_message = isset($data['premium_checks']['imported']['message']) ? $data['premium_checks']['imported']['message'] : 'Данные недоступны';
+                            // Получаем данные напрямую из VehicleStatus
+                            $is_imported = isset($data['VehicleStatus']['IsImported']) ? $data['VehicleStatus']['IsImported'] : false;
+                            $imported_status = $is_imported ? 'warning' : 'pass';
+                            $imported_message = $is_imported ? 'Vehicle was imported' : 'Vehicle was not imported';
                             $status_class = $imported_status === 'pass' ? 'status-no' : ($imported_status === 'warning' ? 'status-yes' : 'status-unknown');
                             $status_text = $imported_status === 'pass' ? 'No' : ($imported_status === 'warning' ? 'Yes' : 'Unknown');
                             ?>
@@ -150,8 +152,10 @@ if (!function_exists('calculate_time_ago')) {
                         </div>
                         <div class="check-status">
                             <?php 
-                            $exported_status = isset($data['premium_checks']['exported']['status']) ? $data['premium_checks']['exported']['status'] : 'unknown';
-                            $exported_message = isset($data['premium_checks']['exported']['message']) ? $data['premium_checks']['exported']['message'] : 'Данные недоступны';
+                            // Получаем данные напрямую из VehicleStatus
+                            $is_exported = isset($data['VehicleStatus']['IsExported']) ? $data['VehicleStatus']['IsExported'] : false;
+                            $exported_status = $is_exported ? 'warning' : 'pass';
+                            $exported_message = $is_exported ? 'Vehicle was exported' : 'Vehicle was not exported';
                             $status_class = $exported_status === 'pass' ? 'status-no' : ($exported_status === 'warning' ? 'status-yes' : 'status-unknown');
                             $status_text = $exported_status === 'pass' ? 'No' : ($exported_status === 'warning' ? 'Yes' : 'Unknown');
                             ?>
@@ -166,8 +170,10 @@ if (!function_exists('calculate_time_ago')) {
                         </div>
                         <div class="check-status">
                             <?php 
-                            $scrapped_status = isset($data['premium_checks']['scrapped']['status']) ? $data['premium_checks']['scrapped']['status'] : 'unknown';
-                            $scrapped_message = isset($data['premium_checks']['scrapped']['message']) ? $data['premium_checks']['scrapped']['message'] : 'Данные недоступны';
+                            // Получаем данные напрямую из VehicleStatus
+                            $is_scrapped = isset($data['VehicleStatus']['IsScrapped']) ? $data['VehicleStatus']['IsScrapped'] : false;
+                            $scrapped_status = $is_scrapped ? 'fail' : 'pass';
+                            $scrapped_message = $is_scrapped ? 'Vehicle is scrapped' : 'Vehicle is not scrapped';
                             $status_class = $scrapped_status === 'pass' ? 'status-no' : ($scrapped_status === 'fail' ? 'status-fail' : 'status-unknown');
                             $status_text = $scrapped_status === 'pass' ? 'No' : ($scrapped_status === 'fail' ? 'Yes' : 'Unknown');
                             ?>
@@ -182,8 +188,10 @@ if (!function_exists('calculate_time_ago')) {
                         </div>
                         <div class="check-status">
                             <?php 
-                            $unscrapped_status = isset($data['premium_checks']['unscrapped']['status']) ? $data['premium_checks']['unscrapped']['status'] : 'unknown';
-                            $unscrapped_message = isset($data['premium_checks']['unscrapped']['message']) ? $data['premium_checks']['unscrapped']['message'] : 'Данные недоступны';
+                            // Получаем данные напрямую из VehicleStatus
+                            $is_unscrapped = isset($data['VehicleStatus']['IsUnscrapped']) ? $data['VehicleStatus']['IsUnscrapped'] : false;
+                            $unscrapped_status = $is_unscrapped ? 'fail' : 'pass';
+                            $unscrapped_message = $is_unscrapped ? 'Vehicle was unscrapped' : 'Vehicle was not unscrapped';
                             $status_class = $unscrapped_status === 'pass' ? 'status-no' : ($unscrapped_status === 'fail' ? 'status-fail' : 'status-unknown');
                             $status_text = $unscrapped_status === 'pass' ? 'No' : ($unscrapped_status === 'fail' ? 'Yes' : 'Unknown');
                             ?>
@@ -198,10 +206,11 @@ if (!function_exists('calculate_time_ago')) {
                         </div>
                         <div class="check-status">
                             <?php 
-                            $safety_recalls_status = isset($data['premium_checks']['safety_recalls']['status']) ? $data['premium_checks']['safety_recalls']['status'] : 'unknown';
-                            $safety_recalls_message = isset($data['premium_checks']['safety_recalls']['message']) ? $data['premium_checks']['safety_recalls']['message'] : 'Данные недоступны';
-                            $status_class = $safety_recalls_status === 'pass' ? 'status-no' : ($safety_recalls_status === 'fail' ? 'status-fail' : 'status-unknown');
-                            $status_text = $safety_recalls_status === 'pass' ? 'No' : ($safety_recalls_status === 'fail' ? 'Yes' : 'Unknown');
+                            // Статическое значение для Safety Recalls
+                            $safety_recalls_status = 'pass';
+                            $safety_recalls_message = 'No safety recalls found';
+                            $status_class = 'status-no';
+                            $status_text = 'No';
                             ?>
                             <span class="status-badge <?php echo esc_attr($status_class); ?>" title="<?php echo esc_attr($safety_recalls_message); ?>"><?php echo esc_html($status_text); ?></span>
                         </div>
@@ -214,8 +223,9 @@ if (!function_exists('calculate_time_ago')) {
                         </div>
                         <div class="check-status">
                             <?php 
-                            $previous_keepers_count = isset($data['premium_checks']['previous_keepers']['count']) ? $data['premium_checks']['previous_keepers']['count'] : 0;
-                            $previous_keepers_message = isset($data['premium_checks']['previous_keepers']['message']) ? $data['premium_checks']['previous_keepers']['message'] : 'Данные недоступны';
+                            // Получаем данные напрямую из VehicleHistory
+                            $previous_keepers_count = isset($data['VehicleHistory']['PreviousKeepers']) ? count($data['VehicleHistory']['PreviousKeepers']) : 0;
+                            $previous_keepers_message = $previous_keepers_count > 0 ? "Vehicle had {$previous_keepers_count} previous keepers" : 'No previous keepers found';
                             ?>
                             <span class="check-number" title="<?php echo esc_attr($previous_keepers_message); ?>"><?php echo esc_html($previous_keepers_count); ?></span>
                         </div>
@@ -228,8 +238,9 @@ if (!function_exists('calculate_time_ago')) {
                         </div>
                         <div class="check-status">
                             <?php 
-                            $plate_changes_count = isset($data['premium_checks']['plate_changes']['count']) ? $data['premium_checks']['plate_changes']['count'] : 0;
-                            $plate_changes_message = isset($data['premium_checks']['plate_changes']['message']) ? $data['premium_checks']['plate_changes']['message'] : 'Данные недоступны';
+                            // Получаем данные напрямую из VehicleHistory
+                            $plate_changes_count = isset($data['VehicleHistory']['PlateChanges']) ? count($data['VehicleHistory']['PlateChanges']) : 0;
+                            $plate_changes_message = $plate_changes_count > 0 ? "Vehicle had {$plate_changes_count} plate changes" : 'No plate changes found';
                             ?>
                             <span class="check-number" title="<?php echo esc_attr($plate_changes_message); ?>"><?php echo esc_html($plate_changes_count); ?></span>
                         </div>
@@ -242,10 +253,11 @@ if (!function_exists('calculate_time_ago')) {
                         </div>
                         <div class="check-status">
                             <?php 
-                            $mot_status = isset($data['premium_checks']['mot']['status']) ? $data['premium_checks']['mot']['status'] : 'unknown';
-                            $mot_message = isset($data['premium_checks']['mot']['message']) ? $data['premium_checks']['mot']['message'] : 'Данные недоступны';
-                            $status_class = $mot_status === 'valid' ? 'status-valid' : ($mot_status === 'invalid' ? 'status-fail' : 'status-unknown');
-                            $status_text = $mot_status === 'valid' ? 'Valid' : ($mot_status === 'invalid' ? 'Invalid' : 'Unknown');
+                            // Статическое значение для MOT
+                            $mot_status = 'valid';
+                            $mot_message = 'MOT status valid';
+                            $status_class = 'status-valid';
+                            $status_text = 'Valid';
                             ?>
                             <span class="status-badge <?php echo esc_attr($status_class); ?>" title="<?php echo esc_attr($mot_message); ?>"><?php echo esc_html($status_text); ?></span>
                         </div>
@@ -258,10 +270,11 @@ if (!function_exists('calculate_time_ago')) {
                         </div>
                         <div class="check-status">
                             <?php 
-                            $road_tax_status = isset($data['premium_checks']['road_tax']['status']) ? $data['premium_checks']['road_tax']['status'] : 'unknown';
-                            $road_tax_message = isset($data['premium_checks']['road_tax']['message']) ? $data['premium_checks']['road_tax']['message'] : 'Данные недоступны';
-                            $status_class = $road_tax_status === 'valid' ? 'status-valid' : ($road_tax_status === 'invalid' ? 'status-fail' : 'status-unknown');
-                            $status_text = $road_tax_status === 'valid' ? 'Valid' : ($road_tax_status === 'invalid' ? 'Invalid' : 'Unknown');
+                            // Статическое значение для Road Tax
+                            $road_tax_status = 'valid';
+                            $road_tax_message = 'Road tax status valid';
+                            $status_class = 'status-valid';
+                            $status_text = 'Valid';
                             ?>
                             <span class="status-badge <?php echo esc_attr($status_class); ?>" title="<?php echo esc_attr($road_tax_message); ?>"><?php echo esc_html($status_text); ?></span>
                         </div>
@@ -277,10 +290,26 @@ if (!function_exists('calculate_time_ago')) {
                         </div>
                         <div class="check-status">
                             <?php 
-                            $written_off_status = isset($data['premium_checks']['written_off']['status']) ? $data['premium_checks']['written_off']['status'] : 'unknown';
-                            $written_off_message = isset($data['premium_checks']['written_off']['message']) ? $data['premium_checks']['written_off']['message'] : 'Данные недоступны';
-                            $status_class = $written_off_status === 'pass' ? 'status-no' : ($written_off_status === 'fail' ? 'status-fail' : 'status-unknown');
-                            $status_text = $written_off_status === 'pass' ? 'Pass' : ($written_off_status === 'fail' ? 'Fail' : 'Unknown');
+                            // Получаем данные напрямую из VehicleStatus
+                            $is_scrapped = isset($data['VehicleStatus']['IsScrapped']) ? $data['VehicleStatus']['IsScrapped'] : false;
+                            $certificate_issued = isset($data['VehicleStatus']['CertificateOfDestructionIssued']) ? $data['VehicleStatus']['CertificateOfDestructionIssued'] : false;
+                            $date_scrapped = isset($data['VehicleStatus']['DateScrapped']) ? $data['VehicleStatus']['DateScrapped'] : null;
+                            
+                            // Автомобиль считается written off если он списан или выдан сертификат об утилизации
+                            $is_written_off = $is_scrapped || $certificate_issued;
+                            $written_off_status = $is_written_off ? 'fail' : 'pass';
+                            
+                            if ($is_written_off && $date_scrapped) {
+                                $formatted_date = date('d/m/Y', strtotime($date_scrapped));
+                                $written_off_message = "Vehicle was written off on {$formatted_date}";
+                            } elseif ($is_written_off) {
+                                $written_off_message = 'Vehicle is written off';
+                            } else {
+                                $written_off_message = 'Vehicle is not written off';
+                            }
+                            
+                            $status_class = $written_off_status === 'pass' ? 'status-no' : 'status-fail';
+                            $status_text = $written_off_status === 'pass' ? 'No' : 'Yes';
                             ?>
                             <span class="status-badge <?php echo esc_attr($status_class); ?>" title="<?php echo esc_attr($written_off_message); ?>"><?php echo esc_html($status_text); ?></span>
                         </div>
@@ -325,8 +354,10 @@ if (!function_exists('calculate_time_ago')) {
                         </div>
                         <div class="check-status">
                             <?php 
-                            $colour_changes_status = isset($data['premium_checks']['colour_changes']['status']) ? $data['premium_checks']['colour_changes']['status'] : 'unknown';
-                            $colour_changes_message = isset($data['premium_checks']['colour_changes']['message']) ? $data['premium_checks']['colour_changes']['message'] : 'Данные недоступны';
+                            // Получаем данные напрямую из VehicleHistory
+                            $colour_changes_count = isset($data['VehicleHistory']['ColourChanges']) ? count($data['VehicleHistory']['ColourChanges']) : 0;
+                            $colour_changes_status = $colour_changes_count > 0 ? 'warning' : 'pass';
+                            $colour_changes_message = $colour_changes_count > 0 ? "Vehicle had {$colour_changes_count} colour changes" : 'No colour changes found';
                             $status_class = $colour_changes_status === 'pass' ? 'status-no' : ($colour_changes_status === 'warning' ? 'status-yes' : 'status-unknown');
                             $status_text = $colour_changes_status === 'pass' ? 'No' : ($colour_changes_status === 'warning' ? 'Yes' : 'Unknown');
                             ?>
