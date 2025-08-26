@@ -8,11 +8,13 @@ if (!defined('ABSPATH')) {
 class Ajax {
     private $api_client;
     private $premium_api_client;
+    private $mot_history_client;
     private $logger;
     
     public function __construct() {
         $this->api_client = new ApiClient();
         $this->premium_api_client = new PremiumApiClient();
+        $this->mot_history_client = new VRM_Check_MOT_History_API_Client();
         $this->logger = Logger::get_instance();
         add_action('wp_ajax_vrm_check', array($this, 'handle_vrm_check'));
         add_action('wp_ajax_nopriv_vrm_check', array($this, 'handle_vrm_check'));
@@ -53,6 +55,14 @@ class Ajax {
                     'message' => 'Ошибка получения данных от премиум API'
                 ));
             }
+            
+            // Get MOT History data for premium requests
+            $mot_data = $this->mot_history_client->get_template_data($vrm);
+            if ($mot_data !== false) {
+                // Merge MOT data with premium data
+                $data['mot_history'] = $mot_data;
+            }
+            
             $result = array('success' => true, 'data' => $data);
         } else {
             $result = $this->api_client->get_vehicle_data($vrm);

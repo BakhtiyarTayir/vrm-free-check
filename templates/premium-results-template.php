@@ -104,14 +104,60 @@ if (!function_exists('calculate_time_ago')) {
             <div class="summary-row">
                 <div class="summary-label">Result</div>
                 <div class="summary-value">
-                    <span class="status-badge status-fail">FAIL</span>
+                    <?php 
+                    // Определяем общий результат на основе критических проверок
+                    $is_scrapped = isset($data['VehicleStatus']['IsScrapped']) ? $data['VehicleStatus']['IsScrapped'] : false;
+                    $is_exported = isset($data['VehicleStatus']['IsExported']) ? $data['VehicleStatus']['IsExported'] : false;
+                    $certificate_issued = isset($data['VehicleStatus']['CertificateOfDestructionIssued']) ? $data['VehicleStatus']['CertificateOfDestructionIssued'] : false;
+                    
+                    // Проверяем статус MOT
+                    $mot_data = isset($data['mot_history']) ? $data['mot_history'] : array();
+                    $mot_status = isset($mot_data['mot_status']) ? strtolower($mot_data['mot_status']) : 'unknown';
+                    $mot_expired = ($mot_status === 'expired');
+                    
+                    // Определяем общий статус
+                    if ($is_scrapped || $certificate_issued) {
+                        $overall_status = 'fail';
+                        $status_class = 'status-fail';
+                        $status_text = 'FAIL';
+                    } elseif ($is_exported || $mot_expired) {
+                        $overall_status = 'warning';
+                        $status_class = 'status-warning';
+                        $status_text = 'WARNING';
+                    } else {
+                        $overall_status = 'pass';
+                        $status_class = 'status-pass';
+                        $status_text = 'PASS';
+                    }
+                    ?>
+                    <span class="status-badge <?php echo esc_attr($status_class); ?>"><?php echo esc_html($status_text); ?></span>
                 </div>
             </div>
             
             <div class="summary-row">
                 <div class="summary-label">Information</div>
                 <div class="summary-value summary-info">
-                    Report failed, proceed with caution
+                    <?php 
+                    // Генерируем информационное сообщение на основе статуса
+                    if ($overall_status === 'fail') {
+                        if ($is_scrapped) {
+                            echo 'Vehicle is scrapped - do not purchase';
+                        } elseif ($certificate_issued) {
+                            echo 'Certificate of destruction issued - vehicle should not be on the road';
+                        }
+                    } elseif ($overall_status === 'warning') {
+                        $warnings = array();
+                        if ($is_exported) {
+                            $warnings[] = 'vehicle was exported';
+                        }
+                        if ($mot_expired) {
+                            $warnings[] = 'MOT has expired';
+                        }
+                        echo 'Proceed with caution: ' . implode(', ', $warnings);
+                    } else {
+                        echo 'No major issues found with this vehicle';
+                    }
+                    ?>
                 </div>
             </div>
         </div>
@@ -253,11 +299,25 @@ if (!function_exists('calculate_time_ago')) {
                         </div>
                         <div class="check-status">
                             <?php 
-                            // Статическое значение для MOT
-                            $mot_status = 'valid';
-                            $mot_message = 'MOT status valid';
-                            $status_class = 'status-valid';
-                            $status_text = 'Valid';
+                            // Получаем данные MOT из API
+                            $mot_data = isset($data['mot_history']) ? $data['mot_history'] : array();
+                            $mot_status = isset($mot_data['mot_status']) ? $mot_data['mot_status'] : 'Unknown';
+                            $mot_expiry = isset($mot_data['mot_expiry_date']) ? $mot_data['mot_expiry_date'] : '';
+                            
+                            // Определяем статус и класс
+                            if (strtolower($mot_status) === 'valid' || strtolower($mot_status) === 'current') {
+                                $status_class = 'status-valid';
+                                $status_text = 'Valid';
+                                $mot_message = 'MOT is valid' . ($mot_expiry ? ' until ' . $mot_expiry : '');
+                            } elseif (strtolower($mot_status) === 'expired') {
+                                $status_class = 'status-fail';
+                                $status_text = 'Expired';
+                                $mot_message = 'MOT has expired';
+                            } else {
+                                $status_class = 'status-unknown';
+                                $status_text = 'Unknown';
+                                $mot_message = 'MOT status unknown';
+                            }
                             ?>
                             <span class="status-badge <?php echo esc_attr($status_class); ?>" title="<?php echo esc_attr($mot_message); ?>"><?php echo esc_html($status_text); ?></span>
                         </div>
@@ -471,12 +531,12 @@ if (!function_exists('calculate_time_ago')) {
                     
                     <div class="description-row">
                         <div class="description-label">Colour</div>
-                        <div class="description-value">Black</div>
+                        <div class="description-value"><?php echo esc_html($data['colour'] ?? 'Not Available'); ?></div>
                     </div>
                     
                     <div class="description-row">
                         <div class="description-label">Transmission</div>
-                        <div class="description-value">Semi Automatic</div>
+                        <div class="description-value"><?php echo esc_html($data['transmission'] ?? 'Not Available'); ?></div>
                     </div>
                     
                     <div class="description-row">
@@ -486,7 +546,7 @@ if (!function_exists('calculate_time_ago')) {
                     
                     <div class="description-row">
                         <div class="description-label">Engine Size</div>
-                        <div class="description-value">3.0 litres</div>
+                        <div class="description-value"><?php echo esc_html($data['engine_size'] ?? 'Not Available'); ?></div>
                     </div>
                 </div>
                 
@@ -494,32 +554,46 @@ if (!function_exists('calculate_time_ago')) {
                 <div class="description-column">
                     <div class="description-row">
                         <div class="description-label">Fuel Type</div>
-                        <div class="description-value">Diesel</div>
+                        <div class="description-value"><?php echo esc_html($data['fuel_type'] ?? 'Not Available'); ?></div>
                     </div>
                     
                     <div class="description-row">
                         <div class="description-label">No. of Seats</div>
-                        <div class="description-value">4 Seats</div>
+                        <div class="description-value"><?php echo esc_html($data['seats'] ?? 'Not Available'); ?></div>
                     </div>
                     
                     <div class="description-row">
                         <div class="description-label">Vehicle Type</div>
-                        <div class="description-value">Car</div>
+                        <div class="description-value"><?php echo esc_html($data['vehicle_type'] ?? 'Not Available'); ?></div>
                     </div>
                     
                     <div class="description-row">
                         <div class="description-label">Engine Size (cc)</div>
-                        <div class="description-value">2996 cc</div>
+                        <div class="description-value"><?php echo esc_html($data['engine_size_cc'] ?? 'Not Available'); ?></div>
                     </div>
                     
                     <div class="description-row">
                         <div class="description-label">BHP</div>
-                        <div class="description-value">385 BHP</div>
+                        <div class="description-value"><?php echo esc_html($data['bhp'] ?? 'Not Available'); ?></div>
                     </div>
                     
                     <div class="description-row">
                         <div class="description-label">Vehicle Age</div>
-                        <div class="description-value">5 years 11 months</div>
+                        <div class="description-value"><?php 
+                            if (isset($data['year']) && is_numeric($data['year'])) {
+                                $current_year = date('Y');
+                                $vehicle_year = intval($data['year']);
+                                $age_years = $current_year - $vehicle_year;
+                                $age_months = date('n') - 1; // Current month minus 1 for approximate calculation
+                                if ($age_months < 0) {
+                                    $age_years--;
+                                    $age_months += 12;
+                                }
+                                echo esc_html($age_years . ' years ' . $age_months . ' months');
+                            } else {
+                                echo 'Not Available';
+                            }
+                        ?></div>
                     </div>
                 </div>
             </div>
@@ -541,17 +615,23 @@ if (!function_exists('calculate_time_ago')) {
                 
                 <div class="manual-check-row">
                     <div class="manual-check-label">VIN ends with</div>
-                    <div class="manual-check-value">8495</div>
+                    <div class="manual-check-value"><?php 
+                        if (isset($data['vin']) && strlen($data['vin']) >= 4) {
+                            echo esc_html(substr($data['vin'], -4));
+                        } else {
+                            echo 'Not Available';
+                        }
+                    ?></div>
                 </div>
                 
                 <div class="manual-check-row">
                     <div class="manual-check-label">Engine Number</div>
-                    <div class="manual-check-value">65192133O101</div>
+                    <div class="manual-check-value"><?php echo esc_html($data['engine_number'] ?? 'Not Available'); ?></div>
                 </div>
                 
                 <div class="manual-check-row">
                     <div class="manual-check-label">V5C logbook date</div>
-                    <div class="manual-check-value">06 September 2022</div>
+                    <div class="manual-check-value"><?php echo esc_html($data['v5c_date'] ?? 'Not Available'); ?></div>
                 </div>
                 
                 <div class="vin-check-section">
@@ -559,7 +639,13 @@ if (!function_exists('calculate_time_ago')) {
                     <p class="vin-check-description">Enter this vehicle's 17 digit Vehicle Identification Number (VIN) in the field below to see if it matches our records.</p>
                     
                     <div class="vin-input-container">
-                        <input type="text" class="vin-input" value="*************8495" readonly>
+                        <input type="text" class="vin-input" value="<?php 
+                            if (isset($data['vin']) && strlen($data['vin']) >= 4) {
+                                echo esc_attr(str_repeat('*', strlen($data['vin']) - 4) . substr($data['vin'], -4));
+                            } else {
+                                echo '*************';
+                            }
+                        ?>" readonly>
                         <button class="vin-check-button">Check</button>
                     </div>
                     
@@ -579,22 +665,35 @@ if (!function_exists('calculate_time_ago')) {
             <div class="keeper-info-content">
                 <div class="keeper-info-row">
                     <div class="keeper-info-label">Current Keeper Acq.</div>
-                    <div class="keeper-info-value">13 August 2022</div>
+                    <div class="keeper-info-value"><?php echo esc_html($data['current_keeper_date'] ?? 'Not Available'); ?></div>
                 </div>
                 
                 <div class="keeper-info-row">
                     <div class="keeper-info-label">Current Ownership</div>
-                    <div class="keeper-info-value">0 years 4 months</div>
+                    <div class="keeper-info-value"><?php 
+                        if (isset($data['current_keeper_date']) && !empty($data['current_keeper_date'])) {
+                            $keeper_date = DateTime::createFromFormat('Y-m-d', $data['current_keeper_date']);
+                            if ($keeper_date) {
+                                $current_date = new DateTime();
+                                $interval = $current_date->diff($keeper_date);
+                                echo esc_html($interval->y . ' years ' . $interval->m . ' months');
+                            } else {
+                                echo 'Not Available';
+                            }
+                        } else {
+                            echo 'Not Available';
+                        }
+                    ?></div>
                 </div>
                 
                 <div class="keeper-info-row">
                     <div class="keeper-info-label">Registered Date</div>
-                    <div class="keeper-info-value">17 January 2017</div>
+                    <div class="keeper-info-value"><?php echo esc_html($data['registration_date'] ?? 'Not Available'); ?></div>
                 </div>
                 
                 <div class="keeper-info-row">
                     <div class="keeper-info-label">Prev. Keeper Acq.</div>
-                    <div class="keeper-info-value">01 February 2022</div>
+                    <div class="keeper-info-value"><?php echo esc_html($data['previous_keeper_date'] ?? 'Not Available'); ?></div>
                 </div>
             </div>
         </div>
@@ -611,12 +710,38 @@ if (!function_exists('calculate_time_ago')) {
             <div class="mot-content">
                 <div class="mot-row">
                     <div class="mot-label">MOT Expiry</div>
-                    <div class="mot-value">19 Jun 2023</div>
+                    <div class="mot-value">
+                        <?php 
+                        $mot_data = isset($data['mot_history']) ? $data['mot_history'] : array();
+                        $mot_expiry = isset($mot_data['mot_expiry_date']) ? $mot_data['mot_expiry_date'] : 'N/A';
+                        echo esc_html($mot_expiry);
+                        ?>
+                    </div>
                 </div>
                 
                 <div class="mot-row">
                     <div class="mot-label">Days Remaining</div>
-                    <div class="mot-value">XXX days</div>
+                    <div class="mot-value">
+                        <?php 
+                        $days_remaining = 'N/A';
+                        if (!empty($mot_data['mot_expiry_date'])) {
+                            try {
+                                $expiry_date = new DateTime($mot_data['mot_expiry_date']);
+                                $current_date = new DateTime();
+                                $diff = $current_date->diff($expiry_date);
+                                
+                                if ($expiry_date > $current_date) {
+                                    $days_remaining = $diff->days . ' days';
+                                } else {
+                                    $days_remaining = 'Expired ' . $diff->days . ' days ago';
+                                }
+                            } catch (Exception $e) {
+                                $days_remaining = 'N/A';
+                            }
+                        }
+                        echo esc_html($days_remaining);
+                        ?>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1064,36 +1189,52 @@ if (!function_exists('calculate_time_ago')) {
                     <div class="mot-header-item">Result</div>
                     <div class="mot-header-item">Mileage</div>
                 </div>
+                
+                <?php 
+                $mot_data = isset($data['mot_history']) ? $data['mot_history'] : array();
+                $test_history = isset($mot_data['test_history']) ? $mot_data['test_history'] : array();
+                
+                if (!empty($test_history)) {
+                    foreach ($test_history as $test) {
+                        $test_result = isset($test['test_result']) ? strtolower($test['test_result']) : 'unknown';
+                        $result_class = ($test_result === 'passed' || $test_result === 'pass') ? 'pass' : 'fail';
+                        $result_text = ($test_result === 'passed' || $test_result === 'pass') ? 'Pass' : 'Fail';
+                ?>
                 <div class="mot-history-row">
                     <div class="mot-date-cell">
-                        <div class="mot-date">03/01/2023</div>
+                        <div class="mot-date"><?php echo esc_html($test['test_date'] ?? 'N/A'); ?></div>
                     </div>
                     <div class="mot-result-cell">
-                        <span class="mot-result-badge pass">Pass</span>
+                        <span class="mot-result-badge <?php echo esc_attr($result_class); ?>"><?php echo esc_html($result_text); ?></span>
                     </div>
                     <div class="mot-mileage-cell">
                         <div class="mot-mileage-label">Mileage :</div>
-                        <div class="mot-mileage-value">49413 miles</div>
+                        <div class="mot-mileage-value"><?php echo esc_html($test['odometer_value'] ?? 'N/A'); ?> <?php echo esc_html($test['odometer_unit'] ?? 'miles'); ?></div>
+                        
+                        <?php if (!empty($test['rfrAndComments'])) { ?>
                         <div class="mot-advisory-notices">
                             <div class="advisory-title">Advisory Notices</div>
+                            <?php foreach ($test['rfrAndComments'] as $comment) { 
+                                $comment_type = isset($comment['type']) ? strtolower($comment['type']) : 'advisory';
+                            ?>
                             <div class="advisory-item">
-                                • Nearside rear tyre worn close to legal limit (4.1.e.i (e))
+                                • <?php echo esc_html($comment['text'] ?? ''); ?>
                             </div>
+                            <?php } ?>
                         </div>
+                        <?php } ?>
                     </div>
                 </div>
+                <?php 
+                    }
+                } else {
+                ?>
                 <div class="mot-history-row">
-                    <div class="mot-date-cell">
-                        <div class="mot-date">06/01/2022</div>
-                    </div>
-                    <div class="mot-result-cell">
-                        <span class="mot-result-badge pass">Pass</span>
-                    </div>
-                    <div class="mot-mileage-cell">
-                        <div class="mot-mileage-label">Mileage :</div>
-                        <div class="mot-mileage-value">39454 miles</div>
+                    <div class="mot-no-data">
+                        <p>No MOT history data available for this vehicle.</p>
                     </div>
                 </div>
+                <?php } ?>
             </div>
         </div>
     </div>
