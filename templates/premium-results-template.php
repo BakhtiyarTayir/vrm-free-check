@@ -1065,18 +1065,24 @@ if (!function_exists('calculate_time_ago')) {
             <h3 class="mileage-information-title title-gray">Mileage Information</h3>
         </div>
         <div class="mileage-information-content">
+            <?php if (!empty($data['MileageCheckDetails']['MileageAnomalyDetected'])): ?>
             <div class="mileage-information-row">
                 <span class="mileage-information-label">Mileage Issues</span>
-                <span class="mileage-information-value mileage-issues-red">The odometer reading reduced by 886 miles between 01/08/2022 and 02/09/2022.</span>
+                <span class="mileage-information-value mileage-issues-red"><?php echo esc_html($data['MileageCheckDetails']['MileageAnomalyDetected']); ?></span>
             </div>
+            <?php endif; ?>
+            <?php if (!empty($data['MileageCheckDetails']['AverageMileagePerYear'])): ?>
             <div class="mileage-information-row">
                 <span class="mileage-information-label">Average Mileage for year</span>
-                <span class="mileage-information-value">27300</span>
+                <span class="mileage-information-value"><?php echo esc_html($data['MileageCheckDetails']['AverageMileagePerYear']); ?></span>
             </div>
+            <?php endif; ?>
+            <?php if (!empty($data['MileageCheckDetails']['MileageStatus'])): ?>
             <div class="mileage-information-row">
                 <span class="mileage-information-label">Mileage Average</span>
-                <span class="mileage-information-value">above average</span>
+                <span class="mileage-information-value"><?php echo esc_html($data['MileageCheckDetails']['MileageStatus']); ?></span>
             </div>
+            <?php endif; ?>
         </div>
     </div>
 
@@ -1131,41 +1137,59 @@ if (!function_exists('calculate_time_ago')) {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>03/01/2023</td>
-                        <td>49413</td>
-                        <td class="source-mot">MOT</td>
-                    </tr>
-                    <tr class="reduced-mileage">
-                        <td>02/09/2022</td>
-                        <td class="mileage-reduced">46113 (Reduced -886)</td>
-                        <td class="source-vmc">VMC</td>
-                    </tr>
-                    <tr>
-                        <td>01/08/2022</td>
-                        <td>47003</td>
-                        <td class="source-dvla">DVLA</td>
-                    </tr>
-                    <tr>
-                        <td>06/01/2022</td>
-                        <td>39454</td>
-                        <td class="source-mot">MOT</td>
-                    </tr>
-                    <tr>
-                        <td>02/09/2021</td>
-                        <td>39003</td>
-                        <td class="source-dvla">DVLA</td>
-                    </tr>
-                    <tr>
-                        <td>19/11/2020</td>
-                        <td>38413</td>
-                        <td class="source-nama">NAMA</td>
-                    </tr>
-                    <tr>
-                        <td>11/02/2019</td>
-                        <td>35409</td>
-                        <td class="source-rmi">RMI</td>
-                    </tr>
+                    <?php if (!empty($data['MileageCheckDetails']['MileageRecordList'])): ?>
+                        <?php foreach ($data['MileageCheckDetails']['MileageRecordList'] as $record): ?>
+                            <tr<?php echo (!empty($record['IsAnomaly']) && $record['IsAnomaly']) ? ' class="reduced-mileage"' : ''; ?>>
+                                <td><?php echo esc_html($record['RecordedDate'] ?? 'N/A'); ?></td>
+                                <td<?php echo (!empty($record['IsAnomaly']) && $record['IsAnomaly']) ? ' class="mileage-reduced"' : ''; ?>>
+                                    <?php echo esc_html($record['Mileage'] ?? 'N/A'); ?>
+                                    <?php if (!empty($record['IsAnomaly']) && $record['IsAnomaly']): ?>
+                                        (Anomaly)
+                                    <?php endif; ?>
+                                </td>
+                                <td class="source-<?php echo esc_attr(strtolower($record['Source'] ?? 'unknown')); ?>">
+                                    <?php echo esc_html($record['Source'] ?? 'Unknown'); ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <!-- Fallback static data if no API data available -->
+                        <tr>
+                            <td>03/01/2023</td>
+                            <td>49413</td>
+                            <td class="source-mot">MOT</td>
+                        </tr>
+                        <tr class="reduced-mileage">
+                            <td>02/09/2022</td>
+                            <td class="mileage-reduced">46113 (Reduced -886)</td>
+                            <td class="source-vmc">VMC</td>
+                        </tr>
+                        <tr>
+                            <td>01/08/2022</td>
+                            <td>47003</td>
+                            <td class="source-dvla">DVLA</td>
+                        </tr>
+                        <tr>
+                            <td>06/01/2022</td>
+                            <td>39454</td>
+                            <td class="source-mot">MOT</td>
+                        </tr>
+                        <tr>
+                            <td>02/09/2021</td>
+                            <td>39003</td>
+                            <td class="source-dvla">DVLA</td>
+                        </tr>
+                        <tr>
+                            <td>19/11/2020</td>
+                            <td>38413</td>
+                            <td class="source-nama">NAMA</td>
+                        </tr>
+                        <tr>
+                            <td>11/02/2019</td>
+                            <td>35409</td>
+                            <td class="source-rmi">RMI</td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>

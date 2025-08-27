@@ -1,0 +1,94 @@
+{
+  "RequestInformation": {
+    "PackageName": "MileageFinanceDetails",
+    "SearchTerm": "BL66VPO",
+    "SearchType": "VRM",
+    "RequestIp": "84.54.82.215"
+  },
+  "ResponseInformation": {
+    "StatusCode": 0,
+    "StatusMessage": "Success",
+    "IsSuccessStatusCode": true,
+    "QueryTimeMs": 12,
+    "ResponseId": "0198eb53-30a3-7274-9da7-d89120b0d309"
+  },
+  "BillingInformation": {
+    "BillingTransactionId": "3a0ab462-83fe-42c9-a5e0-7551e0ab85bc",
+    "AccountType": 2,
+    "AccountBalance": null,
+    "TransactionCost": 1.01,
+    "BillingResult": 0,
+    "BillingResultMessage": "Success",
+    "RefundAmount": null,
+    "RefundResult": null,
+    "RefundResultMessage": null
+  },
+  "Results": {
+    "FinanceDetails": {
+      "FinanceRecordList": [],
+      "StatusCode": 0,
+      "StatusMessage": "Success",
+      "DocumentVersion": 1,
+      "GeneratedAt": "2025-08-27T10:24:55.0049901Z"
+    },
+    "VehicleCodes": {
+      "UkvdId": "V-QYPQAE",
+      "Uvc": "M-HSJAX",
+      "StatusCode": 0,
+      "StatusMessage": "Success",
+      "DocumentVersion": 1
+    },
+    "MileageCheckDetails": {
+      "MileageResultList": [
+        {
+          "Mileage": 22308,
+          "DateRecorded": "2019-12-19T13:33:10Z",
+          "InSequence": true,
+          "DataSource": "MOT"
+        },
+        {
+          "Mileage": 22310,
+          "DateRecorded": "2019-12-19T16:22:48Z",
+          "InSequence": true,
+          "DataSource": "MOT"
+        },
+        {
+          "Mileage": 22913,
+          "DateRecorded": "2020-09-22T15:56:39Z",
+          "InSequence": true,
+          "DataSource": "MOT"
+        },
+        {
+          "Mileage": 30745,
+          "DateRecorded": "2021-08-25T14:41:29Z",
+          "InSequence": true,
+          "DataSource": "MOT"
+        },
+        {
+          "Mileage": 40012,
+          "DateRecorded": "2022-08-31T13:03:11Z",
+          "InSequence": true,
+          "DataSource": "MOT"
+        },
+        {
+          "Mileage": 52608,
+          "DateRecorded": "2023-09-13T10:17:21Z",
+          "InSequence": true,
+          "DataSource": "MOT"
+        },
+        {
+          "Mileage": 32962,
+          "DateRecorded": "2024-09-23T11:03:02Z",
+          "InSequence": false,
+          "DataSource": "MOT"
+        }
+      ],
+      "MileageAnomalyDetected": true,
+      "CalculatedAverageAnnualMileage": 4276,
+      "AverageMileageForAge": 96000,
+      "StatusCode": 0,
+      "StatusMessage": "Success",
+      "DocumentVersion": 1
+    }
+  }
+}
