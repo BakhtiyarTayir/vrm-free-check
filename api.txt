@@ -1,0 +1,9 @@
+https://uk.api.vehicledataglobal.com/r2/lookup?packagename=VehicleDetailsWithImage&apikey=AAEF08BA-E98B-42A0-BB63-FEE0492243A7&vrm=KA57DPO
+https://uk.api.vehicledataglobal.com/r2/lookup?packagename=GetTax&apikey=AAEF08BA-E98B-42A0-BB63-FEE0492243A7&vrm=KA57DPO
+https://uk.api.vehicledataglobal.com/r2/lookup?packagename=MileageFinanceDetails&apikey=AAEF08BA-E98B-42A0-BB63-FEE0492243A7&vrm=KA57DPO
+https://uk.api.vehicledataglobal.com/r2/lookup?packagename=MotHistoryDetails&apikey=AAEF08BA-E98B-42A0-BB63-FEE0492243A7&vrm=KA57DPO
+https://uk.api.vehicledataglobal.com/r2/lookup?packagename=SpecAndOptionsDetails&apikey=AAEF08BA-E98B-42A0-BB63-FEE0492243A7&vrm=KA57DPO
+https://uk.api.vehicledataglobal.com/r2/lookup?packagename=TyreDetails&apikey=AAEF08BA-E98B-42A0-BB63-FEE0492243A7&vrm=KA57DPO
+https://uk.api.vehicledataglobal.com/r2/lookup?packagename=ValuationDetails&apikey=AAEF08BA-E98B-42A0-BB63-FEE0492243A7&vrm=KA57DPO
+https://uk.api.vehicledataglobal.com/r2/lookup?packagename=VDICheck&apikey=AAEF08BA-E98B-42A0-BB63-FEE0492243A7&vrm=KA57DPO
+https://uk.api.vehicledataglobal.com/r2/lookup?packagename=VehicleDetails&apikey=AAEF08BA-E98B-42A0-BB63-FEE0492243A7&vrm=KA57DPO

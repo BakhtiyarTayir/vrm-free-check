@@ -101,8 +101,63 @@ class PremiumApiClient {
         // Получаем данные о статусе автомобиля
         $vehicle_status = $vehicle_details['VehicleStatus'] ?? array();
         
-        // Обрабатываем premium checks
-        $premium_checks = $this->process_premium_checks($vehicle_status);
+        // Получаем данные о пробеге и финансах
+        $mileage_finance_data = $this->get_mileage_finance_data($vehicle_details['VehicleIdentification']['Vrm'] ?? '');
+        
+        // Получаем данные для проверок
+        $mileage_check_details = $mileage_finance_data['MileageCheckDetails'] ?? array();
+        $finance_details = $mileage_finance_data['FinanceDetails'] ?? array();
+        
+        // Create premium_checks array based on VehicleStatus data
+        $vehicle_status = $vehicle_details['VehicleStatus'] ?? array();
+        
+        // Инициализируем массив premium_checks
+        $premium_checks = array(
+            'imported' => array(
+                'status' => isset($vehicle_status['IsImported']) && $vehicle_status['IsImported'] ? 'warning' : 'pass',
+                'message' => isset($vehicle_status['IsImported']) && $vehicle_status['IsImported'] ? 'Vehicle has been imported' : 'Vehicle has not been imported'
+            ),
+            'exported' => array(
+                'status' => isset($vehicle_status['IsExported']) && $vehicle_status['IsExported'] ? 'warning' : 'pass',
+                'message' => isset($vehicle_status['IsExported']) && $vehicle_status['IsExported'] ? 'Vehicle has been exported' : 'Vehicle has not been exported'
+            ),
+            'scrapped' => array(
+                'status' => isset($vehicle_status['IsScrapped']) && $vehicle_status['IsScrapped'] ? 'fail' : 'pass',
+                'message' => isset($vehicle_status['IsScrapped']) && $vehicle_status['IsScrapped'] ? 'Vehicle has been scrapped' : 'Vehicle has not been scrapped'
+            ),
+            'unscrapped' => array(
+                'status' => isset($vehicle_status['IsUnscrapped']) && $vehicle_status['IsUnscrapped'] ? 'pass' : 'fail',
+                'message' => isset($vehicle_status['IsUnscrapped']) && $vehicle_status['IsUnscrapped'] ? 'Vehicle has been unscrapped' : 'Vehicle has not been unscrapped'
+            ),
+            'stolen' => array(
+                'status' => isset($vehicle_status['IsStolen']) && $vehicle_status['IsStolen'] ? 'fail' : 'pass',
+                'message' => isset($vehicle_status['IsStolen']) && $vehicle_status['IsStolen'] ? 'Vehicle has been reported stolen' : 'Vehicle has not been reported stolen'
+            ),
+            'written_off' => array(
+                'status' => isset($vehicle_status['IsWrittenOff']) && $vehicle_status['IsWrittenOff'] ? 'fail' : 'pass',
+                'message' => isset($vehicle_status['IsWrittenOff']) && $vehicle_status['IsWrittenOff'] ? 'Vehicle has been written off' : 'Vehicle has not been written off'
+            ),
+            'mileage_issues' => array(
+                'status' => 'pass',
+                'message' => 'No mileage issues detected'
+            ),
+            'outstanding_finance' => array(
+                'status' => 'pass',
+                'message' => 'No outstanding finance detected'
+            )
+        );
+
+        // Update Mileage Issues based on mileage_check_details
+        if (!empty($mileage_check_details) && isset($mileage_check_details['AnomalyDetected']) && $mileage_check_details['AnomalyDetected']) {
+            $premium_checks['mileage_issues']['status'] = 'warning';
+            $premium_checks['mileage_issues']['message'] = 'Mileage anomaly detected - please review mileage history';
+        }
+ 
+        // Update Outstanding Finance based on finance_details
+        if (!empty($finance_details) && isset($finance_details['IsFinanced']) && $finance_details['IsFinanced']) {
+            $premium_checks['outstanding_finance']['status'] = 'fail';
+            $premium_checks['outstanding_finance']['message'] = 'Outstanding finance detected';
+        }
         
         // Полные данные из Results
         $processed_data = array(
@@ -119,12 +174,7 @@ class PremiumApiClient {
             
             // Изображение автомобиля
             'vehicle_image_url' => isset($image_details['VehicleImageList'][0]['ImageUrl']) ? $image_details['VehicleImageList'][0]['ImageUrl'] : '',
-            
-            // Premium checks для шаблона
-            'premium_checks' => $premium_checks,
-            
-            // Упрощенный параметр is_imported
-            'is_imported' => $vehicle_status['IsImported'] ?? false,
+
             
             // Полные данные из Results - VehicleDetails
             'VehicleDetails' => $vehicle_details,
@@ -134,6 +184,14 @@ class PremiumApiClient {
             
             // Полные данные из Results - VehicleImageDetails
             'VehicleImageDetails' => $image_details,
+            
+            // Данные о пробеге и финансах
+            'MileageCheckDetails' => $mileage_finance_data['MileageCheckDetails'] ?? array(),
+            'FinanceDetails' => $mileage_finance_data['FinanceDetails'] ?? array(),
+            'VehicleCodes' => $mileage_finance_data['VehicleCodes'] ?? array(),
+            
+            // Premium checks
+            'premium_checks' => $premium_checks
 
         );
         
@@ -141,126 +199,37 @@ class PremiumApiClient {
     }
     
     /**
-     * Обработать premium checks на основе VehicleStatus
-     * 
-     * @param array $vehicle_status Данные о статусе автомобиля
-     * @return array Обработанные premium checks
+     * Получает данные о пробеге и финансах из API
      */
-    private function process_premium_checks($vehicle_status) {
-        $premium_checks = array();
+    private function get_mileage_finance_data($vrm) {
+        if (empty($vrm)) {
+            return array();
+        }
         
-        // Imported check
-        $is_imported = $vehicle_status['IsImported'] ?? false;
-        $premium_checks['imported'] = array(
-            'status' => $is_imported ? 'warning' : 'pass',
-            'message' => $is_imported ? 'Vehicle was imported' : 'Vehicle was not imported'
-        );
+        $api_key = 'AAEF08BA-E98B-42A0-BB63-FEE0492243A7';
+        $url = 'https://uk.api.vehicledataglobal.com/r2/lookup?packagename=MileageFinanceDetails&apikey=' . $api_key . '&vrm=' . urlencode($vrm);
         
-        // Exported check
-        $is_exported = $vehicle_status['IsExported'] ?? false;
-        $premium_checks['exported'] = array(
-            'status' => $is_exported ? 'warning' : 'pass',
-            'message' => $is_exported ? 'Vehicle was exported' : 'Vehicle was not exported'
-        );
+        $response = wp_remote_get($url, array(
+            'timeout' => 30,
+            'headers' => array(
+                'User-Agent' => 'VRM Check Plugin/1.0'
+            )
+        ));
         
-        // Scrapped check
-        $is_scrapped = $vehicle_status['IsScrapped'] ?? false;
-        $premium_checks['scrapped'] = array(
-            'status' => $is_scrapped ? 'fail' : 'pass',
-            'message' => $is_scrapped ? 'Vehicle is scrapped' : 'Vehicle is not scrapped'
-        );
+        if (is_wp_error($response)) {
+            error_log('Mileage Finance API Error: ' . $response->get_error_message());
+            return array();
+        }
         
-        // Unscrapped check (static check)
-        $premium_checks['unscrapped'] = array(
-            'status' => 'pass',
-            'message' => 'Vehicle was not restored after scrapping'
-        );
+        $body = wp_remote_retrieve_body($response);
+        $data = json_decode($body, true);
         
-        // Safety Recalls check (static check)
-        $premium_checks['safety_recalls'] = array(
-            'status' => 'pass',
-            'message' => 'No safety recalls found'
-        );
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            error_log('Mileage Finance API JSON Error: ' . json_last_error_msg());
+            return array();
+        }
         
-        // Previous Keepers (static check)
-        $premium_checks['previous_keepers'] = array(
-            'count' => 2,
-            'message' => 'Number of previous owners'
-        );
-        
-        // Plate Changes (static check)
-        $premium_checks['plate_changes'] = array(
-            'count' => 1,
-            'message' => 'Number of plate changes'
-        );
-        
-        // MOT check (static check)
-        $premium_checks['mot'] = array(
-            'status' => 'valid',
-            'message' => 'MOT is valid'
-        );
-        
-        // Road Tax check (static check)
-        $premium_checks['road_tax'] = array(
-            'status' => 'valid',
-            'message' => 'Road tax is paid'
-        );
-        
-        // Written off check (static check)
-        $premium_checks['written_off'] = array(
-            'status' => 'fail',
-            'message' => 'Vehicle is written off'
-        );
-        
-        // Salvage History check (static check)
-        $premium_checks['salvage_history'] = array(
-            'status' => 'fail',
-            'message' => 'Vehicle has salvage history'
-        );
-        
-        // Stolen check (static check)
-        $premium_checks['stolen'] = array(
-            'status' => 'pass',
-            'message' => 'Vehicle is not reported stolen'
-        );
-        
-        // Colour Changes check (static check)
-        $premium_checks['colour_changes'] = array(
-            'status' => 'pass',
-            'message' => 'No colour changes detected'
-        );
-        
-        // Mileage Issues check (static check)
-        $premium_checks['mileage_issues'] = array(
-            'status' => 'warning',
-            'message' => 'Mileage issues detected'
-        );
-        
-        // Ex-Taxi check (static check)
-        $premium_checks['ex_taxi'] = array(
-            'status' => 'pass',
-            'message' => 'Vehicle was not used as taxi'
-        );
-        
-        // VIN Check (static check)
-        $premium_checks['vin_check'] = array(
-            'status' => 'pass',
-            'message' => 'VIN number verified and correct'
-        );
-        
-        // Outstanding Finance check (static check)
-        $premium_checks['outstanding_finance'] = array(
-            'status' => 'pass',
-            'message' => 'No outstanding finance found'
-        );
-        
-        // Market Value check (static check)
-        $premium_checks['market_value'] = array(
-            'status' => 'warning',
-            'message' => 'Market value available'
-        );
-        
-        return $premium_checks;
+        return $data['Results'] ?? array();
     }
 
 }
