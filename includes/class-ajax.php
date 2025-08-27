@@ -5,6 +5,9 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// Подключаем класс MOT History API Client
+require_once plugin_dir_path(__FILE__) . 'utilities/class-mot-history-api-client.php';
+
 class Ajax {
     private $api_client;
     private $premium_api_client;
@@ -14,7 +17,7 @@ class Ajax {
     public function __construct() {
         $this->api_client = new ApiClient();
         $this->premium_api_client = new PremiumApiClient();
-        $this->mot_history_client = new VRM_Check_MOT_History_API_Client();
+        $this->mot_history_client = new \VRM_Check_MOT_History_API_Client();
         $this->logger = Logger::get_instance();
         add_action('wp_ajax_vrm_check', array($this, 'handle_vrm_check'));
         add_action('wp_ajax_nopriv_vrm_check', array($this, 'handle_vrm_check'));

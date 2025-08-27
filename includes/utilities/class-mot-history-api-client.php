@@ -12,6 +12,9 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// Подключаем класс Logger
+require_once dirname(__FILE__) . '/../class-logger.php';
+
 /**
  * Класс для работы с MOT History API
  */
@@ -34,7 +37,7 @@ class VRM_Check_MOT_History_API_Client {
     /**
      * Логгер
      *
-     * @var VRM_Check_Logger
+     * @var \VrmCheckPlugin\Logger
      */
     private $logger;
     
@@ -45,7 +48,7 @@ class VRM_Check_MOT_History_API_Client {
      */
     public function __construct($api_key = '') {
         $this->api_key = !empty($api_key) ? $api_key : 'AAEF08BA-E98B-42A0-BB63-FEE0492243A7';
-        $this->logger = new VRM_Check_Logger();
+        $this->logger = \VrmCheckPlugin\Logger::get_instance();
     }
     
     /**
