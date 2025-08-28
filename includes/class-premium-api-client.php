@@ -38,6 +38,13 @@ class PremiumApiClient {
         $logger = $this->get_logger();
         
         try {
+            if (empty($vrm)) {
+                $logger->log('error', 'Пустой VRM передан в get_vehicle_data_with_image');
+                return false;
+            }
+            
+            $logger->log('info', 'Запрос к премиум API для VRM: ' . $vrm);
+            
             // Подготавливаем параметры запроса
             $params = array(
                 'packagename' => 'VehicleDetailsWithImage',
@@ -47,42 +54,62 @@ class PremiumApiClient {
             
             $url = $this->api_url . '?' . http_build_query($params);
             
-            $logger->log('Отправка запроса к премиум API: ' . $url, 'info');
+            $logger->log('info', 'Отправка запроса к премиум API: ' . $url);
             
             // Выполняем запрос
             $response = wp_remote_get($url, array(
-                'timeout' => 30,
+                'timeout' => 25, // Уменьшаем общий таймаут
                 'headers' => array(
                     'User-Agent' => 'VRM Check Plugin/1.0'
                 )
             ));
             
             if (is_wp_error($response)) {
-                $logger->log('Ошибка запроса к премиум API: ' . $response->get_error_message(), 'error');
+                $logger->log('error', 'Ошибка запроса к премиум API: ' . $response->get_error_message());
+                return false;
+            }
+            
+            $response_code = wp_remote_retrieve_response_code($response);
+            if ($response_code !== 200) {
+                $logger->log('error', 'Премиум API вернул HTTP код: ' . $response_code);
                 return false;
             }
             
             $body = wp_remote_retrieve_body($response);
-            $data = json_decode($body, true);
-            
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                $logger->log('Ошибка декодирования JSON ответа премиум API: ' . json_last_error_msg(), 'error');
+            if (empty($body)) {
+                $logger->log('error', 'Пустой ответ от премиум API');
                 return false;
             }
             
-            $logger->log('Получен ответ от премиум API: ' . substr($body, 0, 500) . '...', 'info');
+            $data = json_decode($body, true);
+            
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                $logger->log('error', 'Ошибка декодирования JSON ответа премиум API: ' . json_last_error_msg());
+                return false;
+            }
+            
+            $logger->log('info', 'Получен ответ от премиум API: ' . substr($body, 0, 500) . '...');
             
             // Проверяем успешность ответа
             if (!isset($data['ResponseInformation']['IsSuccessStatusCode']) || !$data['ResponseInformation']['IsSuccessStatusCode']) {
-                $logger->log('Премиум API вернул ошибку: ' . ($data['ResponseInformation']['StatusMessage'] ?? 'Unknown error'), 'error');
+                $logger->log('error', 'Премиум API вернул ошибку: ' . ($data['ResponseInformation']['StatusMessage'] ?? 'Unknown error'));
+                return false;
+            }
+            
+            // Проверяем наличие основных данных
+            if (!isset($data['Results']) || empty($data['Results'])) {
+                $logger->log('error', 'Премиум API вернул пустые результаты');
                 return false;
             }
             
             // Обрабатываем и возвращаем данные
             return $this->process_api_response($data);
             
-        } catch (Exception $e) {
-            $logger->log('Исключение при запросе к премиум API: ' . $e->getMessage(), 'error');
+        } catch (\Exception $e) {
+            $logger->log_exception($e, array('vrm' => $vrm, 'context' => 'premium_api_request'));
+            return false;
+        } catch (\Error $e) {
+            $logger->log_exception($e, array('vrm' => $vrm, 'context' => 'premium_api_fatal_error'));
             return false;
         }
     }
@@ -94,16 +121,27 @@ class PremiumApiClient {
      * @return array Обработанные данные
      */
     private function process_api_response($api_data) {
-        $vehicle_details = $api_data['Results']['VehicleDetails'] ?? array();
-        $model_details = $api_data['Results']['ModelDetails'] ?? array();
-        $image_details = $api_data['Results']['VehicleImageDetails'] ?? array();
+        $logger = $this->get_logger();
         
-        // Получаем данные о статусе автомобиля и истории
-        $vehicle_status = $vehicle_details['VehicleStatus'] ?? array();
-        $vehicle_history = $vehicle_details['VehicleHistory'] ?? array();
-        
-        // Получаем данные о пробеге и финансах
-        $mileage_finance_data = $this->get_mileage_finance_data($vehicle_details['VehicleIdentification']['Vrm'] ?? '');
+        try {
+            $vehicle_details = $api_data['Results']['VehicleDetails'] ?? array();
+            $model_details = $api_data['Results']['ModelDetails'] ?? array();
+            $image_details = $api_data['Results']['VehicleImageDetails'] ?? array();
+            
+            // Получаем данные о статусе автомобиля и истории
+            $vehicle_status = $vehicle_details['VehicleStatus'] ?? array();
+            $vehicle_history = $vehicle_details['VehicleHistory'] ?? array();
+            
+            // Получаем данные о пробеге и финансах с обработкой ошибок
+            $mileage_finance_data = array();
+            $vrm = $vehicle_details['VehicleIdentification']['Vrm'] ?? '';
+            
+            if (!empty($vrm)) {
+                $logger->log('info', 'Запрос данных о пробеге и финансах для VRM: ' . $vrm);
+                $mileage_finance_data = $this->get_mileage_finance_data($vrm);
+            } else {
+                $logger->log('info', 'VRM не найден в данных автомобиля, пропускаем запрос пробега/финансов');
+            }
         
         // Получаем данные для проверок
         $mileage_check_details = $mileage_finance_data['MileageCheckDetails'] ?? array();
@@ -196,40 +234,105 @@ class PremiumApiClient {
         );
         
         return $processed_data;
+        
+        } catch (\Exception $e) {
+            $logger->log_exception('Ошибка при обработке ответа премиум API', $e);
+            
+            // Возвращаем минимальные данные в случае ошибки
+            return array(
+                'vrm' => $api_data['Results']['VehicleDetails']['VehicleIdentification']['Vrm'] ?? '',
+                'make' => $api_data['Results']['VehicleDetails']['VehicleIdentification']['DvlaMake'] ?? '',
+                'model' => $api_data['Results']['VehicleDetails']['VehicleIdentification']['DvlaModel'] ?? '',
+                'year' => $api_data['Results']['VehicleDetails']['VehicleIdentification']['YearOfManufacture'] ?? '',
+                'colour' => $api_data['Results']['VehicleDetails']['VehicleHistory']['ColourDetails']['CurrentColour'] ?? '',
+                'fuel_type' => $api_data['Results']['VehicleDetails']['VehicleIdentification']['DvlaFuelType'] ?? '',
+                'body_type' => $api_data['Results']['VehicleDetails']['VehicleIdentification']['DvlaBodyType'] ?? '',
+                'engine_size' => $api_data['Results']['VehicleDetails']['DvlaTechnicalDetails']['EngineCapacityCc'] ?? '',
+                'seats' => $api_data['Results']['VehicleDetails']['DvlaTechnicalDetails']['NumberOfSeats'] ?? '',
+                'vehicle_image_url' => '',
+                'VehicleDetails' => $api_data['Results']['VehicleDetails'] ?? array(),
+                'ModelDetails' => $api_data['Results']['ModelDetails'] ?? array(),
+                'VehicleImageDetails' => array(),
+                'VehicleStatus' => array(),
+                'VehicleHistory' => array(),
+                'MileageCheckDetails' => array(),
+                'FinanceDetails' => array(),
+                'VehicleCodes' => array(),
+                'premium_checks' => array(
+                    'imported' => array('status' => 'unknown', 'message' => 'Data unavailable'),
+                    'exported' => array('status' => 'unknown', 'message' => 'Data unavailable'),
+                    'scrapped' => array('status' => 'unknown', 'message' => 'Data unavailable'),
+                    'unscrapped' => array('status' => 'unknown', 'message' => 'Data unavailable'),
+                    'stolen' => array('status' => 'unknown', 'message' => 'Data unavailable'),
+                    'written_off' => array('status' => 'unknown', 'message' => 'Data unavailable'),
+                    'mileage_issues' => array('status' => 'unknown', 'message' => 'Data unavailable'),
+                    'outstanding_finance' => array('status' => 'unknown', 'message' => 'Data unavailable')
+                )
+            );
+        }
     }
     
     /**
      * Получает данные о пробеге и финансах из API
      */
     private function get_mileage_finance_data($vrm) {
+        $logger = $this->get_logger();
+        
         if (empty($vrm)) {
+            $logger->log('error', 'Пустой VRM для запроса данных о пробеге и финансах');
             return array();
         }
         
-        $api_key = 'AAEF08BA-E98B-42A0-BB63-FEE0492243A7';
-        $url = 'https://uk.api.vehicledataglobal.com/r2/lookup?packagename=MileageFinanceDetails&apikey=' . $api_key . '&vrm=' . urlencode($vrm);
-        
-        $response = wp_remote_get($url, array(
-            'timeout' => 30,
-            'headers' => array(
-                'User-Agent' => 'VRM Check Plugin/1.0'
-            )
-        ));
-        
-        if (is_wp_error($response)) {
-            error_log('Mileage Finance API Error: ' . $response->get_error_message());
+        try {
+            $api_key = 'AAEF08BA-E98B-42A0-BB63-FEE0492243A7';
+            $url = 'https://uk.api.vehicledataglobal.com/r2/lookup?packagename=MileageFinanceDetails&apikey=' . $api_key . '&vrm=' . urlencode($vrm);
+            
+            $logger->log('info', 'Запрос данных о пробеге и финансах: ' . $url);
+            
+            $response = wp_remote_get($url, array(
+                'timeout' => 15, // Уменьшаем таймаут для избежания долгих ожиданий
+                'headers' => array(
+                    'User-Agent' => 'VRM Check Plugin/1.0'
+                )
+            ));
+            
+            if (is_wp_error($response)) {
+                $logger->log_error('Ошибка API пробега и финансов: ' . $response->get_error_message());
+                return array();
+            }
+            
+            $response_code = wp_remote_retrieve_response_code($response);
+            if ($response_code !== 200) {
+                $logger->log_error('API пробега и финансов вернул код: ' . $response_code);
+                return array();
+            }
+            
+            $body = wp_remote_retrieve_body($response);
+            if (empty($body)) {
+                $logger->log_error('Пустой ответ от API пробега и финансов');
+                return array();
+            }
+            
+            $data = json_decode($body, true);
+            
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                $logger->log_error('Ошибка JSON в API пробега и финансов: ' . json_last_error_msg());
+                return array();
+            }
+            
+            // Проверяем успешность ответа API
+            if (!isset($data['ResponseInformation']['IsSuccessStatusCode']) || !$data['ResponseInformation']['IsSuccessStatusCode']) {
+                $logger->log_error('API пробега и финансов вернул ошибку: ' . ($data['ResponseInformation']['StatusMessage'] ?? 'Unknown error'));
+                return array();
+            }
+            
+            $logger->log('info', 'Успешно получены данные о пробеге и финансах');
+            return $data['Results'] ?? array();
+            
+        } catch (\Exception $e) {
+            $logger->log_exception('Исключение при запросе данных о пробеге и финансах', $e);
             return array();
         }
-        
-        $body = wp_remote_retrieve_body($response);
-        $data = json_decode($body, true);
-        
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            error_log('Mileage Finance API JSON Error: ' . json_last_error_msg());
-            return array();
-        }
-        
-        return $data['Results'] ?? array();
     }
 
 }

@@ -65,13 +65,13 @@ class VRM_Check_MOT_History_API_Client {
         // Очищаем VRM от лишних символов
         $vrm = sanitize_text_field(strtoupper(trim($vrm)));
         
-        $this->logger->log('Запрос MOT History для VRM: ' . $vrm);
+        $this->logger->log('info', 'Запрос MOT History для VRM: ' . $vrm);
         
         // Выполняем запрос к API
         $response = $this->make_api_request($vrm);
         
         if (is_wp_error($response)) {
-            $this->logger->log('Ошибка API запроса: ' . $response->get_error_message(), 'error');
+            $this->logger->log('error', 'Ошибка API запроса: ' . $response->get_error_message());
             return $response;
         }
         
@@ -79,11 +79,11 @@ class VRM_Check_MOT_History_API_Client {
         $processed_data = $this->process_api_response($response, $vrm);
         
         if (is_wp_error($processed_data)) {
-            $this->logger->log('Ошибка обработки данных: ' . $processed_data->get_error_message(), 'error');
+            $this->logger->log('error', 'Ошибка обработки данных: ' . $processed_data->get_error_message());
             return $processed_data;
         }
         
-        $this->logger->log('MOT History данные успешно получены для VRM: ' . $vrm);
+        $this->logger->log('info', 'MOT History данные успешно получены для VRM: ' . $vrm);
         
         return $processed_data;
     }

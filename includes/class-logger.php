@@ -93,6 +93,24 @@ class Logger {
     }
     
     /**
+     * Логирует исключение
+     */
+    public function log_exception($exception, $context = array()) {
+        $message = sprintf(
+            'Exception: %s in %s:%d',
+            $exception->getMessage(),
+            $exception->getFile(),
+            $exception->getLine()
+        );
+        
+        $exception_context = array_merge($context, array(
+            'trace' => $exception->getTraceAsString()
+        ));
+        
+        $this->error($message, $exception_context);
+    }
+    
+    /**
      * Форматирует контекст для записи в лог
      */
     private function format_context($context) {

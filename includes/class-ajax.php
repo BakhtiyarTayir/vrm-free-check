@@ -24,16 +24,25 @@ class Ajax {
     }
     
     public function handle_vrm_check() {
-        // Verify nonce for security
-        if (!wp_verify_nonce($_POST['nonce'], 'vrm_check_nonce')) {
+        try {
+            // Verify nonce for security
+            // Verify nonce with debug logging
+            $this->logger->log('info', 'Starting nonce verification');
+        if (!wp_verify_nonce($_POST['nonce'] ?? '', 'vrm_check_nonce')) {
+            $this->logger->log_error('Nonce verification failed', ['received_nonce' => $_POST['nonce'] ?? 'not provided']);
             wp_send_json_error(array(
                 'message' => __('Security check failed. Please refresh the page and try again.', 'vrm-check-plugin')
             ));
         }
         
         // Get and validate VRM
-        $vrm = sanitize_text_field($_POST['vrm']);
+        // Validate and log VRM input
+        $raw_vrm = $_POST['vrm'] ?? '';
+        $this->logger->log('info', 'Raw VRM input: ' . $raw_vrm);
+        $vrm = sanitize_text_field($raw_vrm);
+        
         if (empty($vrm)) {
+            $this->logger->log_error('Empty VRM submitted');
             wp_send_json_error(array(
                 'message' => __('Please enter a vehicle registration number.', 'vrm-check-plugin')
             ));
@@ -52,10 +61,21 @@ class Ajax {
         
         // Make API request (basic or premium)
         if ($is_premium) {
-            $data = $this->premium_api_client->get_vehicle_data_with_image($vrm);
-            if ($data === false) {
+            try {
+                $this->logger->log('info', 'Starting premium API request for VRM: ' . $vrm);
+                $data = $this->premium_api_client->get_vehicle_data_with_image($vrm);
+                
+                if ($data === false) {
+                    $this->logger->log_error('Premium API returned false', ['vrm' => $vrm]);
+                    wp_send_json_error(array(
+                        'message' => __('Error retrieving premium vehicle data', 'vrm-check-plugin')
+                    ));
+                }
+            } catch (\Exception $e) {
+                $this->logger->log_exception($e, array('vrm' => $vrm, 'context' => 'ajax_premium_api_error'));
                 wp_send_json_error(array(
-                    'message' => 'Ошибка получения данных от премиум API'
+                    'message' => __('Service temporarily unavailable', 'vrm-check-plugin'),
+                    'error_code' => 'api_error'
                 ));
             }
             
@@ -82,6 +102,28 @@ class Ajax {
         wp_send_json_success(array(
             'html' => $html
         ));
+        
+        } catch (\Exception $e) {
+            $this->logger->log_exception($e, array(
+                'context' => 'ajax_handler_exception',
+                'vrm' => isset($vrm) ? $vrm : 'unknown',
+                'is_premium' => isset($is_premium) ? $is_premium : false
+            ));
+            wp_send_json_error(array(
+                'message' => __('An unexpected error occurred. Please try again.', 'vrm-check-plugin'),
+                'error_code' => 'unexpected_error'
+            ));
+        } catch (\Error $e) {
+            $this->logger->log_exception($e, array(
+                'context' => 'ajax_handler_fatal_error',
+                'vrm' => isset($vrm) ? $vrm : 'unknown',
+                'is_premium' => isset($is_premium) ? $is_premium : false
+            ));
+            wp_send_json_error(array(
+                'message' => __('A critical error occurred. Please contact support.', 'vrm-check-plugin'),
+                'error_code' => 'fatal_error'
+            ));
+        }
     }
     
     private function is_valid_vrm($vrm) {
