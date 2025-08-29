@@ -1256,6 +1256,35 @@
     color: #ffffff;
 }
 
+/* Summary Report Status Classes */
+.status-good {
+    background-color: #28a745;
+    color: #ffffff;
+}
+
+.status-warning {
+    background-color: #ffc107;
+    color: #000000;
+}
+
+.status-error {
+    background-color: #dc3545;
+    color: #ffffff;
+}
+
+/* Summary Recommendations Styles */
+.summary-recommendations ul {
+    margin: 0;
+    padding-left: 20px;
+    list-style-type: disc;
+}
+
+.summary-recommendations li {
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #555;
+}
+
 .check-number {
     color: #333333;
     font-size: 14px;
