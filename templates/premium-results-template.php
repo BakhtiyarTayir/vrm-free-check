@@ -11,13 +11,7 @@ if (!isset($data) || empty($data)) {
     return;
 }
 
-// Отладочный вывод полученных данных
-// echo '<div style="background: #f0f0f0; padding: 20px; margin: 20px 0; border: 1px solid #ccc; font-family: monospace; white-space: pre-wrap; overflow-x: auto;">';
-// echo '<h3>Отладочная информация - полученные данные:</h3>';
-// echo '<pre>';
-// print_r($data);
-// echo '</pre>';
-// echo '</div>';
+// Данные готовы для отображения в шаблоне
 
 // Функция для вычисления возраста
 if (!function_exists('calculate_age')) {

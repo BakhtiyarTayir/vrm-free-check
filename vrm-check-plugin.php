@@ -27,7 +27,6 @@ require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-ajax.php';
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-shortcode.php';
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-api-client.php';
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-premium-api-client.php';
-require_once VRM_CHECK_PLUGIN_PATH . 'includes/utilities/class-mot-history-api-client.php';
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-activator.php';
 
 // Plugin activation/deactivation hooks

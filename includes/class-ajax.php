@@ -5,19 +5,19 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-// Подключаем класс MOT History API Client
-require_once plugin_dir_path(__FILE__) . 'utilities/class-mot-history-api-client.php';
+
 
 class Ajax {
     private $api_client;
     private $premium_api_client;
-    private $mot_history_client;
+
+    
     private $logger;
     
     public function __construct() {
         $this->api_client = new ApiClient();
         $this->premium_api_client = new PremiumApiClient();
-        $this->mot_history_client = new \VRM_Check_MOT_History_API_Client();
+        
         $this->logger = Logger::get_instance();
         add_action('wp_ajax_vrm_check', array($this, 'handle_vrm_check'));
         add_action('wp_ajax_nopriv_vrm_check', array($this, 'handle_vrm_check'));
@@ -61,32 +61,14 @@ class Ajax {
         
         // Make API request (basic or premium)
         if ($is_premium) {
-            try {
-                $this->logger->log('info', 'Starting premium API request for VRM: ' . $vrm);
-                $data = $this->premium_api_client->get_vehicle_data_with_image($vrm);
-                
-                if ($data === false) {
-                    $this->logger->log_error('Premium API returned false', ['vrm' => $vrm]);
-                    wp_send_json_error(array(
-                        'message' => __('Error retrieving premium vehicle data', 'vrm-check-plugin')
-                    ));
-                }
-            } catch (\Exception $e) {
-                $this->logger->log_exception($e, array('vrm' => $vrm, 'context' => 'ajax_premium_api_error'));
+            $this->logger->log('info', 'Starting premium API request for VRM: ' . $vrm);
+            $result = $this->premium_api_client->get_vehicle_report($vrm);
+            if (!$result['success']) {
+                $this->logger->error('Premium API request failed for VRM: ' . $vrm, ['error' => $result['error']]);
                 wp_send_json_error(array(
-                    'message' => __('Service temporarily unavailable', 'vrm-check-plugin'),
-                    'error_code' => 'api_error'
+                    'message' => $result['error']
                 ));
             }
-            
-            // Get MOT History data for premium requests
-            $mot_data = $this->mot_history_client->get_template_data($vrm);
-            if ($mot_data !== false) {
-                // Merge MOT data with premium data
-                $data['mot_history'] = $mot_data;
-            }
-            
-            $result = array('success' => true, 'data' => $data);
         } else {
             $result = $this->api_client->get_vehicle_data($vrm);
             if (!$result['success']) {
@@ -94,6 +76,11 @@ class Ajax {
                     'message' => $result['error']
                 ));
             }
+        }
+        
+        // Адаптируем данные для премиум шаблона
+        if ($is_premium) {
+            $result['data'] = $this->adapt_premium_data($result['data']);
         }
         
         // Generate HTML from template
@@ -171,5 +158,99 @@ class Ajax {
         }
         
         return ob_get_clean();
+    }
+    
+    private function adapt_premium_data($data) {
+        error_log('VRM Check: adapt_premium_data called with data: ' . print_r($data, true));
+        
+        // Функция для извлечения первого значения из массива или возврата самого значения
+        $extract_value = function($value) {
+            if (is_array($value) && !empty($value)) {
+                return $value[0];
+            }
+            return $value;
+        };
+        
+        // Адаптируем основные поля
+        $adapted = array();
+        
+        // Копируем VRM и год
+        $adapted['vrm'] = isset($data['vrm']) ? $extract_value($data['vrm']) : '';
+        $adapted['year'] = isset($data['year']) ? $extract_value($data['year']) : '';
+        $adapted['image'] = isset($data['image']) ? $data['image'] : 'default-car.png';
+        
+        // Адаптируем VehicleDetails
+        if (isset($data['VehicleDetails'])) {
+            $adapted['VehicleDetails'] = array();
+            
+            if (isset($data['VehicleDetails']['VehicleIdentification'])) {
+                $adapted['VehicleDetails']['VehicleIdentification'] = array();
+                $vi = $data['VehicleDetails']['VehicleIdentification'];
+                
+                $adapted['VehicleDetails']['VehicleIdentification']['DvlaMake'] = 
+                    isset($vi['DvlaMake']) ? $extract_value($vi['DvlaMake']) : '';
+                $adapted['VehicleDetails']['VehicleIdentification']['DvlaModel'] = 
+                    isset($vi['DvlaModel']) ? $extract_value($vi['DvlaModel']) : '';
+                $adapted['VehicleDetails']['VehicleIdentification']['Vrm'] = 
+                    isset($vi['Vrm']) ? $extract_value($vi['Vrm']) : '';
+                $adapted['VehicleDetails']['VehicleIdentification']['VinLast5'] = 
+                    isset($vi['VinLast5']) ? $extract_value($vi['VinLast5']) : '';
+            }
+            
+            // Адаптируем VehicleRegistration
+            if (isset($data['VehicleDetails']['VehicleRegistration'])) {
+                $adapted['VehicleDetails']['VehicleRegistration'] = array();
+                $vr = $data['VehicleDetails']['VehicleRegistration'];
+                
+                $adapted['VehicleDetails']['VehicleRegistration']['DateOfFirstRegistration'] = 
+                    isset($vr['DateOfFirstRegistration']) ? $extract_value($vr['DateOfFirstRegistration']) : '';
+                $adapted['VehicleDetails']['VehicleRegistration']['YearOfManufacture'] = 
+                    isset($vr['YearOfManufacture']) ? $extract_value($vr['YearOfManufacture']) : '';
+            }
+            
+            // Адаптируем VehicleCharacteristics
+            if (isset($data['VehicleDetails']['VehicleCharacteristics'])) {
+                $adapted['VehicleDetails']['VehicleCharacteristics'] = array();
+                $vc = $data['VehicleDetails']['VehicleCharacteristics'];
+                
+                $adapted['VehicleDetails']['VehicleCharacteristics']['Colour'] = 
+                    isset($vc['Colour']) ? $extract_value($vc['Colour']) : '';
+                $adapted['VehicleDetails']['VehicleCharacteristics']['EngineCapacity'] = 
+                    isset($vc['EngineCapacity']) ? $extract_value($vc['EngineCapacity']) : '';
+                $adapted['VehicleDetails']['VehicleCharacteristics']['FuelType'] = 
+                    isset($vc['FuelType']) ? $extract_value($vc['FuelType']) : '';
+                $adapted['VehicleDetails']['VehicleCharacteristics']['SeatingCapacity'] = 
+                    isset($vc['SeatingCapacity']) ? $extract_value($vc['SeatingCapacity']) : '';
+                $adapted['VehicleDetails']['VehicleCharacteristics']['NumberOfDoors'] = 
+                    isset($vc['NumberOfDoors']) ? $extract_value($vc['NumberOfDoors']) : '';
+            }
+        }
+        
+        // Адаптируем VehicleStatus
+        if (isset($data['VehicleStatus'])) {
+            $adapted['VehicleStatus'] = array();
+            $vs = $data['VehicleStatus'];
+            
+            $adapted['VehicleStatus']['IsScrapped'] = 
+                isset($vs['IsScrapped']) ? $extract_value($vs['IsScrapped']) : false;
+            $adapted['VehicleStatus']['IsExported'] = 
+                isset($vs['IsExported']) ? $extract_value($vs['IsExported']) : false;
+            $adapted['VehicleStatus']['CertificateOfDestructionIssued'] = 
+                isset($vs['CertificateOfDestructionIssued']) ? $extract_value($vs['CertificateOfDestructionIssued']) : false;
+        }
+        
+        // Копируем остальные данные как есть
+        $adapted['mot_history'] = isset($data['mot_history']) ? $data['mot_history'] : array();
+        $adapted['_meta'] = isset($data['_meta']) ? $data['_meta'] : array();
+        
+        // Добавляем простые поля для совместимости с шаблоном
+        $adapted['make'] = isset($adapted['VehicleDetails']['VehicleIdentification']['DvlaMake']) ? 
+            $adapted['VehicleDetails']['VehicleIdentification']['DvlaMake'] : '';
+        $adapted['model'] = isset($adapted['VehicleDetails']['VehicleIdentification']['DvlaModel']) ? 
+            $adapted['VehicleDetails']['VehicleIdentification']['DvlaModel'] : '';
+        
+        error_log('VRM Check: adapt_premium_data result: ' . print_r($adapted, true));
+        
+        return $adapted;
     }
 }
