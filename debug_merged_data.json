@@ -258,17 +258,17 @@
         "VehicleImageList": [
             {
                 "ViewAngle": "Exterior_Angle270",
-                "ImageUrl": "https:\/\/vehicleimages.ukvehicledata.co.uk\/s3\/95B34DF231C26B5D271C831DD725FD994D613146920E86F6384F08C8C0657BC1841C3B902D2F3B6F9003C80DEF602D0E9FD2110E552E5380E84D2899849B1256D6A66A4B772E35A30C0F1FDC95DFBB4D4381747768FC401553F3107BE4FD420B",
+                "ImageUrl": "https:\/\/vehicleimages.ukvehicledata.co.uk\/s3\/95B34DF231C26B5D271C831DD725FD994D613146920E86F6384F08C8C0657BC1841C3B902D2F3B6F9003C80DEF602D0E9FD2110E552E5380E84D2899849B1256D6A66A4B772E35A30C0F1FDC95DFBB4DC829A0936D182AA26B08537B9646CC79",
                 "Colour": "#212121",
                 "Description": "Dark Grey",
-                "ExpiryDate": "2025-09-05T11:09:47Z"
+                "ExpiryDate": "2025-09-05T12:51:23Z"
             },
             {
                 "ViewAngle": "Exterior_Angle270",
-                "ImageUrl": "https:\/\/vehicleimages.ukvehicledata.co.uk\/s3\/95B34DF231C26B5D271C831DD725FD994D613146920E86F6384F08C8C0657BC1841C3B902D2F3B6F9003C80DEF602D0E9FD2110E552E5380E84D2899849B1256D6A66A4B772E35A30C0F1FDC95DFBB4D37DE40ECD7E0177F2F18ADF549BA481E",
+                "ImageUrl": "https:\/\/vehicleimages.ukvehicledata.co.uk\/s3\/95B34DF231C26B5D271C831DD725FD994D613146920E86F6384F08C8C0657BC1841C3B902D2F3B6F9003C80DEF602D0E9FD2110E552E5380E84D2899849B1256D6A66A4B772E35A30C0F1FDC95DFBB4D4257F306BD41668BEEB0B6574BC4AC2D",
                 "Colour": "#212121",
                 "Description": "Dark Grey",
-                "ExpiryDate": "2025-09-05T11:09:52Z"
+                "ExpiryDate": "2025-09-05T12:51:28Z"
             }
         ],
         "StatusCode": 0,
@@ -1378,14 +1378,14 @@
         "DocumentVersion": 1
     },
     "ValuationDetails": {
-        "ValuationTime": "2025-08-29T11:09:52.3404682Z",
-        "ValuationMileage": 223028,
+        "ValuationTime": "2025-08-29T12:51:28.0532516Z",
+        "ValuationMileage": 223031,
         "ValuationBook": "Direct",
         "VehicleDescription": "Seat Leon Stylance TDI TDI Stylance [Diesel \/ Manual]",
         "DateOfFirstRegistration": "2007-12-11T00:00:00Z",
         "ValuationFigures": {
             "OnTheRoad": 14430,
-            "DealerForecourt": 1008,
+            "DealerForecourt": 1007,
             "TradeRetail": 871,
             "PrivateClean": 701,
             "PrivateAverage": 645,

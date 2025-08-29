@@ -532,13 +532,53 @@ class VRM_All_Checks_Processor {
      * @return array Status information
      */
     private static function get_vin_check_status($data) {
-        // No VIN check data available in current API
-        return array(
-            'status' => 'unknown',
-            'class' => 'status-unknown',
-            'text' => 'Unknown',
-            'message' => 'VIN check data not available'
-        );
+        // Проверяем наличие VIN данных в структуре VehicleDetails
+        $vin_data = null;
+        $vin_last5 = null;
+        
+        // Ищем VIN в разных возможных местах структуры данных
+        if (isset($data['VehicleDetails']['VehicleIdentification']['Vin'])) {
+            $vin_data = $data['VehicleDetails']['VehicleIdentification']['Vin'];
+        }
+        
+        if (isset($data['VehicleDetails']['VehicleIdentification']['VinLast5'])) {
+            $vin_last5 = $data['VehicleDetails']['VehicleIdentification']['VinLast5'];
+        }
+        
+        // Проверяем статус VIN
+        if (!empty($vin_data) && $vin_data !== 'Permission Required') {
+            // Полный VIN доступен
+            return array(
+                'status' => 'available',
+                'class' => 'status-valid',
+                'text' => 'Available',
+                'message' => 'Full VIN data available for verification'
+            );
+        } elseif (!empty($vin_last5)) {
+            // Доступны только последние 5 цифр VIN
+            return array(
+                'status' => 'partial',
+                'class' => 'status-warning',
+                'text' => 'Partial',
+                'message' => 'VIN last 5 digits available: ' . esc_html($vin_last5)
+            );
+        } elseif ($vin_data === 'Permission Required') {
+            // VIN требует дополнительных разрешений
+            return array(
+                'status' => 'restricted',
+                'class' => 'status-warning',
+                'text' => 'Restricted',
+                'message' => 'VIN data requires additional permissions'
+            );
+        } else {
+            // VIN данные недоступны
+            return array(
+                'status' => 'unavailable',
+                'class' => 'status-unknown',
+                'text' => 'Unavailable',
+                'message' => 'VIN data not available in current API response'
+            );
+        }
     }
     
     /**

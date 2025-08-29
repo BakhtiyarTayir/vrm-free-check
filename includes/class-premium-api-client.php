@@ -25,8 +25,7 @@ class PremiumApiClient {
         'TyreDetails',
         'ValuationDetails',
         'VDICheck',
-        'VehicleDetails',
-       'commercial'
+        'VehicleDetails'
     ];
     
     public function __construct() {
@@ -375,7 +374,7 @@ class PremiumApiClient {
             $data['image'] = 'default-car.png';
         }
         
-        $this->get_logger()->log('Final processed data for template: ' . print_r($data, true), 'debug');
+        // $this->get_logger()->log('Final processed data for template: ' . print_r($data, true), 'debug');
         
         return $data;
     }
