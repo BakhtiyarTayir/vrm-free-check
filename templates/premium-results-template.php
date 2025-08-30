@@ -1528,33 +1528,61 @@ if (!isset($data) || empty($data)) {
     </div>
 
     <!-- Mileage Information Block -->
+    <?php
+    // Подключаем класс MileageProcessor
+    require_once plugin_dir_path(__FILE__) . '../utils/class-mileage-processor.php';
+    
+    // Создаем экземпляр процессора пробега с передачей данных
+    $mileage_processor = new MileageProcessor($data);
+    $mileage_info = $mileage_processor->getMileageInformation();
+    ?>
     <div class="mileage-information-block">
         <div class="mileage-information-header">
             <h3 class="mileage-information-title title-gray">Mileage Information</h3>
         </div>
         <div class="mileage-information-content">
-            <?php if (!empty($data['MileageCheckDetails']['MileageAnomalyDetected'])): ?>
+            <?php if ($mileage_info['has_anomaly']): ?>
             <div class="mileage-information-row">
                 <span class="mileage-information-label">Mileage Issues</span>
-                <span class="mileage-information-value mileage-issues-red"><?php echo esc_html($data['MileageCheckDetails']['MileageAnomalyDetected']); ?></span>
+                <span class="mileage-information-value mileage-issues-red"><?php echo esc_html($mileage_info['anomaly_status']); ?></span>
             </div>
             <?php endif; ?>
-            <?php if (!empty($data['MileageCheckDetails']['AverageMileagePerYear'])): ?>
+            
+            <?php if (!empty($mileage_info['average_annual_mileage'])): ?>
             <div class="mileage-information-row">
                 <span class="mileage-information-label">Average Mileage for year</span>
-                <span class="mileage-information-value"><?php echo esc_html($data['MileageCheckDetails']['AverageMileagePerYear']); ?></span>
+                <span class="mileage-information-value"><?php echo esc_html($mileage_info['average_annual_mileage']); ?></span>
             </div>
             <?php endif; ?>
-            <?php if (!empty($data['MileageCheckDetails']['MileageStatus'])): ?>
+            
+            <?php if (!empty($mileage_info['average_for_age'])): ?>
             <div class="mileage-information-row">
-                <span class="mileage-information-label">Mileage Average</span>
-                <span class="mileage-information-value"><?php echo esc_html($data['MileageCheckDetails']['MileageStatus']); ?></span>
+                <span class="mileage-information-label">Average Mileage for Age</span>
+                <span class="mileage-information-value"><?php echo esc_html($mileage_info['average_for_age']); ?></span>
+            </div>
+            <?php endif; ?>
+            
+            <?php if (!empty($mileage_info['status_message'])): ?>
+            <div class="mileage-information-row">
+                <span class="mileage-information-label">Status</span>
+                <span class="mileage-information-value"><?php echo esc_html($mileage_info['status_message']); ?></span>
+            </div>
+            <?php endif; ?>
+            
+            <?php if (empty($mileage_info['has_data'])): ?>
+            <div class="mileage-information-row">
+                <span class="mileage-information-value">No mileage information available</span>
             </div>
             <?php endif; ?>
         </div>
     </div>
 
     <!-- Start Advanced Mileage History Block -->
+    <?php
+    // Получаем историю пробега и данные для графика
+    $mileage_history = $mileage_processor->getMileageHistory();
+    $chart_data = $mileage_processor->getChartData();
+    ?>
     <div class="advanced-mileage-history-block">
         <div class="advanced-mileage-history-header">
             <h3 class="advanced-mileage-history-title">Advanced Mileage History</h3>
@@ -1591,7 +1619,11 @@ if (!isset($data) || empty($data)) {
         
         <!-- Mileage Chart Section -->
         <div class="mileage-chart-section">
-            <canvas id="mileageChart" width="400" height="200"></canvas>
+            <canvas id="mileageChart" width="400" height="200"> </canvas>
+            <script>
+                // Передаем данные для графика в JavaScript
+                window.mileageChartData = <?php echo json_encode($chart_data); ?>;
+            </script>
         </div>
         
         <!-- Mileage Data Table Section -->
@@ -1605,57 +1637,24 @@ if (!isset($data) || empty($data)) {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (!empty($data['MileageCheckDetails']['MileageRecordList'])): ?>
-                        <?php foreach ($data['MileageCheckDetails']['MileageRecordList'] as $record): ?>
-                            <tr<?php echo (!empty($record['IsAnomaly']) && $record['IsAnomaly']) ? ' class="reduced-mileage"' : ''; ?>>
-                                <td><?php echo esc_html($record['RecordedDate'] ?? 'N/A'); ?></td>
-                                <td<?php echo (!empty($record['IsAnomaly']) && $record['IsAnomaly']) ? ' class="mileage-reduced"' : ''; ?>>
-                                    <?php echo esc_html($record['Mileage'] ?? 'N/A'); ?>
-                                    <?php if (!empty($record['IsAnomaly']) && $record['IsAnomaly']): ?>
+                    <?php if (!empty($mileage_history)): ?>
+                        <?php foreach ($mileage_history as $record): ?>
+                            <tr<?php echo $record['is_anomaly'] ? ' class="reduced-mileage"' : ''; ?>>
+                                <td><?php echo esc_html($record['formatted_date']); ?></td>
+                                <td<?php echo $record['is_anomaly'] ? ' class="mileage-reduced"' : ''; ?>>
+                                    <?php echo esc_html($record['formatted_mileage']); ?>
+                                    <?php if ($record['is_anomaly']): ?>
                                         (Anomaly)
                                     <?php endif; ?>
                                 </td>
-                                <td class="source-<?php echo esc_attr(strtolower($record['Source'] ?? 'unknown')); ?>">
-                                    <?php echo esc_html($record['Source'] ?? 'Unknown'); ?>
+                                <td class="source-<?php echo esc_attr(strtolower($record['source'])); ?>">
+                                    <?php echo esc_html($record['source']); ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <!-- Fallback static data if no API data available -->
                         <tr>
-                            <td>03/01/2023</td>
-                            <td>49413</td>
-                            <td class="source-mot">MOT</td>
-                        </tr>
-                        <tr class="reduced-mileage">
-                            <td>02/09/2022</td>
-                            <td class="mileage-reduced">46113 (Reduced -886)</td>
-                            <td class="source-vmc">VMC</td>
-                        </tr>
-                        <tr>
-                            <td>01/08/2022</td>
-                            <td>47003</td>
-                            <td class="source-dvla">DVLA</td>
-                        </tr>
-                        <tr>
-                            <td>06/01/2022</td>
-                            <td>39454</td>
-                            <td class="source-mot">MOT</td>
-                        </tr>
-                        <tr>
-                            <td>02/09/2021</td>
-                            <td>39003</td>
-                            <td class="source-dvla">DVLA</td>
-                        </tr>
-                        <tr>
-                            <td>19/11/2020</td>
-                            <td>38413</td>
-                            <td class="source-nama">NAMA</td>
-                        </tr>
-                        <tr>
-                            <td>11/02/2019</td>
-                            <td>35409</td>
-                            <td class="source-rmi">RMI</td>
+                            <td colspan="3">No mileage history available</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>

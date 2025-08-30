@@ -3,29 +3,52 @@ document.addEventListener('DOMContentLoaded', function() {
     const ctx = document.getElementById('mileageChart');
     
     if (ctx) {
+        // Проверяем наличие данных
+        if (!window.mileageChartData || !window.mileageChartData.labels || window.mileageChartData.labels.length === 0) {
+            // Скрываем canvas и показываем сообщение об отсутствии данных
+            ctx.style.display = 'none';
+            const noDataMsg = document.createElement('div');
+            noDataMsg.className = 'no-chart-data';
+            noDataMsg.innerHTML = '<p>No mileage data available for chart display.</p>';
+            noDataMsg.style.textAlign = 'center';
+            noDataMsg.style.padding = '20px';
+            noDataMsg.style.color = '#666';
+            ctx.parentNode.appendChild(noDataMsg);
+            return;
+        }
+        
         // Create gradient for the chart
         const gradient = ctx.getContext('2d').createLinearGradient(0, 0, 0, 400);
         gradient.addColorStop(0, 'rgba(54, 162, 235, 0.8)');
         gradient.addColorStop(0.5, 'rgba(54, 162, 235, 0.4)');
         gradient.addColorStop(1, 'rgba(54, 162, 235, 0.1)');
         
-        // Chart data based on the provided table
+        // Создаем массивы цветов для точек (красные для аномалий)
+        const pointColors = window.mileageChartData.mileage.map((value, index) => {
+            return window.mileageChartData.anomalies[index] ? '#ff6b6b' : '#36a2eb';
+        });
+        
+        const pointBackgroundColors = window.mileageChartData.mileage.map((value, index) => {
+            return window.mileageChartData.anomalies[index] ? '#ffffff' : '#ffffff';
+        });
+        
+        // Используем динамические данные из PHP
         const chartData = {
-            labels: ['Feb 2019', 'Nov 2020', 'Sep 2021', 'Jan 2022', 'Aug 2022', 'Sep 2022', 'Jan 2023'],
+            labels: window.mileageChartData.labels,
             datasets: [{
                 label: 'Mileage',
-                data: [35409, 38413, 39003, 39454, 47003, 46113, 49413],
+                data: window.mileageChartData.mileage,
                 borderColor: '#36a2eb',
                 backgroundColor: gradient,
                 borderWidth: 3,
                 fill: true,
                 tension: 0.4,
-                pointBackgroundColor: '#ffffff',
-                pointBorderColor: '#36a2eb',
+                pointBackgroundColor: pointBackgroundColors,
+                pointBorderColor: pointColors,
                 pointBorderWidth: 3,
                 pointRadius: 6,
                 pointHoverRadius: 8,
-                pointHoverBackgroundColor: '#36a2eb',
+                pointHoverBackgroundColor: pointColors,
                 pointHoverBorderColor: '#ffffff',
                 pointHoverBorderWidth: 3
             }]
@@ -71,7 +94,12 @@ document.addEventListener('DOMContentLoaded', function() {
                                 return context[0].label;
                             },
                             label: function(context) {
-                                return context.parsed.y.toLocaleString() + ' miles';
+                                const isAnomaly = window.mileageChartData.anomalies[context.dataIndex];
+                                let label = 'Mileage: ' + context.parsed.y.toLocaleString() + ' miles';
+                                if (isAnomaly) {
+                                    label += ' (Anomaly detected)';
+                                }
+                                return label;
                             }
                         }
                     }
@@ -117,7 +145,11 @@ document.addEventListener('DOMContentLoaded', function() {
                             },
                             padding: 10,
                             callback: function(value) {
-                                return (value / 1000) + 'k';
+                                // Форматируем значения как на изображении (32.5k, 35k, etc.)
+                                if (value >= 1000) {
+                                    return (value / 1000).toFixed(value % 1000 === 0 ? 0 : 1) + 'k';
+                                }
+                                return value.toString();
                             }
                         }
                     }

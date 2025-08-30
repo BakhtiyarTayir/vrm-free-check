@@ -258,17 +258,17 @@
         "VehicleImageList": [
             {
                 "ViewAngle": "Exterior_Angle270",
-                "ImageUrl": "https:\/\/vehicleimages.ukvehicledata.co.uk\/s3\/95B34DF231C26B5D271C831DD725FD994D613146920E86F6384F08C8C0657BC1841C3B902D2F3B6F9003C80DEF602D0E9FD2110E552E5380E84D2899849B1256D546B15D16728E1E6EBD93D669474EE7FD46F5844520E7D5179BE294C8594ED7",
+                "ImageUrl": "https:\/\/vehicleimages.ukvehicledata.co.uk\/s3\/95B34DF231C26B5D271C831DD725FD994D613146920E86F6384F08C8C0657BC1841C3B902D2F3B6F9003C80DEF602D0E9FD2110E552E5380E84D2899849B1256D546B15D16728E1E6EBD93D669474EE7AFEFC5218889AF766AECEC449FE9B24B",
                 "Colour": "#212121",
                 "Description": "Dark Grey",
-                "ExpiryDate": "2025-09-06T12:53:15Z"
+                "ExpiryDate": "2025-09-06T13:34:41Z"
             },
             {
                 "ViewAngle": "Exterior_Angle270",
-                "ImageUrl": "https:\/\/vehicleimages.ukvehicledata.co.uk\/s3\/95B34DF231C26B5D271C831DD725FD994D613146920E86F6384F08C8C0657BC1841C3B902D2F3B6F9003C80DEF602D0E9FD2110E552E5380E84D2899849B1256D546B15D16728E1E6EBD93D669474EE7115DD1AA5AF08EFF54F218FA170F458F",
+                "ImageUrl": "https:\/\/vehicleimages.ukvehicledata.co.uk\/s3\/95B34DF231C26B5D271C831DD725FD994D613146920E86F6384F08C8C0657BC1841C3B902D2F3B6F9003C80DEF602D0E9FD2110E552E5380E84D2899849B1256D546B15D16728E1E6EBD93D669474EE7A409ACE96ED9B2ED27248D1EC3D6A215",
                 "Colour": "#212121",
                 "Description": "Dark Grey",
-                "ExpiryDate": "2025-09-06T12:53:22Z"
+                "ExpiryDate": "2025-09-06T13:34:47Z"
             }
         ],
         "StatusCode": 0,
@@ -1378,7 +1378,7 @@
         "DocumentVersion": 1
     },
     "ValuationDetails": {
-        "ValuationTime": "2025-08-30T12:53:21.2503032Z",
+        "ValuationTime": "2025-08-30T13:34:47.4203998Z",
         "ValuationMileage": 223063,
         "ValuationBook": "Direct",
         "VehicleDescription": "Seat Leon Stylance TDI TDI Stylance [Diesel \/ Manual]",
