@@ -1292,24 +1292,143 @@ if (!isset($data) || empty($data)) {
                     <div class="keeper-history-table-cell header-cell">Acquired</div>
                     <div class="keeper-history-table-cell header-cell">Ownership Duration</div>
                 </div>
-                <div class="keeper-history-table-row">
-                    <div class="keeper-history-table-cell">1</div>
-                    <div class="keeper-history-table-cell">2017-01-17</div>
-                    <div class="keeper-history-table-cell">3 years and X months</div>
-                </div>
-                <div class="keeper-history-table-row">
-                    <div class="keeper-history-table-cell">2</div>
-                    <div class="keeper-history-table-cell">2022-02-01</div>
-                    <div class="keeper-history-table-cell">X months and X days</div>
-                </div>
-                <div class="keeper-history-table-row">
-                    <div class="keeper-history-table-cell">3(Current)</div>
-                    <div class="keeper-history-table-cell">2022-08-13</div>
-                    <div class="keeper-history-table-cell">X months and X days</div>
-                </div>
+                <?php
+                // Создаем массив владельцев для отображения истории
+                $keepers_history = [];
+                
+                if (!empty($keeper_change_list)) {
+                    // Если KeeperChangeList - это объект с данными текущего владельца
+                    if (isset($keeper_change_list['NumberOfPreviousKeepers'])) {
+                        $keepers_history[] = $keeper_change_list;
+                    }
+                    // Если KeeperChangeList - это массив объектов
+                    elseif (is_array($keeper_change_list) && !empty($keeper_change_list)) {
+                        $keepers_history = $keeper_change_list;
+                    }
+                }
+                
+                if (!empty($keepers_history)) {
+                     $total_keepers = count($keepers_history);
+                     
+                     // Переворачиваем массив, чтобы текущий владелец был последним
+                     $reversed_keepers = array_reverse($keepers_history);
+                     
+                     foreach ($reversed_keepers as $index => $keeper) {
+                         $keeper_number = $index + 1;
+                         $is_current = ($index === ($total_keepers - 1)); // Последний элемент - текущий владелец
+                         $keeper_label = $is_current ? $keeper_number . ' (Current)' : $keeper_number;
+                        
+                        // Дата приобретения
+                        $acquired_date = 'Not Available';
+                        if (!empty($keeper['KeeperStartDate'])) {
+                            $date = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $keeper['KeeperStartDate']);
+                            if ($date) {
+                                $acquired_date = $date->format('j F Y');
+                            } else {
+                                $acquired_date = esc_html($keeper['KeeperStartDate']);
+                            }
+                        }
+                        
+                        // Продолжительность владения
+                        $ownership_duration = 'Not Available';
+                        if (!empty($keeper['KeeperStartDate'])) {
+                            $start_date = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $keeper['KeeperStartDate']);
+                            if ($start_date) {
+                                $end_date = new DateTime(); // Для текущего владельца - сегодня
+                                
+                                // Для предыдущих владельцев ищем дату окончания
+                                if (!$is_current && !empty($keeper['KeeperEndDate'])) {
+                                    $end_date = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $keeper['KeeperEndDate']);
+                                } elseif (!$is_current && !empty($keeper['PreviousKeeperDisposalDate'])) {
+                                    $end_date = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $keeper['PreviousKeeperDisposalDate']);
+                                }
+                                
+                                if ($end_date) {
+                                    $interval = $start_date->diff($end_date);
+                                    $years = $interval->y;
+                                    $months = $interval->m;
+                                    $days = $interval->d;
+                                    
+                                    $duration_parts = [];
+                                    if ($years > 0) {
+                                        $duration_parts[] = $years . ' year' . ($years > 1 ? 's' : '');
+                                    }
+                                    if ($months > 0) {
+                                        $duration_parts[] = $months . ' month' . ($months > 1 ? 's' : '');
+                                    }
+                                    if ($days > 0 && $years == 0) {
+                                        $duration_parts[] = $days . ' day' . ($days > 1 ? 's' : '');
+                                    }
+                                    
+                                    if (!empty($duration_parts)) {
+                                        $ownership_duration = implode(' and ', $duration_parts);
+                                    } else {
+                                        $ownership_duration = 'Less than 1 day';
+                                    }
+                                }
+                            }
+                        }
+                        
+                        echo '<div class="keeper-history-table-row">';
+                        echo '<div class="keeper-history-table-cell">' . esc_html($keeper_label) . '</div>';
+                        echo '<div class="keeper-history-table-cell">' . esc_html($acquired_date) . '</div>';
+                        echo '<div class="keeper-history-table-cell">' . esc_html($ownership_duration) . '</div>';
+                        echo '</div>';
+                        
+                        $keeper_number++;
+                    }
+                } else {
+                    // Если данных нет, показываем сообщение
+                    echo '<div class="keeper-history-table-row">';
+                    echo '<div class="keeper-history-table-cell" colspan="3">No keeper history data available</div>';
+                    echo '</div>';
+                }
+                ?>
             </div>
         </div>
     </div>
+
+    <?php
+    // Обработка данных ValuationDetails для блока Market Value
+    $valuation_data = null;
+    $vehicle_description = 'N/A';
+    $valuation_mileage = 'N/A';
+    $trade_value_range = 'N/A';
+    $private_value_range = 'N/A';
+    
+    if (isset($data['ValuationDetails'])) {
+        $valuation_data = $data['ValuationDetails'];
+        
+        // Описание автомобиля
+        if (!empty($valuation_data['VehicleDescription'])) {
+            $vehicle_description = esc_html($valuation_data['VehicleDescription']);
+        }
+        
+        // Пробег для валюации
+        if (!empty($valuation_data['ValuationMileage'])) {
+            $valuation_mileage = number_format($valuation_data['ValuationMileage']) . ' miles';
+        }
+        
+        // Торговая стоимость (диапазон)
+        if (!empty($valuation_data['ValuationFigures'])) {
+            $figures = $valuation_data['ValuationFigures'];
+            
+            // Торговая стоимость: TradeAverage и TradeRetail
+            if (isset($figures['TradeAverage']) && isset($figures['TradeRetail'])) {
+                $trade_min = min($figures['TradeAverage'], $figures['TradeRetail']);
+                $trade_max = max($figures['TradeAverage'], $figures['TradeRetail']);
+                $trade_value_range = '£' . number_format($trade_min) . ' - £' . number_format($trade_max);
+            }
+            
+            // Частная стоимость: PrivateAverage и PrivateClean
+            if (isset($figures['PrivateAverage']) && isset($figures['PrivateClean'])) {
+                $private_min = min($figures['PrivateAverage'], $figures['PrivateClean']);
+                $private_max = max($figures['PrivateAverage'], $figures['PrivateClean']);
+                $private_value_range = '£' . number_format($private_min) . ' - £' . number_format($private_max);
+            }
+        }
+    }
+    ?>
 
     <!-- Market Value Block -->
     <div class="market-value-block">
@@ -1322,22 +1441,45 @@ if (!isset($data) || empty($data)) {
         <div class="market-value-content">
             <div class="market-value-row">
                 <span class="market-value-label">Description</span>
-                <span class="market-value-value">Mercedes-Benz, C220</span>
+                <span class="market-value-value"><?php echo $vehicle_description; ?></span>
             </div>
             <div class="market-value-row">
                 <span class="market-value-label">Based on Mileage</span>
-                <span class="market-value-value">30,000 miles</span>
+                <span class="market-value-value"><?php echo $valuation_mileage; ?></span>
             </div>
             <div class="market-value-row">
                 <span class="market-value-label">Average Trade Value</span>
-                <span class="market-value-value">£26,110 - £27,324</span>
+                <span class="market-value-value"><?php echo $trade_value_range; ?></span>
             </div>
             <div class="market-value-row">
                 <span class="market-value-label">Average Private Value</span>
-                <span class="market-value-value">£23,970 - £25,956</span>
+                <span class="market-value-value"><?php echo $private_value_range; ?></span>
             </div>
         </div>
     </div>
+
+    <?php
+    // Обработка данных PlateChangeList для блока Plate Change History
+    $plate_changes = [];
+    $has_plate_changes = false;
+    
+    // Проверяем наличие данных PlateChangeList в VehicleDetails -> VehicleHistory
+    if (isset($data['VehicleDetails']['VehicleHistory']['PlateChangeList'])) {
+        $plate_change_data = $data['VehicleDetails']['VehicleHistory']['PlateChangeList'];
+        
+        // Обрабатываем различные форматы данных
+        if (is_array($plate_change_data) && !empty($plate_change_data)) {
+            // Если это массив с данными
+            $plate_changes = $plate_change_data;
+            $has_plate_changes = true;
+        } elseif (is_object($plate_change_data)) {
+            // Если это объект, преобразуем в массив
+            $plate_changes = [$plate_change_data];
+            $has_plate_changes = true;
+        }
+        // Если пустой массив или null - $has_plate_changes остается false
+    }
+    ?>
 
     <!-- Plate Change History Block -->
     <div class="plate-change-history-block">
@@ -1345,14 +1487,43 @@ if (!isset($data) || empty($data)) {
             <h3 class="plate-change-history-title title-gray">Plate Change History</h3>
         </div>
         <div class="plate-change-history-content">
-            <div class="plate-change-history-row">
-                <span class="plate-change-history-label">Registration</span>
-                <span class="plate-change-history-value">A91UO</span>
-            </div>
-            <div class="plate-change-history-row">
-                <span class="plate-change-history-label">Transfer Off</span>
-                <span class="plate-change-history-value">Until 14 May 2021</span>
-            </div>
+            <?php if ($has_plate_changes): ?>
+                <?php foreach ($plate_changes as $index => $plate_change): ?>
+                    <?php
+                    // Извлекаем данные о смене номерных знаков
+                    $registration = isset($plate_change['Registration']) ? esc_html($plate_change['Registration']) : 'N/A';
+                    $transfer_date = 'N/A';
+                    
+                    // Обрабатываем дату передачи
+                    if (isset($plate_change['TransferOffDate']) && !empty($plate_change['TransferOffDate'])) {
+                        $transfer_date_obj = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $plate_change['TransferOffDate']);
+                        if ($transfer_date_obj) {
+                            $transfer_date = 'Until ' . $transfer_date_obj->format('j F Y');
+                        }
+                    } elseif (isset($plate_change['TransferOnDate']) && !empty($plate_change['TransferOnDate'])) {
+                        $transfer_date_obj = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $plate_change['TransferOnDate']);
+                        if ($transfer_date_obj) {
+                            $transfer_date = 'From ' . $transfer_date_obj->format('j F Y');
+                        }
+                    }
+                    ?>
+                    <div class="plate-change-history-row">
+                        <span class="plate-change-history-label">Registration</span>
+                        <span class="plate-change-history-value"><?php echo $registration; ?></span>
+                    </div>
+                    <div class="plate-change-history-row">
+                        <span class="plate-change-history-label">Transfer</span>
+                        <span class="plate-change-history-value"><?php echo $transfer_date; ?></span>
+                    </div>
+                    <?php if ($index < count($plate_changes) - 1): ?>
+                        <hr class="plate-change-separator">
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="plate-change-history-row">
+                    <span class="plate-change-history-value" style="text-align: center; width: 100%; color: #666;">No plate change history available</span>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 
