@@ -25,7 +25,7 @@ class PremiumApiClient {
         'TyreDetails',
         'ValuationDetails',
         'VDICheck',
-        'VehicleDetails'
+        'VehicleDetails',
     ];
     
     public function __construct() {
@@ -379,6 +379,8 @@ class PremiumApiClient {
         return $data;
     }
     
+
+
     /**
      * Генерирует ключ кэша для VRM
      * 

@@ -11,11 +11,6 @@ if (!isset($data) || empty($data)) {
     return;
 }
 
-// Отладочный вывод массива $data
-echo '<div style="background: #f0f0f0; padding: 15px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; font-family: monospace; white-space: pre-wrap; max-height: 500px; overflow-y: auto;">';
-echo '<h3 style="margin-top: 0;">Отладка: структура массива $data</h3>';
-// echo htmlspecialchars(print_r($data, true));
-echo '</div>';
 ?>
 
 <div class="vrm-check-premium-results">
@@ -345,38 +340,42 @@ echo '</div>';
             <h3 class="description-title title-gray">Vehicle Description</h3>
         </div>
         
+        
         <div class="description-content">
             <div class="description-grid">
                 <!-- Left Column -->
                 <div class="description-column">
                     <div class="description-row">
                         <div class="description-label">Manufacturer</div>
-                        <div class="description-value"><?php echo esc_html($data['make']); ?></div>
+                        <div class="description-value"><?php echo esc_html($data['VehicleDetails']['VehicleIdentification']['DvlaMake'] ?? 'Not Available'); ?></div>
                     </div>
                     
                     <div class="description-row">
                         <div class="description-label">Model</div>
-                        <div class="description-value"><?php echo esc_html($data['model']); ?></div>
+                        <div class="description-value"><?php echo esc_html($data['VehicleDetails']['VehicleIdentification']['DvlaModel'] ?? 'Not Available'); ?></div>
                     </div>
                     
                     <div class="description-row">
                         <div class="description-label">Colour</div>
-                        <div class="description-value"><?php echo esc_html($data['colour'] ?? 'Not Available'); ?></div>
+                        <div class="description-value"><?php echo esc_html($data['VehicleDetails']['VehicleHistory']['ColourDetails']['CurrentColour'] ?? 'Not Available'); ?></div>
                     </div>
                     
                     <div class="description-row">
                         <div class="description-label">Transmission</div>
-                        <div class="description-value"><?php echo esc_html($data['transmission'] ?? 'Not Available'); ?></div>
+                        <div class="description-value"><?php echo esc_html($data['ModelDetails']['Powertrain']['Transmission']['TransmissionType'] ?? 'Not Available'); ?></div>
                     </div>
                     
                     <div class="description-row">
                         <div class="description-label">Year of manufacture</div>
-                        <div class="description-value"><?php echo esc_html($data['year']); ?></div>
+                        <div class="description-value"><?php echo esc_html($data['VehicleDetails']['VehicleIdentification']['YearOfManufacture'] ?? 'Not Available'); ?></div>
                     </div>
                     
                     <div class="description-row">
                         <div class="description-label">Engine Size</div>
-                        <div class="description-value"><?php echo esc_html($data['engine_size'] ?? 'Not Available'); ?></div>
+                        <div class="description-value"><?php 
+                            $engine_size = $data['VehicleDetails']['DvlaTechnicalDetails']['EngineCapacityCc'] ?? '';
+                            echo esc_html($engine_size ? $engine_size . ' cc' : 'Not Available'); 
+                        ?></div>
                     </div>
                 </div>
                 
@@ -384,35 +383,42 @@ echo '</div>';
                 <div class="description-column">
                     <div class="description-row">
                         <div class="description-label">Fuel Type</div>
-                        <div class="description-value"><?php echo esc_html($data['fuel_type'] ?? 'Not Available'); ?></div>
+                        <div class="description-value"><?php echo esc_html($data['VehicleDetails']['VehicleIdentification']['DvlaFuelType'] ?? 'Not Available'); ?></div>
                     </div>
                     
                     <div class="description-row">
                         <div class="description-label">No. of Seats</div>
-                        <div class="description-value"><?php echo esc_html($data['seats'] ?? 'Not Available'); ?></div>
+                        <div class="description-value"><?php echo esc_html($data['VehicleDetails']['DvlaTechnicalDetails']['NumberOfSeats'] ?? 'Not Available'); ?></div>
                     </div>
                     
                     <div class="description-row">
                         <div class="description-label">Vehicle Type</div>
-                        <div class="description-value"><?php echo esc_html($data['vehicle_type'] ?? 'Not Available'); ?></div>
+                        <div class="description-value"><?php echo esc_html($data['VehicleDetails']['VehicleIdentification']['DvlaBodyType'] ?? 'Not Available'); ?></div>
                     </div>
                     
                     <div class="description-row">
                         <div class="description-label">Engine Size (cc)</div>
-                        <div class="description-value"><?php echo esc_html($data['engine_size_cc'] ?? 'Not Available'); ?></div>
+                        <div class="description-value"><?php 
+                            $engine_size = $data['VehicleDetails']['DvlaTechnicalDetails']['EngineCapacityCc'] ?? '';
+                            echo esc_html($engine_size ? $engine_size . ' cc' : 'Not Available'); 
+                        ?></div>
                     </div>
                     
                     <div class="description-row">
                         <div class="description-label">BHP</div>
-                        <div class="description-value"><?php echo esc_html($data['bhp'] ?? 'Not Available'); ?></div>
+                        <div class="description-value"><?php 
+                            $bhp = $data['ModelDetails']['Performance']['Power']['Bhp'] ?? '';
+                            echo esc_html($bhp ? $bhp . ' BHP' : 'Not Available'); 
+                        ?></div>
                     </div>
                     
                     <div class="description-row">
                         <div class="description-label">Vehicle Age</div>
                         <div class="description-value"><?php 
-                            if (isset($data['year']) && is_numeric($data['year'])) {
+                            $year = $data['VehicleDetails']['VehicleIdentification']['YearOfManufacture'] ?? '';
+                            if (!empty($year) && is_numeric($year)) {
                                 $current_year = date('Y');
-                                $vehicle_year = intval($data['year']);
+                                $vehicle_year = intval($year);
                                 $age_years = $current_year - $vehicle_year;
                                 $age_months = date('n') - 1; // Current month minus 1 for approximate calculation
                                 if ($age_months < 0) {
@@ -446,8 +452,9 @@ echo '</div>';
                 <div class="manual-check-row">
                     <div class="manual-check-label">VIN ends with</div>
                     <div class="manual-check-value"><?php 
-                        if (isset($data['vin']) && strlen($data['vin']) >= 4) {
-                            echo esc_html(substr($data['vin'], -4));
+                        $vin = $data['VehicleDetails']['VehicleIdentification']['Vin'] ?? '';
+                        if (!empty($vin) && strlen($vin) >= 4) {
+                            echo esc_html(substr($vin, -4));
                         } else {
                             echo 'Not Available';
                         }
@@ -456,12 +463,12 @@ echo '</div>';
                 
                 <div class="manual-check-row">
                     <div class="manual-check-label">Engine Number</div>
-                    <div class="manual-check-value"><?php echo esc_html($data['engine_number'] ?? 'Not Available'); ?></div>
+                    <div class="manual-check-value"><?php echo esc_html($data['VehicleDetails']['VehicleIdentification']['EngineNumber'] ?? 'Not Available'); ?></div>
                 </div>
                 
                 <div class="manual-check-row">
                     <div class="manual-check-label">V5C logbook date</div>
-                    <div class="manual-check-value"><?php echo esc_html($data['v5c_date'] ?? 'Not Available'); ?></div>
+                    <div class="manual-check-value"><?php echo esc_html($data['VehicleDetails']['VehicleHistory']['V5CDetails']['V5CIssueDate'] ?? 'Not Available'); ?></div>
                 </div>
                 
                 <div class="vin-check-section">
@@ -470,8 +477,9 @@ echo '</div>';
                     
                     <div class="vin-input-container">
                         <input type="text" class="vin-input" value="<?php 
-                            if (isset($data['vin']) && strlen($data['vin']) >= 4) {
-                                echo esc_attr(str_repeat('*', strlen($data['vin']) - 4) . substr($data['vin'], -4));
+                            $vin = $data['VehicleDetails']['VehicleIdentification']['Vin'] ?? '';
+                            if (!empty($vin) && strlen($vin) >= 4) {
+                                echo esc_attr(str_repeat('*', strlen($vin) - 4) . substr($vin, -4));
                             } else {
                                 echo '*************';
                             }
@@ -495,14 +503,31 @@ echo '</div>';
             <div class="keeper-info-content">
                 <div class="keeper-info-row">
                     <div class="keeper-info-label">Current Keeper Acq.</div>
-                    <div class="keeper-info-value"><?php echo esc_html($data['current_keeper_date'] ?? 'Not Available'); ?></div>
+                    <div class="keeper-info-value"><?php 
+                        // Получаем дату начала владения текущего владельца (первый элемент в списке)
+                        $current_keeper_date = '';
+                        if (isset($data['VehicleDetails']['VehicleHistory']['KeeperChangeList'][0]['KeeperStartDate'])) {
+                            $current_keeper_date = $data['VehicleDetails']['VehicleHistory']['KeeperChangeList'][0]['KeeperStartDate'];
+                            // Форматируем дату из ISO формата в читаемый вид
+                            $date_obj = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $current_keeper_date);
+                            if ($date_obj) {
+                                echo esc_html($date_obj->format('Y-m-d'));
+                            } else {
+                                echo esc_html($current_keeper_date);
+                            }
+                        } else {
+                            echo 'Not Available';
+                        }
+                    ?></div>
                 </div>
                 
                 <div class="keeper-info-row">
                     <div class="keeper-info-label">Current Ownership</div>
                     <div class="keeper-info-value"><?php 
-                        if (isset($data['current_keeper_date']) && !empty($data['current_keeper_date'])) {
-                            $keeper_date = DateTime::createFromFormat('Y-m-d', $data['current_keeper_date']);
+                        // Рассчитываем время владения текущего владельца
+                        if (isset($data['VehicleDetails']['VehicleHistory']['KeeperChangeList'][0]['KeeperStartDate'])) {
+                            $keeper_date_str = $data['VehicleDetails']['VehicleHistory']['KeeperChangeList'][0]['KeeperStartDate'];
+                            $keeper_date = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $keeper_date_str);
                             if ($keeper_date) {
                                 $current_date = new DateTime();
                                 $interval = $current_date->diff($keeper_date);
@@ -518,12 +543,38 @@ echo '</div>';
                 
                 <div class="keeper-info-row">
                     <div class="keeper-info-label">Registered Date</div>
-                    <div class="keeper-info-value"><?php echo esc_html($data['registration_date'] ?? 'Not Available'); ?></div>
+                    <div class="keeper-info-value"><?php 
+                        // Используем DateFirstRegisteredInUk для даты регистрации
+                        $reg_date = $data['VehicleDetails']['VehicleIdentification']['DateFirstRegisteredInUk'] ?? '';
+                        if (!empty($reg_date)) {
+                            $date_obj = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $reg_date);
+                            if ($date_obj) {
+                                echo esc_html($date_obj->format('Y-m-d'));
+                            } else {
+                                echo esc_html($reg_date);
+                            }
+                        } else {
+                            echo 'Not Available';
+                        }
+                    ?></div>
                 </div>
                 
                 <div class="keeper-info-row">
                     <div class="keeper-info-label">Prev. Keeper Acq.</div>
-                    <div class="keeper-info-value"><?php echo esc_html($data['previous_keeper_date'] ?? 'Not Available'); ?></div>
+                    <div class="keeper-info-value"><?php 
+                        // Получаем дату начала владения предыдущего владельца (второй элемент в списке)
+                        if (isset($data['VehicleDetails']['VehicleHistory']['KeeperChangeList'][1]['KeeperStartDate'])) {
+                            $prev_keeper_date = $data['VehicleDetails']['VehicleHistory']['KeeperChangeList'][1]['KeeperStartDate'];
+                            $date_obj = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $prev_keeper_date);
+                            if ($date_obj) {
+                                echo esc_html($date_obj->format('Y-m-d'));
+                            } else {
+                                echo esc_html($prev_keeper_date);
+                            }
+                        } else {
+                            echo 'Not Available';
+                        }
+                    ?></div>
                 </div>
             </div>
         </div>
@@ -542,8 +593,24 @@ echo '</div>';
                     <div class="mot-label">MOT Expiry</div>
                     <div class="mot-value">
                         <?php 
-                        $mot_data = isset($data['mot_history']) ? $data['mot_history'] : array();
-                        $mot_expiry = isset($mot_data['mot_expiry_date']) ? $mot_data['mot_expiry_date'] : 'N/A';
+                        // Получаем дату истечения MOT из MotHistoryDetails
+                        $mot_expiry = '';
+                        if (isset($data['MotHistoryDetails']['MotTestDetailsList'][0]['ExpiryDate'])) {
+                            $expiry_date_str = $data['MotHistoryDetails']['MotTestDetailsList'][0]['ExpiryDate'];
+                            if (!empty($expiry_date_str)) {
+                                // Форматируем дату из ISO формата в читаемый вид
+                                $date_obj = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $expiry_date_str);
+                                if ($date_obj) {
+                                    $mot_expiry = $date_obj->format('Y-m-d');
+                                } else {
+                                    $mot_expiry = $expiry_date_str;
+                                }
+                            } else {
+                                $mot_expiry = 'N/A';
+                            }
+                        } else {
+                            $mot_expiry = 'N/A';
+                        }
                         echo esc_html($mot_expiry);
                         ?>
                     </div>
@@ -553,20 +620,23 @@ echo '</div>';
                     <div class="mot-label">Days Remaining</div>
                     <div class="mot-value">
                         <?php 
+                        // Рассчитываем количество оставшихся дней до истечения MOT
                         $days_remaining = 'N/A';
-                        if (!empty($mot_data['mot_expiry_date'])) {
-                            try {
-                                $expiry_date = new DateTime($mot_data['mot_expiry_date']);
-                                $current_date = new DateTime();
-                                $diff = $current_date->diff($expiry_date);
-                                
-                                if ($expiry_date > $current_date) {
-                                    $days_remaining = $diff->days . ' days';
-                                } else {
-                                    $days_remaining = 'Expired ' . $diff->days . ' days ago';
+                        if (isset($data['MotHistoryDetails']['MotTestDetailsList'][0]['ExpiryDate'])) {
+                            $expiry_date_str = $data['MotHistoryDetails']['MotTestDetailsList'][0]['ExpiryDate'];
+                            if (!empty($expiry_date_str)) {
+                                $expiry_date = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $expiry_date_str);
+                                if ($expiry_date) {
+                                    $current_date = new DateTime();
+                                    $interval = $current_date->diff($expiry_date);
+                                    
+                                    // Проверяем, истек ли срок
+                                    if ($expiry_date < $current_date) {
+                                        $days_remaining = 'Expired ' . $interval->days . ' days ago';
+                                    } else {
+                                        $days_remaining = $interval->days . ' days';
+                                    }
                                 }
-                            } catch (Exception $e) {
-                                $days_remaining = 'N/A';
                             }
                         }
                         echo esc_html($days_remaining);
@@ -585,12 +655,38 @@ echo '</div>';
             <div class="roadtax-content">
                 <div class="roadtax-row">
                     <div class="roadtax-label">Road Tax Expiry</div>
-                    <div class="roadtax-value">01 Aug 2023</div>
+                    <div class="roadtax-value">
+                        <?php 
+                        // Извлекаем дату истечения налога из VehicleTaxDetails
+                        if (isset($merged_data['VehicleTaxDetails']['TaxDueDate']) && !empty($merged_data['VehicleTaxDetails']['TaxDueDate'])) {
+                            $tax_due_date = $merged_data['VehicleTaxDetails']['TaxDueDate'];
+                            // Преобразуем из ISO формата в читаемый вид
+                            $formatted_date = date('d M Y', strtotime($tax_due_date));
+                            echo esc_html($formatted_date);
+                        } else {
+                            echo 'Not Available';
+                        }
+                        ?>
+                    </div>
                 </div>
                 
                 <div class="roadtax-row">
                     <div class="roadtax-label">Days Remaining</div>
-                    <div class="roadtax-value">XXX days</div>
+                    <div class="roadtax-value">
+                        <?php 
+                        // Отображаем оставшиеся дни до истечения налога
+                        if (isset($merged_data['VehicleTaxDetails']['TaxDaysRemaining'])) {
+                            $days_remaining = $merged_data['VehicleTaxDetails']['TaxDaysRemaining'];
+                            if ($days_remaining <= 0) {
+                                echo '<span style="color: #e74c3c;">Expired</span>';
+                            } else {
+                                echo esc_html($days_remaining . ' days');
+                            }
+                        } else {
+                            echo 'Not Available';
+                        }
+                        ?>
+                    </div>
                 </div>
             </div>
         </div>
@@ -605,19 +701,62 @@ echo '</div>';
         <div class="stolen-content">
             <div class="stolen-row">
                 <div class="stolen-label">Stolen Police</div>
-                <div class="stolen-value">No</div>
+                <div class="stolen-value <?php 
+                    // Extract stolen status from PncDetails
+                    $is_stolen = isset($data['PncDetails']['IsStolen']) ? $data['PncDetails']['IsStolen'] : false;
+                    // Add CSS class based on stolen status
+                    $status_class = $is_stolen ? 'status-badge status-yes' : 'status-badge status-no';
+                    echo esc_attr($status_class);
+                ?>">
+                    <?php 
+                    $stolen_status = $is_stolen ? 'Yes' : 'No';
+                    echo esc_html($stolen_status);
+                    ?>
+                </div>
             </div>
             
             <div class="stolen-row">
-                <div class="stolen-label">Stolen Insurance</div>
-                <div class="stolen-value">No</div>
+                <div class="stolen-label">Date Reported</div>
+                <div class="stolen-value">
+                    <?php 
+                    // Extract date reported stolen from PncDetails
+                    $date_reported = isset($data['PncDetails']['DateReportedStolen']) ? $data['PncDetails']['DateReportedStolen'] : null;
+                    if ($date_reported && $date_reported !== null) {
+                        $formatted_date = date('d M Y', strtotime($date_reported));
+                        echo esc_html($formatted_date);
+                    } else {
+                        echo esc_html('Not Reported');
+                    }
+                    ?>
+                </div>
+            </div>
+            
+            <div class="stolen-row">
+                <div class="stolen-label">Police Force</div>
+                <div class="stolen-value">
+                    <?php 
+                    // Extract police force name from PncDetails
+                    $police_force = isset($data['PncDetails']['PoliceForceName']) ? $data['PncDetails']['PoliceForceName'] : null;
+                    if ($police_force && $police_force !== null) {
+                        echo esc_html($police_force);
+                    } else {
+                        echo esc_html('N/A');
+                    }
+                    ?>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Written Off Block -->
     <div class="written-off-block">
-        <div class="written-off-header">
+        <?php 
+        // Check WriteOffRecordList status for header styling
+        $write_off_records = isset($data['MiaftrDetails']['WriteOffRecordList']) ? $data['MiaftrDetails']['WriteOffRecordList'] : array();
+        $has_write_off_data = !empty($write_off_records);
+        $header_style = $has_write_off_data ? 'background-color: #dc3545;' : 'background-color: #28a745;';
+        ?>
+        <div class="written-off-header" style="<?php echo esc_attr($header_style); ?>">
             <h3 class="written-off-title">Written Off</h3>
         </div>
         
@@ -626,25 +765,118 @@ echo '</div>';
         </div>
         
         <div class="written-off-content">
-            <div class="written-off-row">
-                <div class="written-off-label">Written off Category</div>
-                <div class="written-off-value">S</div>
-            </div>
+            <?php 
+            // Check if vehicle is written off from VehicleStatus
+            $is_scrapped = isset($data['VehicleDetails']['VehicleStatus']['IsScrapped']) ? $data['VehicleDetails']['VehicleStatus']['IsScrapped'] : false;
+            $certificate_issued = isset($data['VehicleDetails']['VehicleStatus']['CertificateOfDestructionIssued']) ? $data['VehicleDetails']['VehicleStatus']['CertificateOfDestructionIssued'] : false;
+            $is_written_off = $is_scrapped || $certificate_issued;
             
-            <div class="written-off-row">
-                <div class="written-off-label">Loss Date</div>
-                <div class="written-off-value">19 May 2021</div>
-            </div>
+            // Get WriteOffRecordList from MiaftrDetails (already defined above for header styling)
+            // $write_off_records and $has_write_off_data are already available
             
-            <div class="written-off-row">
-                <div class="written-off-label">Damage Areas</div>
-                <div class="written-off-value">a . Front<br>b . FrontNearside</div>
-            </div>
+            // Get the first write-off record if available
+            $write_off_record = $has_write_off_data ? $write_off_records[0] : null;
             
-            <div class="written-off-row">
-                <div class="written-off-label">Cause of Damage</div>
-                <div class="written-off-value">Accident</div>
-            </div>
+            if ($has_write_off_data) {
+                // Display actual write-off data when records exist
+                ?>
+                <div class="written-off-row">
+                    <div class="written-off-label">Written off Category</div>
+                    <div class="written-off-value">
+                        <?php 
+                        if ($write_off_record && isset($write_off_record['Category'])) {
+                            echo esc_html($write_off_record['Category']);
+                        } else {
+                            echo esc_html('Unknown');
+                        }
+                        ?>
+                    </div>
+                </div>
+                
+                <div class="written-off-row">
+                    <div class="written-off-label">Loss Date</div>
+                    <div class="written-off-value">
+                        <?php 
+                        if ($write_off_record && isset($write_off_record['LossDate'])) {
+                            $loss_date = $write_off_record['LossDate'];
+                            if ($loss_date && $loss_date !== null) {
+                                $formatted_date = date('d M Y', strtotime($loss_date));
+                                echo esc_html($formatted_date);
+                            } else {
+                                echo esc_html('Not Available');
+                            }
+                        } else {
+                            echo esc_html('Not Available');
+                        }
+                        ?>
+                    </div>
+                </div>
+                
+                <div class="written-off-row">
+                    <div class="written-off-label">Damage Areas</div>
+                    <div class="written-off-value">
+                        <?php 
+                        if ($write_off_record && isset($write_off_record['DamageAreas']) && is_array($write_off_record['DamageAreas'])) {
+                            $damage_areas = $write_off_record['DamageAreas'];
+                            if (!empty($damage_areas)) {
+                                $formatted_areas = array();
+                                foreach ($damage_areas as $index => $area) {
+                                    $letter = chr(97 + $index); // a, b, c, etc.
+                                    $formatted_areas[] = $letter . ' . ' . esc_html($area);
+                                }
+                                echo implode('<br>', $formatted_areas);
+                            } else {
+                                echo esc_html('Not Specified');
+                            }
+                        } elseif ($write_off_record && isset($write_off_record['DamageArea'])) {
+                            echo esc_html($write_off_record['DamageArea']);
+                        } else {
+                            echo esc_html('Not Available');
+                        }
+                        ?>
+                    </div>
+                </div>
+                
+                <div class="written-off-row">
+                    <div class="written-off-label">Cause of Damage</div>
+                    <div class="written-off-value">
+                        <?php 
+                        if ($write_off_record && isset($write_off_record['CauseOfDamage'])) {
+                            echo esc_html($write_off_record['CauseOfDamage']);
+                        } elseif ($write_off_record && isset($write_off_record['Cause'])) {
+                            echo esc_html($write_off_record['Cause']);
+                        } else {
+                            echo esc_html('Not Available');
+                        }
+                        ?>
+                    </div>
+                </div>
+                <?php 
+            } else {
+                // Display "No records found" message when WriteOffRecordList is empty
+                ?>
+                <div class="written-off-row">
+                    <div class="written-off-label">Status</div>
+                    <div class="written-off-value" style="color: #28a745; font-weight: bold;">
+                        <?php echo esc_html('No Write-Off Records Found'); ?>
+                    </div>
+                </div>
+                
+                <div class="written-off-row">
+                    <div class="written-off-label">Vehicle Status</div>
+                    <div class="written-off-value">
+                        <?php 
+                        if ($is_written_off) {
+                            echo esc_html('Vehicle may be scrapped or have certificate issued');
+                        } else {
+                            echo esc_html('Vehicle appears to be in good standing');
+                        }
+                        ?>
+                    </div>
+                </div>
+                <?php 
+            }
+            ?>
         </div>
     </div>
 
@@ -694,37 +926,116 @@ echo '</div>';
         <div class="important-checks-content">
             <div class="important-checks-row">
                 <div class="important-checks-label">Import Date</div>
-                <div class="important-checks-value">Not Imported</div>
+                <div class="important-checks-value"><?php 
+                    // Проверяем дату импорта
+                    $date_imported = $data['VehicleDetails']['VehicleStatus']['DateImported'] ?? null;
+                    $is_imported = $data['VehicleDetails']['VehicleStatus']['IsImported'] ?? false;
+                    
+                    if (!empty($date_imported)) {
+                        $date_obj = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $date_imported);
+                        if ($date_obj) {
+                            echo esc_html($date_obj->format('d M Y'));
+                        } else {
+                            echo esc_html($date_imported);
+                        }
+                    } elseif ($is_imported) {
+                        echo 'Imported (Date Unknown)';
+                    } else {
+                        echo 'Not Imported';
+                    }
+                ?></div>
             </div>
             
             <div class="important-checks-row">
                 <div class="important-checks-label">Date Exported</div>
-                <div class="important-checks-value">Not Exported</div>
+                <div class="important-checks-value"><?php 
+                    // Проверяем дату экспорта
+                    $date_exported = $data['VehicleDetails']['VehicleStatus']['DateExported'] ?? null;
+                    $is_exported = $data['VehicleDetails']['VehicleStatus']['IsExported'] ?? false;
+                    
+                    if (!empty($date_exported)) {
+                        $date_obj = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $date_exported);
+                        if ($date_obj) {
+                            echo esc_html($date_obj->format('d M Y'));
+                        } else {
+                            echo esc_html($date_exported);
+                        }
+                    } elseif ($is_exported) {
+                        echo 'Exported (Date Unknown)';
+                    } else {
+                        echo 'Not Exported';
+                    }
+                ?></div>
             </div>
             
             <div class="important-checks-row">
                 <div class="important-checks-label">Q Registration</div>
-                <div class="important-checks-value">Not Q Registered</div>
+                <div class="important-checks-value"><?php 
+                    // Проверяем Q регистрацию через VRM или другие индикаторы
+                    $vrm = $data['VehicleDetails']['VehicleIdentification']['Vrm'] ?? '';
+                    $is_q_registered = (strpos($vrm, 'Q') === 0); // Q регистрация начинается с Q
+                    
+                    echo $is_q_registered ? 'Q Registered' : 'Not Q Registered';
+                ?></div>
             </div>
             
             <div class="important-checks-row">
                 <div class="important-checks-label">VIC Inspected</div>
-                <div class="important-checks-value">Not VIC Inspected</div>
+                <div class="important-checks-value"><?php 
+                    // VIC инспекция обычно связана с импортированными автомобилями
+                    $is_imported = $data['VehicleDetails']['VehicleStatus']['IsImported'] ?? false;
+                    $is_imported_outside_eu = $data['VehicleDetails']['VehicleStatus']['IsImportedFromOutsideEu'] ?? false;
+                    
+                    // VIC требуется для автомобилей, импортированных из-за пределов ЕС
+                    if ($is_imported_outside_eu) {
+                        echo 'VIC Required/Inspected';
+                    } elseif ($is_imported) {
+                        echo 'VIC May Be Required';
+                    } else {
+                        echo 'Not VIC Inspected';
+                    }
+                ?></div>
             </div>
             
             <div class="important-checks-row">
-                <div class="important-checks-label">Imported from Northen Ireland</div>
-                <div class="important-checks-value">Not Imported</div>
+                <div class="important-checks-label">Imported from Northern Ireland</div>
+                <div class="important-checks-value"><?php 
+                    $is_imported_from_ni = $data['VehicleDetails']['VehicleStatus']['IsImportedFromNi'] ?? false;
+                    
+                    echo $is_imported_from_ni ? 'Imported from NI' : 'Not Imported from NI';
+                ?></div>
             </div>
             
             <div class="important-checks-row">
                 <div class="important-checks-label">Date Scrapped</div>
-                <div class="important-checks-value">Not Scrapped</div>
+                <div class="important-checks-value"><?php 
+                    // Проверяем дату утилизации
+                    $date_scrapped = $data['VehicleDetails']['VehicleStatus']['DateScrapped'] ?? null;
+                    $is_scrapped = $data['VehicleDetails']['VehicleStatus']['IsScrapped'] ?? false;
+                    
+                    if (!empty($date_scrapped)) {
+                        $date_obj = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $date_scrapped);
+                        if ($date_obj) {
+                            echo esc_html($date_obj->format('d M Y'));
+                        } else {
+                            echo esc_html($date_scrapped);
+                        }
+                    } elseif ($is_scrapped) {
+                        echo 'Scrapped (Date Unknown)';
+                    } else {
+                        echo 'Not Scrapped';
+                    }
+                ?></div>
             </div>
             
             <div class="important-checks-row">
                 <div class="important-checks-label">Unscrapped</div>
-                <div class="important-checks-value">Not Unscrapped</div>
+                <div class="important-checks-value"><?php 
+                    // Проверяем статус восстановления после утилизации
+                    $is_unscrapped = $data['VehicleDetails']['VehicleStatus']['IsUnscrapped'] ?? false;
+                    
+                    echo $is_unscrapped ? 'Unscrapped' : 'Not Unscrapped';
+                ?></div>
             </div>
         </div>
     </div>
@@ -738,42 +1049,198 @@ echo '</div>';
             <em>Finance check is powered by Experian</em>
         </div>
         <div class="outstanding-finance-content">
-            <div class="outstanding-finance-row">
-                <span class="outstanding-finance-label">Agreement Date</span>
-                <span class="outstanding-finance-value">18 August 2020</span>
-            </div>
-            <div class="outstanding-finance-row">
-                <span class="outstanding-finance-label">Agreement Number</span>
-                <span class="outstanding-finance-value">25623928</span>
-            </div>
-            <div class="outstanding-finance-row">
-                <span class="outstanding-finance-label">Agreement Term</span>
-                <span class="outstanding-finance-value">48</span>
-            </div>
-            <div class="outstanding-finance-row">
-                <span class="outstanding-finance-label">Agreement Type</span>
-                <span class="outstanding-finance-value">Hire Purchase</span>
-            </div>
-            <div class="outstanding-finance-row">
-                <span class="outstanding-finance-label">Contact Number</span>
-                <span class="outstanding-finance-value">0845 604 6123</span>
-            </div>
-            <div class="outstanding-finance-row">
-                <span class="outstanding-finance-label">Date Of Transaction</span>
-                <span class="outstanding-finance-value">16 August 2020</span>
-            </div>
-            <div class="outstanding-finance-row">
-                <span class="outstanding-finance-label">Finance Company</span>
-                <span class="outstanding-finance-value">Asset Finance (UK) Ltd</span>
-            </div>
-            <div class="outstanding-finance-row">
-                <span class="outstanding-finance-label">Vehicle Description</span>
-                <span class="outstanding-finance-value">Mercedes C Class</span>
-            </div>
+            <?php
+            // Получаем данные о финансах из API
+            $finance_details = $data['FinanceDetails'] ?? [];
+            $finance_record = $finance_details['FinanceRecordList'] ?? [];
+            
+            // Проверяем, есть ли данные о финансах
+            if (!empty($finance_record) && is_array($finance_record)) {
+                // Если FinanceRecordList содержит массив записей, берем первую
+                if (isset($finance_record[0])) {
+                    $finance_record = $finance_record[0];
+                }
+                
+                // Форматируем дату соглашения
+                $agreement_date = '';
+                if (!empty($finance_record['AgreementDate'])) {
+                    $date = DateTime::createFromFormat('Y-m-d\TH:i:s', $finance_record['AgreementDate']);
+                    if ($date) {
+                        $agreement_date = $date->format('j F Y');
+                    } else {
+                        $agreement_date = esc_html($finance_record['AgreementDate']);
+                    }
+                }
+                ?>
+                <div class="outstanding-finance-row">
+                    <span class="outstanding-finance-label">Agreement Date</span>
+                    <span class="outstanding-finance-value"><?php echo $agreement_date ?: 'Not Available'; ?></span>
+                </div>
+                <div class="outstanding-finance-row">
+                    <span class="outstanding-finance-label">Agreement Number</span>
+                    <span class="outstanding-finance-value"><?php echo esc_html($finance_record['AgreementNumber'] ?? 'Not Available'); ?></span>
+                </div>
+                <div class="outstanding-finance-row">
+                    <span class="outstanding-finance-label">Agreement Term</span>
+                    <span class="outstanding-finance-value"><?php echo esc_html($finance_record['AgreementTerm'] ?? 'Not Available'); ?></span>
+                </div>
+                <div class="outstanding-finance-row">
+                    <span class="outstanding-finance-label">Agreement Type</span>
+                    <span class="outstanding-finance-value"><?php echo esc_html($finance_record['AgreementType'] ?? 'Not Available'); ?></span>
+                </div>
+                <div class="outstanding-finance-row">
+                    <span class="outstanding-finance-label">Contact Number</span>
+                    <span class="outstanding-finance-value"><?php echo esc_html($finance_record['ContactNumber'] ?? 'Not Available'); ?></span>
+                </div>
+                <div class="outstanding-finance-row">
+                    <span class="outstanding-finance-label">Date Of Transaction</span>
+                    <span class="outstanding-finance-value"><?php echo $agreement_date ?: 'Not Available'; ?></span>
+                </div>
+                <div class="outstanding-finance-row">
+                    <span class="outstanding-finance-label">Finance Company</span>
+                    <span class="outstanding-finance-value"><?php echo esc_html($finance_record['FinanceCompany'] ?? 'Not Available'); ?></span>
+                </div>
+                <div class="outstanding-finance-row">
+                    <span class="outstanding-finance-label">Vehicle Description</span>
+                    <span class="outstanding-finance-value"><?php echo esc_html($finance_record['VehicleDescription'] ?? 'Not Available'); ?></span>
+                </div>
+                <?php
+            } else {
+                // Если данных о финансах нет, показываем сообщение
+                ?>
+                <div class="outstanding-finance-row">
+                    <span class="outstanding-finance-label">Status</span>
+                    <span class="outstanding-finance-value">No Outstanding Finance Found</span>
+                </div>
+                <?php
+            }
+            ?>
         </div>
     </div>
 
     <!-- Ownership Block -->
+    <?php
+    // Получаем данные о владельцах из API
+    $keeper_change_list = $data['VehicleDetails']['VehicleHistory']['KeeperChangeList'] ?? [];
+    $vehicle_identification = $data['VehicleDetails']['VehicleIdentification'] ?? [];
+    
+    // Инициализируем переменные
+    $previous_keepers = 'Not Available';
+    $current_keeper_acq = 'Not Available';
+    $prev_keeper_sold = 'Not Available';
+    $prev_keeper_acq = 'Not Available';
+    $current_ownership = 'Not Available';
+    $vehicle_age = 'Not Available';
+    $registration_date = 'Not Available';
+    
+    // Обрабатываем данные о владельцах в зависимости от структуры
+    if (!empty($keeper_change_list)) {
+        $current_keeper = null;
+        $previous_keeper = null;
+        
+        // Случай 1: KeeperChangeList - это объект с данными текущего владельца
+        if (isset($keeper_change_list['NumberOfPreviousKeepers'])) {
+            $current_keeper = $keeper_change_list;
+        }
+        // Случай 2: KeeperChangeList - это массив объектов
+        elseif (is_array($keeper_change_list) && !empty($keeper_change_list)) {
+            // Берем первый элемент как текущего владельца
+            $current_keeper = $keeper_change_list[0];
+            // Если есть второй элемент, это предыдущий владелец
+            if (isset($keeper_change_list[1])) {
+                $previous_keeper = $keeper_change_list[1];
+            }
+        }
+        
+        // Обрабатываем данные текущего владельца
+        if ($current_keeper) {
+            // Количество предыдущих владельцев
+            $previous_keepers = $current_keeper['NumberOfPreviousKeepers'] ?? 'Not Available';
+            
+            // Дата приобретения текущим владельцем
+            if (!empty($current_keeper['KeeperStartDate'])) {
+                $date = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $current_keeper['KeeperStartDate']);
+                if ($date) {
+                    $current_keeper_acq = $date->format('j F Y');
+                } else {
+                    $current_keeper_acq = esc_html($current_keeper['KeeperStartDate']);
+                }
+            }
+            
+            // Дата продажи предыдущим владельцем (из данных текущего владельца)
+            if (!empty($current_keeper['PreviousKeeperDisposalDate'])) {
+                $date = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $current_keeper['PreviousKeeperDisposalDate']);
+                if ($date) {
+                    $prev_keeper_sold = $date->format('j F Y');
+                } else {
+                    $prev_keeper_sold = esc_html($current_keeper['PreviousKeeperDisposalDate']);
+                }
+            }
+            
+            // Вычисляем текущий период владения
+            if (!empty($current_keeper['KeeperStartDate'])) {
+                $start_date = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $current_keeper['KeeperStartDate']);
+                if ($start_date) {
+                    $now = new DateTime();
+                    $interval = $start_date->diff($now);
+                    $years = $interval->y;
+                    $months = $interval->m;
+                    
+                    if ($years > 0 && $months > 0) {
+                        $current_ownership = $years . ' years ' . $months . ' months';
+                    } elseif ($years > 0) {
+                        $current_ownership = $years . ' years';
+                    } elseif ($months > 0) {
+                        $current_ownership = $months . ' months';
+                    } else {
+                        $current_ownership = 'Less than 1 month';
+                    }
+                }
+            }
+        }
+        
+        // Обрабатываем данные предыдущего владельца (если есть)
+        if ($previous_keeper && !empty($previous_keeper['KeeperStartDate'])) {
+            $date = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $previous_keeper['KeeperStartDate']);
+            if ($date) {
+                $prev_keeper_acq = $date->format('j F Y');
+            } else {
+                $prev_keeper_acq = esc_html($previous_keeper['KeeperStartDate']);
+            }
+        }
+    }
+    
+    // Обрабатываем данные о регистрации автомобиля
+    if (!empty($vehicle_identification['DateOfFirstRegistration'])) {
+        $date = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $vehicle_identification['DateOfFirstRegistration']);
+        if ($date) {
+            $registration_date = $date->format('j F Y');
+        } else {
+            $registration_date = esc_html($vehicle_identification['DateOfFirstRegistration']);
+        }
+    }
+    
+    // Вычисляем возраст автомобиля
+    if (!empty($vehicle_identification['DateOfFirstRegistration'])) {
+        $reg_date = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $vehicle_identification['DateOfFirstRegistration']);
+        if ($reg_date) {
+            $now = new DateTime();
+            $interval = $reg_date->diff($now);
+            $years = $interval->y;
+            $months = $interval->m;
+            
+            if ($years > 0 && $months > 0) {
+                $vehicle_age = $years . ' years ' . $months . ' months';
+            } elseif ($years > 0) {
+                $vehicle_age = $years . ' years';
+            } elseif ($months > 0) {
+                $vehicle_age = $months . ' months';
+            } else {
+                $vehicle_age = 'Less than 1 month';
+            }
+        }
+    }
+    ?>
     <div class="ownership-block">
         <div class="ownership-header">
             <h3 class="ownership-title title-gray">Ownership</h3>
@@ -781,31 +1248,31 @@ echo '</div>';
         <div class="ownership-content">
             <div class="ownership-row">
                 <span class="ownership-label">No. Previous Keepers</span>
-                <span class="ownership-value">2</span>
+                <span class="ownership-value"><?php echo esc_html($previous_keepers); ?></span>
             </div>
             <div class="ownership-row">
                 <span class="ownership-label">Current Keeper Acq.</span>
-                <span class="ownership-value">13 August 2022</span>
+                <span class="ownership-value"><?php echo $current_keeper_acq ?: 'Not Available'; ?></span>
             </div>
             <div class="ownership-row">
                 <span class="ownership-label">Current Ownership</span>
-                <span class="ownership-value">0 years 4 months</span>
+                <span class="ownership-value"><?php echo esc_html($current_ownership); ?></span>
             </div>
             <div class="ownership-row">
                 <span class="ownership-label">Prev. Keeper Sold</span>
-                <span class="ownership-value">12 August 2022</span>
+                <span class="ownership-value"><?php echo $prev_keeper_sold ?: 'Not Available'; ?></span>
             </div>
             <div class="ownership-row">
                 <span class="ownership-label">Prev. Keeper Acq.</span>
-                <span class="ownership-value">01 February 2022</span>
+                <span class="ownership-value"><?php echo $prev_keeper_acq ?: 'Not Available'; ?></span>
             </div>
             <div class="ownership-row">
                 <span class="ownership-label">Vehicle Age</span>
-                <span class="ownership-value">5 years 11 months</span>
+                <span class="ownership-value"><?php echo esc_html($vehicle_age); ?></span>
             </div>
             <div class="ownership-row">
                 <span class="ownership-label">Registration</span>
-                <span class="ownership-value">17 January 2017</span>
+                <span class="ownership-value"><?php echo $registration_date ?: 'Not Available'; ?></span>
             </div>
         </div>
     </div>

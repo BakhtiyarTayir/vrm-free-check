@@ -1033,6 +1033,163 @@
     font-size: 14px;
 }
 
+/* Vehicle Summary Section */
+.vehicle-summary-section {
+    margin-top: 20px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.summary-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #212529;
+    margin: 0 0 15px 0;
+    text-align: center;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+}
+
+.summary-label {
+    font-weight: 500;
+    color: #495057;
+    font-size: 14px;
+}
+
+.summary-value {
+    font-weight: 600;
+    color: #212529;
+    font-size: 14px;
+}
+
+.summary-value.status-pass {
+    color: #28a745;
+}
+
+.summary-value.status-fail {
+    color: #dc3545;
+}
+
+.summary-value.status-warning {
+    color: #ffc107;
+}
+
+/* Vehicle Status Section */
+.vehicle-status-section {
+    margin-top: 20px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.status-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #212529;
+    margin: 0 0 15px 0;
+    text-align: center;
+}
+
+.status-indicators {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.status-category {
+    background: white;
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid #dee2e6;
+}
+
+.category-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #495057;
+    margin: 0 0 12px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.category-checks {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.check-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+.check-item.status-pass {
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+}
+
+.check-item.status-fail {
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+
+.check-item.status-warning {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+}
+
+.check-item.status-info {
+    background: #d1ecf1;
+    border: 1px solid #bee5eb;
+}
+
+.check-name {
+    font-weight: 500;
+    color: #495057;
+}
+
+.check-status {
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.check-item.status-pass .check-status {
+    color: #155724;
+}
+
+.check-item.status-fail .check-status {
+    color: #721c24;
+}
+
+.check-item.status-warning .check-status {
+    color: #856404;
+}
+
+.check-item.status-info .check-status {
+    color: #0c5460;
+}
+
 /* Responsive Design for Manual Checks and Keeper Info */
 @media (max-width: 768px) {
     .manual-keeper-container {
@@ -1046,6 +1203,14 @@
     
     .vin-check-button {
         align-self: flex-start;
+    }
+    
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .status-indicators {
+        grid-template-columns: 1fr;
     }
 }
 
