@@ -158,6 +158,20 @@ jQuery(document).ready(function($) {
         $('html, body').animate({
             scrollTop: $('#vrm-check-results').offset().top - 50
         }, 500);
+        
+        // Initialize charts after results are displayed
+        if (typeof window.initializeMileageChart === 'function') {
+            setTimeout(function() {
+                window.initializeMileageChart();
+            }, 100); // Small delay to ensure DOM is updated
+        }
+        
+        // Initialize CO2 chart after results are displayed
+        if (typeof window.initializeCO2Chart === 'function') {
+            setTimeout(function() {
+                window.initializeCO2Chart();
+            }, 100); // Small delay to ensure DOM is updated
+        }
     }
     
     function hideResults() {

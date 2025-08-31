@@ -1532,6 +1532,13 @@ if (!isset($data) || empty($data)) {
     // Подключаем класс MileageProcessor
     require_once plugin_dir_path(__FILE__) . '../utils/class-mileage-processor.php';
     
+    // Отладочная информация о данных
+    error_log('Data keys: ' . print_r(array_keys($data), true));
+    error_log('MileageCheckDetails exists: ' . (isset($data['MileageCheckDetails']) ? 'yes' : 'no'));
+    if (isset($data['MileageCheckDetails'])) {
+        error_log('MileageCheckDetails: ' . print_r($data['MileageCheckDetails'], true));
+    }
+    
     // Создаем экземпляр процессора пробега с передачей данных
     $mileage_processor = new MileageProcessor($data);
     $mileage_info = $mileage_processor->getMileageInformation();
@@ -1582,6 +1589,10 @@ if (!isset($data) || empty($data)) {
     // Получаем историю пробега и данные для графика
     $mileage_history = $mileage_processor->getMileageHistory();
     $chart_data = $mileage_processor->getChartData();
+    
+    // Отладочная информация
+    error_log('Chart data from getChartData(): ' . print_r($chart_data, true));
+    error_log('Mileage processor has data: ' . ($mileage_processor->hasMileageData() ? 'yes' : 'no'));
     ?>
     <div class="advanced-mileage-history-block">
         <div class="advanced-mileage-history-header">
@@ -1623,6 +1634,11 @@ if (!isset($data) || empty($data)) {
             <script>
                 // Передаем данные для графика в JavaScript
                 window.mileageChartData = <?php echo json_encode($chart_data); ?>;
+                
+                // Отладочная информация
+                console.log('Chart data:', window.mileageChartData);
+                console.log('Has labels:', window.mileageChartData && window.mileageChartData.labels);
+                console.log('Labels length:', window.mileageChartData && window.mileageChartData.labels ? window.mileageChartData.labels.length : 0);
             </script>
         </div>
         
@@ -1662,6 +1678,65 @@ if (!isset($data) || empty($data)) {
         </div>
     </div>
     <!-- End Advanced Mileage History Block -->
+
+    <?php
+    // Преобразование данных MotHistoryDetails в формат mot_history
+    if (isset($data['MotHistoryDetails']['MotTestDetailsList']) && !empty($data['MotHistoryDetails']['MotTestDetailsList'])) {
+        $mot_test_list = $data['MotHistoryDetails']['MotTestDetailsList'];
+        $processed_tests = array();
+        
+        foreach ($mot_test_list as $test) {
+            $test_date = isset($test['TestDate']) ? $test['TestDate'] : '';
+            $formatted_date = '';
+            if ($test_date) {
+                $date_obj = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $test_date);
+                if ($date_obj) {
+                    $formatted_date = $date_obj->format('d M Y');
+                }
+            }
+            
+            $test_result = isset($test['TestPassed']) && $test['TestPassed'] ? 'passed' : 'failed';
+            
+            $odometer_value = isset($test['OdometerReading']) ? $test['OdometerReading'] : 'N/A';
+            $odometer_unit = isset($test['OdometerUnit']) ? $test['OdometerUnit'] : 'miles';
+            
+            // Обработка аннотаций (advisory notices)
+            $annotations = array();
+            if (isset($test['AnnotationList'])) {
+                if (is_array($test['AnnotationList']) && isset($test['AnnotationList'][0])) {
+                    // Если AnnotationList - массив объектов
+                    foreach ($test['AnnotationList'] as $annotation) {
+                        if (isset($annotation['Text'])) {
+                            $annotations[] = array(
+                                'text' => $annotation['Text'],
+                                'type' => isset($annotation['Type']) ? strtolower($annotation['Type']) : 'advisory'
+                            );
+                        }
+                    }
+                } elseif (isset($test['AnnotationList']['Text'])) {
+                    // Если AnnotationList - один объект
+                    $annotations[] = array(
+                        'text' => $test['AnnotationList']['Text'],
+                        'type' => isset($test['AnnotationList']['Type']) ? strtolower($test['AnnotationList']['Type']) : 'advisory'
+                    );
+                }
+            }
+            
+            $processed_tests[] = array(
+                'test_date' => $formatted_date,
+                'test_result' => $test_result,
+                'odometer_value' => $odometer_value,
+                'odometer_unit' => $odometer_unit,
+                'rfrAndComments' => $annotations
+            );
+        }
+        
+        // Создаем структуру данных в ожидаемом формате
+        $data['mot_history'] = array(
+            'test_history' => $processed_tests
+        );
+    }
+    ?>
 
     <!-- MOT History Block -->
     <div class="premium-block mot-history-block">
@@ -1745,7 +1820,7 @@ if (!isset($data) || empty($data)) {
                             <span class="fuel-type-label">Urban</span>
                         </div>
                         <div class="fuel-value-cell">
-                            <span class="fuel-value">23.7 MPG</span>
+                            <span class="fuel-value"><?php echo esc_html(isset($data['ModelDetails']['Performance']['FuelEconomy']['UrbanColdMpg']) ? $data['ModelDetails']['Performance']['FuelEconomy']['UrbanColdMpg'] . ' MPG' : 'N/A'); ?></span>
                         </div>
                     </div>
                     <div class="fuel-economy-row">
@@ -1753,7 +1828,7 @@ if (!isset($data) || empty($data)) {
                             <span class="fuel-type-label">Extra-Urban</span>
                         </div>
                         <div class="fuel-value-cell">
-                            <span class="fuel-value">35.3 MPG</span>
+                            <span class="fuel-value"><?php echo esc_html(isset($data['ModelDetails']['Performance']['FuelEconomy']['ExtraUrbanMpg']) ? $data['ModelDetails']['Performance']['FuelEconomy']['ExtraUrbanMpg'] . ' MPG' : 'N/A'); ?></span>
                         </div>
                     </div>
                     <div class="fuel-economy-row">
@@ -1761,7 +1836,7 @@ if (!isset($data) || empty($data)) {
                             <span class="fuel-type-label">Combined</span>
                         </div>
                         <div class="fuel-value-cell">
-                            <span class="fuel-value">30.1 MPG</span>
+                            <span class="fuel-value"><?php echo esc_html(isset($data['ModelDetails']['Performance']['FuelEconomy']['CombinedMpg']) ? $data['ModelDetails']['Performance']['FuelEconomy']['CombinedMpg'] . ' MPG' : 'N/A'); ?></span>
                         </div>
                     </div>
                 </div>
@@ -1786,7 +1861,7 @@ if (!isset($data) || empty($data)) {
                                 <span class="tax-label">VED for 12 months</span>
                             </div>
                             <div class="tax-value-cell">
-                                <span class="tax-value">£165</span>
+                                <span class="tax-value"><?php echo esc_html(isset($data['VehicleTaxDetails']['VehicleExciseDutyDetails']['VedRate']['Standard']['TwelveMonths']) ? '£' . $data['VehicleTaxDetails']['VehicleExciseDutyDetails']['VedRate']['Standard']['TwelveMonths'] : 'N/A'); ?></span>
                             </div>
                         </div>
                         <div class="tax-detail-row">
@@ -1794,7 +1869,7 @@ if (!isset($data) || empty($data)) {
                                 <span class="tax-label">VED for 6 months</span>
                             </div>
                             <div class="tax-value-cell">
-                                <span class="tax-value">£90.75</span>
+                                <span class="tax-value"><?php echo esc_html(isset($data['VehicleTaxDetails']['VehicleExciseDutyDetails']['VedRate']['Standard']['SixMonths']) ? '£' . $data['VehicleTaxDetails']['VehicleExciseDutyDetails']['VedRate']['Standard']['SixMonths'] : 'N/A'); ?></span>
                             </div>
                         </div>
                         <div class="tax-detail-row">
@@ -1802,7 +1877,7 @@ if (!isset($data) || empty($data)) {
                                 <span class="tax-label">CO2 Emissions</span>
                             </div>
                             <div class="tax-value-cell">
-                                <span class="tax-value">212 g/km</span>
+                                <span class="tax-value"><?php echo esc_html(isset($data['VehicleTaxDetails']['Co2Emissions']) ? $data['VehicleTaxDetails']['Co2Emissions'] . ' g/km' : 'N/A'); ?></span>
                             </div>
                         </div>
                     </div>
@@ -1831,12 +1906,12 @@ if (!isset($data) || empty($data)) {
         <div class="performance-content">
             <div class="performance-row">
                 <div class="performance-label">Top Speed</div>
-                <div class="performance-value">155 MPH</div>
+                <div class="performance-value"><?php echo esc_html($data['ModelDetails']['Performance']['Statistics']['MaxSpeedMph'] ?? 'N/A'); ?> MPH</div>
             </div>
             
             <div class="performance-row">
                 <div class="performance-label">0-60 MPH</div>
-                <div class="performance-value">4.70</div>
+                <div class="performance-value"><?php echo esc_html($data['ModelDetails']['Performance']['Statistics']['ZeroToSixtyMph'] ?? 'N/A'); ?></div>
             </div>
         </div>
     </div>
@@ -1851,52 +1926,73 @@ if (!isset($data) || empty($data)) {
         <div class="specification-content">
             <div class="specification-row">
                 <div class="specification-label">Engine Code</div>
-                <div class="specification-value">HR12DE</div>
+                <div class="specification-value"><?php echo esc_html($data['ModelDetails']['Powertrain']['IceDetails']['EngineDescription'] ?? 'N/A'); ?></div>
             </div>
             
             <div class="specification-row">
                 <div class="specification-label">Body</div>
-                <div class="specification-value">2 Axle Rigid Body</div>
+                <div class="specification-value"><?php echo esc_html($data['VehicleDetails']['VehicleIdentification']['DvlaWheelPlan'] ?? 'N/A'); ?></div>
             </div>
             
             <div class="specification-row">
                 <div class="specification-label">Position</div>
-                <div class="specification-value">Front</div>
+                <div class="specification-value"><?php echo esc_html($data['ModelDetails']['Powertrain']['IceDetails']['EngineLocation'] ?? 'N/A'); ?></div>
             </div>
             
             <div class="specification-row">
                 <div class="specification-label">Alignment</div>
-                <div class="specification-value">Transverse</div>
+                <div class="specification-value"><?php echo esc_html($data['ModelDetails']['Powertrain']['Transmission']['DriveType'] ?? 'N/A'); ?></div>
             </div>
             
             <div class="specification-row">
                 <div class="specification-label">Valves</div>
-                <div class="specification-value">12 Valves</div>
+                <div class="specification-value"><?php 
+                    $cylinders = $data['ModelDetails']['Powertrain']['IceDetails']['NumberOfCylinders'] ?? 0;
+                    $valvesPerCylinder = $data['ModelDetails']['Powertrain']['IceDetails']['ValvesPerCylinder'] ?? 0;
+                    $totalValves = $cylinders * $valvesPerCylinder;
+                    echo $totalValves > 0 ? esc_html($totalValves . ' Valves') : 'N/A';
+                ?></div>
             </div>
             
             <div class="specification-row">
                 <div class="specification-label">Cylinders</div>
-                <div class="specification-value">Inline</div>
+                <div class="specification-value"><?php echo esc_html($data['ModelDetails']['Powertrain']['IceDetails']['CylinderArrangement'] ?? 'N/A'); ?></div>
             </div>
             
             <div class="specification-row">
                 <div class="specification-label">Number Of Cylinders</div>
-                <div class="specification-value">3 Cylinders</div>
+                <div class="specification-value"><?php 
+                    $numCylinders = $data['ModelDetails']['Powertrain']['IceDetails']['NumberOfCylinders'] ?? 0;
+                    echo $numCylinders > 0 ? esc_html($numCylinders . ' Cylinders') : 'N/A';
+                ?></div>
             </div>
             
             <div class="specification-row">
                 <div class="specification-label">Fuel Delivery</div>
-                <div class="specification-value">Injection</div>
+                <div class="specification-value"><?php 
+                    $fuelDelivery = $data['ModelDetails']['Powertrain']['IceDetails']['FuelDelivery'] ?? '';
+                    if (empty($fuelDelivery)) {
+                        $fuelType = $data['ModelDetails']['Powertrain']['FuelType'] ?? '';
+                        $fuelDelivery = (strtolower($fuelType) === 'diesel') ? 'Injection' : 'N/A';
+                    }
+                    echo esc_html($fuelDelivery);
+                ?></div>
             </div>
             
             <div class="specification-row">
                 <div class="specification-label">BHP</div>
-                <div class="specification-value">385 BHP</div>
+                <div class="specification-value"><?php 
+                    $bhp = $data['ModelDetails']['Performance']['Power']['Bhp'] ?? 0;
+                    echo $bhp > 0 ? esc_html($bhp . ' BHP') : 'N/A';
+                ?></div>
             </div>
             
             <div class="specification-row">
                 <div class="specification-label">Power Output</div>
-                <div class="specification-value">58 kW</div>
+                <div class="specification-value"><?php 
+                    $kw = $data['ModelDetails']['Performance']['Power']['Kw'] ?? 0;
+                    echo $kw > 0 ? esc_html($kw . ' kW') : 'N/A';
+                ?></div>
             </div>
         </div>
     </div>
@@ -1911,57 +2007,75 @@ if (!isset($data) || empty($data)) {
         <div class="additional-content">
             <div class="additional-row">
                 <div class="additional-label">Vehicle Type</div>
-                <div class="additional-value">Car</div>
+                <div class="additional-value"><?php echo esc_html($data['ModelDetails']['ModelClassification']['VehicleClass'] ?? 'N/A'); ?></div>
             </div>
             
             <div class="additional-row">
                 <div class="additional-label">Width</div>
-                <div class="additional-value">1665 mm</div>
+                <div class="additional-value"><?php 
+                    $width = $data['ModelDetails']['Dimensions']['WidthMm'] ?? 0;
+                    echo $width > 0 ? esc_html($width . ' mm') : 'N/A';
+                ?></div>
             </div>
             
             <div class="additional-row">
                 <div class="additional-label">Length</div>
-                <div class="additional-value">3780 mm</div>
+                <div class="additional-value"><?php 
+                    $length = $data['ModelDetails']['Dimensions']['LengthMm'] ?? 0;
+                    echo $length > 0 ? esc_html($length . ' mm') : 'N/A';
+                ?></div>
             </div>
             
             <div class="additional-row">
                 <div class="additional-label">Height</div>
-                <div class="additional-value">1525 mm</div>
+                <div class="additional-value"><?php 
+                    $height = $data['ModelDetails']['Dimensions']['HeightMm'] ?? 0;
+                    echo $height > 0 ? esc_html($height . ' mm') : 'N/A';
+                ?></div>
             </div>
             
             <div class="additional-row">
                 <div class="additional-label">Wheel Base</div>
-                <div class="additional-value">2450 mm</div>
+                <div class="additional-value"><?php 
+                    $wheelbase = $data['ModelDetails']['Dimensions']['WheelbaseLengthMm'] ?? 0;
+                    echo $wheelbase > 0 ? esc_html($wheelbase . ' mm') : 'N/A';
+                ?></div>
             </div>
             
             <div class="additional-row">
                 <div class="additional-label">Wheel Plan</div>
-                <div class="additional-value">2 Axle Rigid Body</div>
+                <div class="additional-value"><?php echo esc_html($data['VehicleDetails']['VehicleIdentification']['DvlaWheelPlan'] ?? 'N/A'); ?></div>
             </div>
             
             <div class="additional-row">
                 <div class="additional-label">Transmission</div>
-                <div class="additional-value">2 Axle Rigid Body</div>
+                <div class="additional-value"><?php echo esc_html($data['ModelDetails']['Powertrain']['Transmission']['TransmissionType'] ?? 'N/A'); ?></div>
             </div>
             
             <div class="additional-row">
                 <div class="additional-label">No. Of Seats</div>
-                <div class="additional-value">CVT</div>
+                <div class="additional-value"><?php 
+                    $seats = $data['ModelDetails']['BodyDetails']['NumberOfSeats'] ?? 0;
+                    echo $seats > 0 ? esc_html($seats . ' Seats') : 'N/A';
+                ?></div>
             </div>
             
             <div class="additional-row">
                 <div class="additional-label">No. Of Doors</div>
-                <div class="additional-value">5 Doors</div>
+                <div class="additional-value"><?php 
+                    $doors = $data['ModelDetails']['BodyDetails']['NumberOfDoors'] ?? 0;
+                    echo $doors > 0 ? esc_html($doors . ' Doors') : 'N/A';
+                ?></div>
             </div>
             
             <div class="additional-row">
                 <div class="additional-label">Drive Type</div>
-                <div class="additional-value">Front Wheel Drive</div>
+                <div class="additional-value"><?php echo esc_html($data['ModelDetails']['Powertrain']['Transmission']['DriveType'] ?? 'N/A'); ?></div>
             </div>
             
             <div class="additional-row">
                 <div class="additional-label">Driving Position</div>
-                <div class="additional-value">RHD</div>
+                <div class="additional-value"><?php echo esc_html($data['ModelDetails']['Accommodation']['DrivingPosition'] ?? 'N/A'); ?></div>
             </div>
         </div>
     </div>

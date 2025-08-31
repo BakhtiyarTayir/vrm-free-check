@@ -1,5 +1,5 @@
 // Mileage Chart Implementation using Chart.js
-document.addEventListener('DOMContentLoaded', function() {
+function initializeMileageChart() {
     const ctx = document.getElementById('mileageChart');
     
     if (ctx) {
@@ -173,7 +173,15 @@ document.addEventListener('DOMContentLoaded', function() {
         // Create the chart
         new Chart(ctx, config);
     }
+}
+
+// Initialize chart when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initializeMileageChart();
 });
+
+// Make function globally available for calling after AJAX data load
+window.initializeMileageChart = initializeMileageChart;
 
 // Load Chart.js library if not already loaded
 if (typeof Chart === 'undefined') {

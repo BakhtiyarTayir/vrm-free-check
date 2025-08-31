@@ -1,7 +1,7 @@
 // CO2 Emissions Rating Chart using Chart.js
 
-// Wait for DOM to be ready
-document.addEventListener('DOMContentLoaded', function() {
+// Global function to initialize CO2 rating chart
+function initializeCO2Chart() {
     // Check if Chart.js is loaded
     if (typeof Chart === 'undefined') {
         console.error('Chart.js library is not loaded');
@@ -179,6 +179,14 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('resize', function() {
         co2Chart.resize();
     });
+}
+
+// Make function globally available for calling after AJAX data load
+window.initializeCO2Chart = initializeCO2Chart;
+
+// Wait for DOM to be ready for initial load
+document.addEventListener('DOMContentLoaded', function() {
+    initializeCO2Chart();
 });
 
 // Fallback: Load Chart.js if not already present
