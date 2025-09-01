@@ -2090,7 +2090,24 @@ if (!isset($data) || empty($data)) {
         <div class="insurance-content">
             <div class="insurance-row">
                 <div class="insurance-label">Insurance Group</div>
-                <div class="insurance-value">43</div>
+                <div class="insurance-value">
+                    <?php 
+                    // Попытка получить InsuranceGroup из разных источников данных
+                    $insurance_group = '';
+                    
+                    // Проверяем VehicleDetailsWithImage
+                    if (!empty($data['VehicleDetailsWithImage']['InsuranceGroup'])) {
+                        $insurance_group = $data['VehicleDetailsWithImage']['InsuranceGroup'];
+                    }
+                    // Проверяем VDICheck как альтернативный источник
+                    elseif (!empty($data['VDICheck']['InsuranceGroup'])) {
+                        $insurance_group = $data['VDICheck']['InsuranceGroup'];
+                    }
+                    
+                    // Выводим результат
+                    echo !empty($insurance_group) ? esc_html($insurance_group) : 'No data available';
+                    ?>
+                </div>
             </div>
             
             <div class="insurance-row">
@@ -2110,7 +2127,7 @@ if (!isset($data) || empty($data)) {
         <div class="ulez-content">
             <div class="ulez-row">
                 <div class="ulez-label">Euro status</div>
-                <div class="ulez-value">6ag</div>
+                <div class="ulez-value"><?php echo esc_html($data['ModelDetails']['Emissions']['EuroStatus'] ?? $data['VDICheck']['EuroStatus'] ?? 'No data available'); ?></div>
             </div>
             
             <div class="ulez-row">

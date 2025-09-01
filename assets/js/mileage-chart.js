@@ -126,8 +126,14 @@ function initializeMileageChart() {
                     },
                     y: {
                         beginAtZero: false,
-                        min: 32000,
-                        max: 52000,
+                        min: (() => {
+                            const minValue = Math.min(...window.mileageChartData.mileage);
+                            return Math.max(0, minValue - (minValue * 0.1)); // 10% отступ снизу
+                        })(),
+                        max: (() => {
+                            const maxValue = Math.max(...window.mileageChartData.mileage);
+                            return maxValue + (maxValue * 0.1); // 10% отступ сверху
+                        })(),
                         grid: {
                             display: true,
                             color: 'rgba(0, 0, 0, 0.08)',

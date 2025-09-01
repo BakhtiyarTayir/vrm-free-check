@@ -1,1 +1,90 @@
-{"SpecAndOptionsDetails":{"Make":"Seat","Model":"Leon Stylance TDI","YearOfManufacture":"2007","FactoryEquipmentList":[{"Type":"Item","Fitment":"Standard","Category":"Audio and Communications","Name":"CD Equipment inc Multimedia","Description":"Radio/Single CD+8 Speakers+Strng Wh Ctrl","Price":null,"PackageContentList":[]},{"Type":"Item","Fitment":"Standard","Category":"Exterior Features","Name":"Central Locking","Description":"Remote Central Locking","Price":null,"PackageContentList":[]},{"Type":"Item","Fitment":"Standard","Category":"Interior Features","Name":"Air Conditioning","Description":"Manual Air Conditioning","Price":null,"PackageContentList":[]},{"Type":"Item","Fitment":"Standard","Category":"Safety and Security","Name":"ABS","Description":"Anti-lock Braking System","Price":null,"PackageContentList":[]},{"Type":"Item","Fitment":"Standard","Category":"Safety and Security","Name":"Airbags","Description":"Driver and Passenger Airbags","Price":null,"PackageContentList":[]},{"Type":"Item","Fitment":"Standard","Category":"Safety and Security","Name":"Immobiliser","Description":"Electronic Engine Immobiliser","Price":null,"PackageContentList":[]},{"Type":"Item","Fitment":"Standard","Category":"Exterior Features","Name":"Electric Windows","Description":"Electric Front Windows","Price":null,"PackageContentList":[]},{"Type":"Item","Fitment":"Standard","Category":"Exterior Features","Name":"Power Steering","Description":"Power Assisted Steering","Price":null,"PackageContentList":[]},{"Type":"Item","Fitment":"Standard","Category":"Wheels and Tyres","Name":"Alloy Wheels","Description":"16 inch Alloy Wheels","Price":null,"PackageContentList":[]}]}}
+{
+    "SpecAndOptionsDetails": {
+        "Make": "Seat",
+        "Model": "Leon Stylance TDI",
+        "YearOfManufacture": "2007",
+        "FactoryEquipmentList": [
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Audio and Communications",
+                "Name": "CD Equipment inc Multimedia",
+                "Description": "Radio/Single CD+8 Speakers+Strng Wh Ctrl",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Exterior Features",
+                "Name": "Central Locking",
+                "Description": "Remote Central Locking",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Interior Features",
+                "Name": "Air Conditioning",
+                "Description": "Manual Air Conditioning",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Safety and Security",
+                "Name": "ABS",
+                "Description": "Anti-lock Braking System",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Safety and Security",
+                "Name": "Airbags",
+                "Description": "Driver and Passenger Airbags",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Safety and Security",
+                "Name": "Immobiliser",
+                "Description": "Electronic Engine Immobiliser",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Exterior Features",
+                "Name": "Electric Windows",
+                "Description": "Electric Front Windows",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Exterior Features",
+                "Name": "Power Steering",
+                "Description": "Power Assisted Steering",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Wheels and Tyres",
+                "Name": "Alloy Wheels",
+                "Description": "16 inch Alloy Wheels",
+                "Price": null,
+                "PackageContentList": []
+            }
+        ]
+    }
+}

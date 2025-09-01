@@ -1,1 +1,108 @@
-{"FinanceDetails":{"FinanceRecordList":[],"StatusCode":0,"StatusMessage":"Success","DocumentVersion":1,"GeneratedAt":"2025-08-27T06:04:39.8613747Z"},"VehicleCodes":{"UkvdId":"V-VPLYWE","Uvc":"M-BVVQP","StatusCode":0,"StatusMessage":"Success","DocumentVersion":1},"MileageCheckDetails":{"MileageResultList":[{"Mileage":42730,"DateRecorded":"2010-11-15T12:08:33Z","InSequence":true,"DataSource":"MOT"},{"Mileage":48462,"DateRecorded":"2011-11-14T14:32:33Z","InSequence":true,"DataSource":"MOT"},{"Mileage":54194,"DateRecorded":"2012-11-13T15:45:33Z","InSequence":true,"DataSource":"MOT"},{"Mileage":59926,"DateRecorded":"2013-11-12T16:58:33Z","InSequence":true,"DataSource":"MOT"},{"Mileage":65658,"DateRecorded":"2014-11-11T18:11:33Z","InSequence":true,"DataSource":"MOT"},{"Mileage":71390,"DateRecorded":"2015-11-10T19:24:33Z","InSequence":true,"DataSource":"MOT"},{"Mileage":77122,"DateRecorded":"2016-11-09T20:37:33Z","InSequence":true,"DataSource":"MOT"},{"Mileage":82854,"DateRecorded":"2017-11-08T21:50:33Z","InSequence":true,"DataSource":"MOT"},{"Mileage":88586,"DateRecorded":"2018-11-07T23:03:33Z","InSequence":true,"DataSource":"MOT"},{"Mileage":94318,"DateRecorded":"2019-11-07T00:16:33Z","InSequence":true,"DataSource":"MOT"},{"Mileage":100050,"DateRecorded":"2020-11-06T01:29:33Z","InSequence":true,"DataSource":"MOT"},{"Mileage":105782,"DateRecorded":"2021-11-05T02:42:33Z","InSequence":true,"DataSource":"MOT"},{"Mileage":111514,"DateRecorded":"2022-11-04T03:55:33Z","InSequence":true,"DataSource":"MOT"},{"Mileage":117246,"DateRecorded":"2023-11-03T05:08:33Z","InSequence":true,"DataSource":"MOT"}],"StatusCode":0,"StatusMessage":"Success","DocumentVersion":1,"GeneratedAt":"2025-08-27T06:04:39.8613747Z"}}
+{
+    "FinanceDetails": {
+        "FinanceRecordList": [],
+        "StatusCode": 0,
+        "StatusMessage": "Success",
+        "DocumentVersion": 1,
+        "GeneratedAt": "2025-08-27T06:04:39.8613747Z"
+    },
+    "VehicleCodes": {
+        "UkvdId": "V-VPLYWE",
+        "Uvc": "M-BVVQP",
+        "StatusCode": 0,
+        "StatusMessage": "Success",
+        "DocumentVersion": 1
+    },
+    "MileageCheckDetails": {
+        "MileageResultList": [
+            {
+                "Mileage": 42730,
+                "DateRecorded": "2010-11-15T12:08:33Z",
+                "InSequence": true,
+                "DataSource": "MOT"
+            },
+            {
+                "Mileage": 48462,
+                "DateRecorded": "2011-11-14T14:32:33Z",
+                "InSequence": true,
+                "DataSource": "MOT"
+            },
+            {
+                "Mileage": 54194,
+                "DateRecorded": "2012-11-13T15:45:33Z",
+                "InSequence": true,
+                "DataSource": "MOT"
+            },
+            {
+                "Mileage": 59926,
+                "DateRecorded": "2013-11-12T16:58:33Z",
+                "InSequence": true,
+                "DataSource": "MOT"
+            },
+            {
+                "Mileage": 65658,
+                "DateRecorded": "2014-11-11T18:11:33Z",
+                "InSequence": true,
+                "DataSource": "MOT"
+            },
+            {
+                "Mileage": 71390,
+                "DateRecorded": "2015-11-10T19:24:33Z",
+                "InSequence": true,
+                "DataSource": "MOT"
+            },
+            {
+                "Mileage": 77122,
+                "DateRecorded": "2016-11-09T20:37:33Z",
+                "InSequence": true,
+                "DataSource": "MOT"
+            },
+            {
+                "Mileage": 82854,
+                "DateRecorded": "2017-11-08T21:50:33Z",
+                "InSequence": true,
+                "DataSource": "MOT"
+            },
+            {
+                "Mileage": 88586,
+                "DateRecorded": "2018-11-07T23:03:33Z",
+                "InSequence": true,
+                "DataSource": "MOT"
+            },
+            {
+                "Mileage": 94318,
+                "DateRecorded": "2019-11-07T00:16:33Z",
+                "InSequence": true,
+                "DataSource": "MOT"
+            },
+            {
+                "Mileage": 100050,
+                "DateRecorded": "2020-11-06T01:29:33Z",
+                "InSequence": true,
+                "DataSource": "MOT"
+            },
+            {
+                "Mileage": 105782,
+                "DateRecorded": "2021-11-05T02:42:33Z",
+                "InSequence": true,
+                "DataSource": "MOT"
+            },
+            {
+                "Mileage": 111514,
+                "DateRecorded": "2022-11-04T03:55:33Z",
+                "InSequence": true,
+                "DataSource": "MOT"
+            },
+            {
+                "Mileage": 117246,
+                "DateRecorded": "2023-11-03T05:08:33Z",
+                "InSequence": true,
+                "DataSource": "MOT"
+            }
+        ],
+        "StatusCode": 0,
+        "StatusMessage": "Success",
+        "DocumentVersion": 1,
+        "GeneratedAt": "2025-08-27T06:04:39.8613747Z"
+    }
+}

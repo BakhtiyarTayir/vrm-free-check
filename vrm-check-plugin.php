@@ -1,9 +1,9 @@
 <?php
 /**
  * Plugin Name: VRM Check Plugin
- * Plugin URI: https://motcheck.local
+ * Plugin URI: https://motcheck.org
  * Description: UK Vehicle Registration Mark (VRM) checker using Vehicle Data Global API. Provides comprehensive vehicle information including DVLA data, MOT history, tax status, and more.
- * Version: 1.0.0
+ * Version: 1.0.2
  * Author: MOT Check
  * License: GPL v2 or later
  * Text Domain: vrm-check-plugin

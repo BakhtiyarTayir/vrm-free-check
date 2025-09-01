@@ -1,1 +1,33 @@
-{"VehicleTaxDetails":{"Vrm":null,"Make":null,"Co2Emissions":0,"MotStatus":null,"YearOfManufacture":0,"TaxDueDate":null,"TaxStatus":null,"TaxIsCurrentlyValid":false,"TaxDaysRemaining":null,"VehicleExciseDutyDetails":{"DvlaCo2":null,"DvlaCo2Band":null,"DvlaBand":null,"VedRate":{"FirstYear":{"SixMonths":null,"TwelveMonths":null},"PremiumVehicle":{"SixMonths":null,"TwelveMonths":null},"Standard":{"SixMonths":null,"TwelveMonths":null}}}}}}
+{
+    "VehicleTaxDetails": {
+        "Vrm": null,
+        "Make": null,
+        "Co2Emissions": 0,
+        "MotStatus": null,
+        "YearOfManufacture": 0,
+        "TaxDueDate": null,
+        "TaxStatus": null,
+        "TaxIsCurrentlyValid": false,
+        "TaxDaysRemaining": null,
+        "VehicleExciseDutyDetails": {
+            "DvlaCo2": null,
+            "DvlaCo2Band": null,
+            "DvlaBand": null,
+            "VedRate": {
+                "FirstYear": {
+                    "SixMonths": null,
+                    "TwelveMonths": null
+                },
+                "PremiumVehicle": {
+                    "SixMonths": null,
+                    "TwelveMonths": null
+                },
+                "Standard": {
+                    "SixMonths": null,
+                    "TwelveMonths": null
+                }
+            }
+        }
+    }
+}
+}
