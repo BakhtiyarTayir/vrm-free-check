@@ -48,9 +48,17 @@
 
 .vrm-input-wrapper {
     display: flex;
+    flex-direction: column;
     gap: 12px;
     margin-bottom: 15px;
     max-width: 465px;
+}
+
+/* Группа кнопок */
+.vrm-buttons-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
 .vrm-input {
@@ -75,7 +83,6 @@
 
 .vrm-submit-btn {
     padding: 16px 32px;
-    background: linear-gradient(135deg, #3182ce 0%, #2c5aa0 100%);
     color: white;
     border: none;
     border-radius: 8px;
@@ -85,17 +92,42 @@
     transition: all 0.3s ease;
     min-width: 160px;
     position: relative;
+    flex: 1;
 }
 
-.vrm-submit-btn:hover:not(.loading) {
+/* Базовая кнопка (обычная проверка) */
+.vrm-basic-btn {
+    background: linear-gradient(135deg, #3182ce 0%, #2c5aa0 100%);
+}
+
+.vrm-basic-btn:hover:not(.loading) {
     background: linear-gradient(135deg, #2c5aa0 0%, #2a4d8d 100%);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
 }
 
+/* Премиум кнопка */
+.vrm-premium-btn {
+    background: linear-gradient(135deg, #d69e2e 0%, #b7791f 100%);
+    position: relative;
+}
+
+.vrm-premium-btn:hover:not(.loading) {
+    background: linear-gradient(135deg, #b7791f 0%, #975a16 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(214, 158, 46, 0.3);
+}
+
+
+
 .vrm-submit-btn.loading {
     cursor: not-allowed;
     opacity: 0.8;
+}
+
+.vrm-submit-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 .vrm-btn-loading {

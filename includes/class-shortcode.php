@@ -44,13 +44,16 @@ class Shortcode {
                                 maxlength="8"
                                 required
                             >
-                            <button type="submit" class="vrm-submit-btn">
-                                <span class="vrm-btn-text"><?php echo esc_html($atts['button_text']); ?></span>
-                                <span class="vrm-btn-loading" style="display: none;">
-                                    <i class="vrm-spinner"></i>
-                                    <?php _e('Checking...', 'vrm-check-plugin'); ?>
-                                </span>
-                            </button>
+                            <div class="vrm-buttons-group">
+                                <button type="button" class="vrm-submit-btn vrm-basic-btn" onclick="checkVRMBasic()">
+                                    <span class="vrm-btn-text"><?php echo esc_html($atts['button_text']); ?></span>
+                                    <span class="vrm-btn-loading" style="display: none;">
+                                        <i class="vrm-spinner"></i>
+                                        <?php _e('Checking...', 'vrm-check-plugin'); ?>
+                                    </span>
+                                </button>
+                            
+                            </div>
                         </div>
                         
                         <?php if ($atts['show_example'] === 'yes'): ?>
@@ -130,11 +133,11 @@ class Shortcode {
                                 maxlength="8"
                                 required
                             >
-                            <button type="submit" class="vrm-submit-btn">
+                            <button type="button" class="vrm-submit-btn vrm-premium-btn" onclick="checkVRMPremium()">
                                 <span class="vrm-btn-text"><?php echo esc_html($atts['button_text']); ?></span>
                                 <span class="vrm-btn-loading" style="display: none;">
                                     <i class="vrm-spinner"></i>
-                                    <?php _e('Checking...', 'vrm-check-plugin'); ?>
+                                    <?php _e('Checking Premium...', 'vrm-check-plugin'); ?>
                                 </span>
                             </button>
                         </div>
@@ -198,15 +201,11 @@ class Shortcode {
              
              wp_enqueue_script('vrm-check-script', VRM_CHECK_PLUGIN_URL . 'assets/js/vrm-check-script.js', array('jquery'), VRM_CHECK_PLUGIN_VERSION, true);
              
-             // Determine if premium version is being used
-             $is_premium = has_shortcode($post->post_content, 'vrm_check_premium');
-             
              // Localize script for AJAX
-             wp_localize_script('vrm-check-script', 'vrm_check_ajax', array(
-                 'ajax_url' => admin_url('admin-ajax.php'),
-                 'nonce' => wp_create_nonce('vrm_check_nonce'),
-                 'is_premium' => $is_premium
-             ));
+            wp_localize_script('vrm-check-script', 'vrm_check_ajax', array(
+                'ajax_url' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('vrm_check_nonce')
+            ));
          }
     }
 }
