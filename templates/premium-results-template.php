@@ -1759,6 +1759,7 @@ if (!isset($data) || empty($data)) {
                 <?php 
                 $mot_data = isset($data['mot_history']) ? $data['mot_history'] : array();
                 $test_history = isset($mot_data['test_history']) ? $mot_data['test_history'] : array();
+                var_dump($test_history);
                 
                 if (!empty($test_history)) {
                     foreach ($test_history as $test) {

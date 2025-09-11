@@ -19,12 +19,10 @@ class PremiumApiClient {
     private $packagenames = [
         'VehicleDetailsWithImage',
         'GetTax',
-        'MileageFinanceDetails',
         'MotHistoryDetails',
         'SpecAndOptionsDetails',
         'TyreDetails',
         'ValuationDetails',
-        'VDICheck',
         'VehicleDetails',
     ];
     
