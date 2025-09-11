@@ -23,7 +23,7 @@ class PremiumApiClient {
         'SpecAndOptionsDetails',
         // 'TyreDetails',
         'ValuationDetails',
-        'VehicleDetails',
+        // 'VehicleDetails',
     ];
     
     public function __construct() {
