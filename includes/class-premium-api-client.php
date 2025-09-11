@@ -21,7 +21,7 @@ class PremiumApiClient {
         'GetTax',
         'MotHistoryDetails',
         'SpecAndOptionsDetails',
-        'TyreDetails',
+        // 'TyreDetails',
         'ValuationDetails',
         'VehicleDetails',
     ];

@@ -22,12 +22,9 @@ if (!isset($data) || empty($data)) {
             $image_url = '';
             
             // Проверяем наличие изображений в VehicleImageDetails
-            if (!empty($data['VehicleImageDetails']['VehicleImageList']) && is_array($data['VehicleImageDetails']['VehicleImageList'])) {
-                // Берем первое доступное изображение
-                $first_image = $data['VehicleImageDetails']['VehicleImageList'][0];
-                if (!empty($first_image['ImageUrl'])) {
-                    $image_url = esc_url($first_image['ImageUrl']);
-                }
+            if (!empty($data['VehicleImageDetails']['VehicleImageList']) && !empty($data['VehicleImageDetails']['VehicleImageList']['ImageUrl'])) {
+                // VehicleImageList это объект, а не массив
+                $image_url = esc_url($data['VehicleImageDetails']['VehicleImageList']['ImageUrl']);
             }
             
             // Если изображение из API недоступно, используем изображение по умолчанию
@@ -1759,7 +1756,7 @@ if (!isset($data) || empty($data)) {
                 <?php 
                 $mot_data = isset($data['mot_history']) ? $data['mot_history'] : array();
                 $test_history = isset($mot_data['test_history']) ? $mot_data['test_history'] : array();
-                var_dump($test_history);
+
                 
                 if (!empty($test_history)) {
                     foreach ($test_history as $test) {

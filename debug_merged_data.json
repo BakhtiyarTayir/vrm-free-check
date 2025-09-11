@@ -257,10 +257,10 @@
     "VehicleImageDetails": {
         "VehicleImageList": {
             "ViewAngle": "Exterior_Angle270",
-            "ImageUrl": "https:\/\/vehicleimages.ukvehicledata.co.uk\/s3\/95B34DF231C26B5D271C831DD725FD994D613146920E86F6384F08C8C0657BC1841C3B902D2F3B6F9003C80DEF602D0E9FD2110E552E5380E84D2899849B1256AAFDD4F47AE871DD5B71C67B30A7FB83E1FE39156ACBF2B6D847BFB3D5E6C31C",
+            "ImageUrl": "https:\/\/vehicleimages.ukvehicledata.co.uk\/s3\/95B34DF231C26B5D271C831DD725FD994D613146920E86F6384F08C8C0657BC1841C3B902D2F3B6F9003C80DEF602D0E9FD2110E552E5380E84D2899849B1256AAFDD4F47AE871DD5B71C67B30A7FB83129D150B0D2DD41E32D0C6159B8378A0",
             "Colour": "#212121",
             "Description": "Dark Grey",
-            "ExpiryDate": "2025-09-18T06:45:09Z"
+            "ExpiryDate": "2025-09-18T07:03:49Z"
         },
         "StatusCode": 0,
         "StatusMessage": "Success",
@@ -1102,156 +1102,9 @@
         "DocumentVersion": 1,
         "GeneratedAt": "2024-11-29T09:25:07.455Z"
     },
-    "TyreDetails": {
-        "TyreDetailsList": [
-            {
-                "Vehicle": {
-                    "ModelName": "Leon. II",
-                    "PowerKw": 77,
-                    "Year": {
-                        "Uk": null,
-                        "Euro": null
-                    }
-                },
-                "Front": {
-                    "Tyre": {
-                        "SizeDescription": "205\/55R16",
-                        "SectionWidthMm": 205,
-                        "AspectRatio": 55,
-                        "RimDiameterInches": 16,
-                        "LoadIndex": "91",
-                        "SpeedIndex": "v",
-                        "IsRunFlat": false,
-                        "Pressure": {
-                            "TyrePressure": {
-                                "Bar": 2.2,
-                                "Psi": 32
-                            },
-                            "TyrePressureLaden": {
-                                "Bar": null,
-                                "Psi": null
-                            }
-                        }
-                    },
-                    "Rim": {
-                        "SizeDescription": "6.5 x 16",
-                        "OffsetMm": 47
-                    }
-                },
-                "Rear": {
-                    "Tyre": {
-                        "SizeDescription": "205\/55R16",
-                        "SectionWidthMm": 205,
-                        "AspectRatio": 55,
-                        "RimDiameterInches": 16,
-                        "LoadIndex": "91",
-                        "SpeedIndex": "v",
-                        "IsRunFlat": false,
-                        "Pressure": {
-                            "TyrePressure": {
-                                "Bar": 2,
-                                "Psi": 29
-                            },
-                            "TyrePressureLaden": {
-                                "Bar": null,
-                                "Psi": null
-                            }
-                        }
-                    },
-                    "Rim": {
-                        "SizeDescription": "6.5 x 16",
-                        "OffsetMm": 47
-                    }
-                },
-                "Hub": {
-                    "CenterBoreMm": 57.1,
-                    "Pcd": "5x112"
-                },
-                "Fixing": {
-                    "ThreadType": "M14x1.5",
-                    "HeadSizeMm": 17,
-                    "BoltLengthMm": 27,
-                    "TorqueNm": 120
-                }
-            },
-            {
-                "Vehicle": {
-                    "ModelName": "Leon. II",
-                    "PowerKw": 77,
-                    "Year": {
-                        "Uk": null,
-                        "Euro": null
-                    }
-                },
-                "Front": {
-                    "Tyre": {
-                        "SizeDescription": "225\/45R17",
-                        "SectionWidthMm": 225,
-                        "AspectRatio": 45,
-                        "RimDiameterInches": 17,
-                        "LoadIndex": "91",
-                        "SpeedIndex": "W",
-                        "IsRunFlat": false,
-                        "Pressure": {
-                            "TyrePressure": {
-                                "Bar": 2.2,
-                                "Psi": 32
-                            },
-                            "TyrePressureLaden": {
-                                "Bar": null,
-                                "Psi": null
-                            }
-                        }
-                    },
-                    "Rim": {
-                        "SizeDescription": "7 x 17",
-                        "OffsetMm": 49
-                    }
-                },
-                "Rear": {
-                    "Tyre": {
-                        "SizeDescription": "225\/45R17",
-                        "SectionWidthMm": 225,
-                        "AspectRatio": 45,
-                        "RimDiameterInches": 17,
-                        "LoadIndex": "91",
-                        "SpeedIndex": "W",
-                        "IsRunFlat": false,
-                        "Pressure": {
-                            "TyrePressure": {
-                                "Bar": 2,
-                                "Psi": 29
-                            },
-                            "TyrePressureLaden": {
-                                "Bar": null,
-                                "Psi": null
-                            }
-                        }
-                    },
-                    "Rim": {
-                        "SizeDescription": "7 x 17",
-                        "OffsetMm": 49
-                    }
-                },
-                "Hub": {
-                    "CenterBoreMm": 57.1,
-                    "Pcd": "5x112"
-                },
-                "Fixing": {
-                    "ThreadType": "M14x1.5",
-                    "HeadSizeMm": 17,
-                    "BoltLengthMm": 27,
-                    "TorqueNm": 120
-                }
-            }
-        ],
-        "StatusCode": 0,
-        "StatusMessage": "Success",
-        "DocumentVersion": 1
-    },
     "ValuationDetails": {
-        "ValuationTime": "2025-09-11T06:45:13.1363541Z",
-        "ValuationMileage": 223438,
+        "ValuationTime": "2025-09-11T07:03:53.2412984Z",
+        "ValuationMileage": 223439,
         "ValuationBook": "Direct",
         "VehicleDescription": "Seat Leon Stylance TDI TDI Stylance [Diesel \/ Manual]",
         "DateOfFirstRegistration": "2007-12-11T00:00:00Z",
