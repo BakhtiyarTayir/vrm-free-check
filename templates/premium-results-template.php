@@ -1531,9 +1531,12 @@ if (!isset($data) || empty($data)) {
     
     // Отладочная информация о данных
     error_log('Data keys: ' . print_r(array_keys($data), true));
-    error_log('MileageCheckDetails exists: ' . (isset($data['MileageCheckDetails']) ? 'yes' : 'no'));
-    if (isset($data['MileageCheckDetails'])) {
-        error_log('MileageCheckDetails: ' . print_r($data['MileageCheckDetails'], true));
+    error_log('MotHistoryDetails exists: ' . (isset($data['MotHistoryDetails']) ? 'yes' : 'no'));
+    if (isset($data['MotHistoryDetails']['MotTestDetailsList'])) {
+        error_log('MOT Test Records count: ' . count($data['MotHistoryDetails']['MotTestDetailsList']));
+        // Логируем только первые 2 записи для отладки
+        $sample_records = array_slice($data['MotHistoryDetails']['MotTestDetailsList'], 0, 2);
+        error_log('Sample MOT Records: ' . print_r($sample_records, true));
     }
     
     // Создаем экземпляр процессора пробега с передачей данных

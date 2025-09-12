@@ -27,7 +27,7 @@ class PremiumApiClient {
     ];
     
     public function __construct() {
-        $this->api_key = get_option('vrm_check_api_key', 'AAEF08BA-E98B-42A0-BB63-FEE0492243A7');
+        $this->api_key = get_option('vrm_check_api_key', '');
         $this->api_url = 'https://uk.api.vehicledataglobal.com/r2/lookup';
         $this->base_client = new ApiClient();
         
