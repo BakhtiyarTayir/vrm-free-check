@@ -164,36 +164,15 @@ if (!function_exists('calculate_time_ago')) {
                             <div class="vrm-check-title">Stolen</div>
                             <div class="vrm-check-status">Not Stolen</div>
                         </div>
-                        <div class="vrm-check-action">
-                            <a href="#" class="vrm-check-link">Sign in</a> or <a href="#" class="vrm-check-link">Register</a> to check for free
-                        </div>
+                        
                     </div>
                 </div>
                 
                 <!-- Insurance Check -->
-                <div class="vrm-check-item">
-                    <div class="vrm-check-icon vrm-check-info">i</div>
-                    <div class="vrm-check-content">
-                        <div class="vrm-check-title">Insurance</div>
-                        <div class="vrm-check-action">
-                            <a href="#" class="vrm-check-link">Check Insurance</a>
-                        </div>
-                        <div class="vrm-insurance-quote">
-                            <button class="vrm-quote-btn">Get a Quote</button>
-                        </div>
-                    </div>
-                </div>
+                
                 
                 <!-- Valuation -->
-                <div class="vrm-check-item">
-                    <div class="vrm-check-icon vrm-check-info">i</div>
-                    <div class="vrm-check-content">
-                        <div class="vrm-check-title">Valuation</div>
-                        <div class="vrm-check-action">
-                            <a href="#" class="vrm-check-link">Get a Valuation With WeBuyAnyCar.com</a>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </div>
         
@@ -277,15 +256,15 @@ if (!function_exists('calculate_time_ago')) {
                 </div>
             </div>
             
-            <p class="vrm-check-info" style="margin: 15px 0; color: #666;">Check if a vehicle is written off from £1.99.</p>
+            
             
             <!-- Hidden form for data transfer -->
-            <form id="full-check-form" method="POST" action="https://motcheck.local/full-check-page/" target="_blank" style="display: none;">
+            <form id="full-check-form" method="POST" action="https://motcheck.org/full-check-page/" target="_blank" style="display: none;">
                 <input type="hidden" name="vrm_data" value="<?php echo esc_attr(json_encode($data)); ?>">
                 <input type="hidden" name="vrm" value="<?php echo esc_attr($vrm); ?>">
             </form>
             
-            <button class="vrm-check-now-btn" onclick="redirectToFullCheck()" style="background-color: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; cursor: pointer;">Check Now</button>
+            <button class="vrm-check-now-btn" onclick="redirectToFullCheck()" style="background-color: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; cursor: pointer;">Check NOW in full check</button>
         </div>
     </div>
     
@@ -331,26 +310,7 @@ if (!function_exists('calculate_time_ago')) {
             </div>
             
                         <!-- Recommended Block -->
-            <div class="vrm-recommended-block">
-                <h3 class="vrm-block-title">Recommended</h3>
-                <div class="vrm-recommended-content">
-                    <h4 class="vrm-recommended-title">Resto Revival</h4>
-                    <p class="vrm-recommended-description">Captivating stories behind unique and fascinating cars, celebrating the passion of true petrol heads!</p>
-                    
-                    <div class="vrm-recommended-video">
-                        <iframe src="https://www.youtube.com/embed/YBIZnrdUS4k" 
-                                width="100%" 
-                                height="150" 
-                                style="border-radius: 8px; border: none;" 
-                                frameborder="0" 
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                allowfullscreen>
-                        </iframe>
-                    </div>
-                    
-                    <button class="vrm-youtube-btn">Watch Now on YouTube</button>
-                </div>
-            </div>
+            
 
             <!-- Fuel Costs Block -->
             <div class="vrm-performance-block">
@@ -393,9 +353,7 @@ if (!function_exists('calculate_time_ago')) {
 
         </div>
         
-        <div class="vrm-tax-disclaimer">
-            <p style="font-size: 12px; color: #666; margin-top: 15px;">*Road tax costs are indicative. You should check with the seller or book at the <a href="#" style="color: #007cba;">vehicle tax rates</a> table to confirm tax costs.</p>
-        </div>
+        
         
         <!-- Two Column Section -->
         <div class="vrm-two-column-section" style="margin-top: 30px;">
@@ -404,81 +362,10 @@ if (!function_exists('calculate_time_ago')) {
                 <div class="vrm-column vrm-column-left">
                     <div class="vrm-column-content">
                         <!-- Car Finance Claim Block -->
-                        <div class="car-finance-claim">
-                            <div class="claim-header">
-                                <img src="<?php echo esc_url(plugin_dir_url(__FILE__) . '../assets/images/alert.svg'); ?>" alt="Claim" class="claim-icon-svg">
-                                <h3 class="claim-title">Car Finance Claim</h3>
-                            </div>
-                            
-                            <h4 class="claim-question">Have you had a car on finance between 2008-2021?</h4>
-                            
-                            <p class="claim-description">
-                                You may be able to reclaim £1000s in recovered interest payments due 
-                                to potential hidden commission paid. Find out if you are eligible.
-                            </p>
-                            
-                            <a href="https://pcp.claim.co.uk/new/" class="claim-button" target="_blank">
-                                → Start your claim at claim.co.uk
-                            </a>
-                            
-                            <p class="claim-disclaimer">
-                                 Car Finance (HP/PCP) claims are regulated by the FCA. You do not 
-                                 need to use a claims management company such as partners to make 
-                                 a claim. You have the right to complain directly to the lender and/or use 
-                                 the Financial Ombudsman Service to seek redress for free.
-                             </p>
-                         </div>
+                        
                          
                          <!-- Additional Check Sections -->
-                         <div class="vehicle-checks">
-                             <!-- Diesel Claim -->
-                             <div class="check-item">
-                                 <div class="check-header">
-                                     <span class="check-icon">✓</span>
-                                     <h4 class="check-title">Diesel Claim</h4>
-                                 </div>
-                                 <p class="check-description">
-                                     It doesn't look like this vehicle has been affected by the diesel emissions scandal.
-                                 </p>
-                             </div>
-                             
-                             <!-- Exported -->
-                             <div class="check-item">
-                                 <div class="check-header">
-                                     <span class="check-icon">✓</span>
-                                     <h4 class="check-title">Exported</h4>
-                                 </div>
-                                 <p class="check-description">
-                                     This vehicle has not been marked as exported.
-                                 </p>
-                             </div>
-                             
-                             <!-- Recalls -->
-                             <div class="check-item">
-                                 <div class="check-header">
-                                     <span class="check-icon">✓</span>
-                                     <h4 class="check-title">Recalls</h4>
-                                 </div>
-                                 <p class="check-description">
-                                     No safety recalls found for this vehicle.
-                                 </p>
-                             </div>
-                             
-                             <!-- ULEZ Compliance -->
-                             <div class="check-item">
-                                 <div class="check-header">
-                                     <span class="check-icon">✓</span>
-                                     <h4 class="check-title">ULEZ Compliance</h4>
-                                 </div>
-                                 <p class="check-description">
-                                     This vehicle meets the ULEZ standards. Cars that meet Euro 4 
-                                     standards don't need to pay the daily charge when driving in the ULEZ 
-                                     zone. Other charges (e.g. congestion charge) may still apply. You can 
-                                     confirm the current status on the TfL website.
-                                 </p>
-                                 <a href="#" class="check-link">Check ULEZ status on TFL</a>
-                             </div>
-                         </div>
+                         
                          
                          <!-- Hidden History Block -->
                          <div class="hidden-history-block">
@@ -514,7 +401,7 @@ if (!function_exists('calculate_time_ago')) {
                                  Get a history check to check this vehicle for hidden history.
                              </p>
                              
-                             <button class="hidden-history-button">Get a Full Check</button>
+                             <button class="hidden-history-button" onclick="redirectToFullCheck()">Get a Full Check</button>
                          </div>
                     </div>
                 </div>
@@ -556,7 +443,7 @@ if (!function_exists('calculate_time_ago')) {
                                 Buy a full report to check mileage readings from the DVLA, Retailers / Garages & Leasing / Hire Companies.
                             </p>
                             
-                            <button class="hidden-mileage-issues-button">Get a History Check</button>
+                            <button class="hidden-mileage-issues-button" onclick="redirectToFullCheck()">Get a History Check</button>
                         </div>
                         
                         <!-- Mileage Data Block -->
@@ -584,7 +471,7 @@ if (!function_exists('calculate_time_ago')) {
                                 </div>
                             </div>
                             
-                            <button class="mileage-data-button">View Mileage History</button>
+                            <button class="mileage-data-button" onclick="redirectToFullCheck()">View Mileage History</button>
                         </div>
                     </div>
                 </div>
@@ -1475,8 +1362,46 @@ document.addEventListener('DOMContentLoaded', function() {
 // Function to redirect to full check page with data
 function redirectToFullCheck() {
     const form = document.getElementById('full-check-form');
+    const vrmValue = '<?php echo esc_js($data['registration'] ?? $vrm); ?>';
+    const targetName = 'fullcheckwin';
+    const url = 'https://motcheck.org/full-check-page/';
+
     if (form) {
+        form.setAttribute('target', targetName);
+        const win = window.open('', targetName);
         form.submit();
+
+        // Пытаемся заполнить поле на целевой странице после загрузки
+        let attempts = 0;
+        const maxAttempts = 60; // ~12 секунд при 200мс интервала
+        const timer = setInterval(() => {
+            attempts++;
+            try {
+                if (win && win.document) {
+                    const input = win.document.getElementById('vrm-input');
+                    if (input) {
+                        input.value = vrmValue;
+                        input.dispatchEvent(new Event('input', { bubbles: true }));
+                        input.dispatchEvent(new Event('change', { bubbles: true }));
+                        clearInterval(timer);
+                    }
+                }
+            } catch (e) {
+                // игнорируем ошибки доступа до полной загрузки окна
+            }
+
+            if (attempts >= maxAttempts) {
+                clearInterval(timer);
+                try {
+                    // запасной вариант — передаем через query-параметр
+                    if (win) win.location.href = url + '?vrm=' + encodeURIComponent(vrmValue);
+                } catch (e2) {}
+            }
+        }, 200);
+    } else {
+        // если форма недоступна, просто открываем страницу с query-параметром
+        window.open(url + '?vrm=' + encodeURIComponent(vrmValue), '_blank', 'noopener');
     }
 }
+ 
 </script>

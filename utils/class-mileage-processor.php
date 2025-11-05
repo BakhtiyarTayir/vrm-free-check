@@ -3,12 +3,13 @@
 /**
  * Class MileageProcessor
  * 
- * Обрабатывает данные пробега из MileageCheckDetails для отображения в блоках
+ * Обрабатывает данные пробега из MotHistoryDetails для отображения в блоках
  * Mileage Information и Advanced Mileage History
  */
 class MileageProcessor {
     
     private $mileage_data;
+    private $mot_history;
     
     /**
      * Конструктор
@@ -16,7 +17,9 @@ class MileageProcessor {
      * @param array $data Массив данных из API
      */
     public function __construct($data) {
-        $this->mileage_data = isset($data['MileageCheckDetails']) ? $data['MileageCheckDetails'] : [];
+        // Используем данные из MotHistoryDetails вместо MileageCheckDetails
+        $this->mot_history = isset($data['MotHistoryDetails']) ? $data['MotHistoryDetails'] : [];
+        $this->mileage_data = $this->convertMotDataToMileageFormat();
     }
     
     /**
@@ -69,26 +72,28 @@ class MileageProcessor {
     public function getMileageHistory() {
         $history = [];
         
-        if (empty($this->mileage_data['MileageResultList'])) {
+        if (empty($this->mot_history['MotTestDetailsList'])) {
             return $history;
         }
         
-        foreach ($this->mileage_data['MileageResultList'] as $record) {
-            $formatted_record = [
-                'date' => $this->formatDate($record['DateRecorded'] ?? ''),
-                'formatted_date' => $this->formatDate($record['DateRecorded'] ?? ''),
-                'mileage' => isset($record['Mileage']) ? number_format($record['Mileage']) : 'N/A',
-                'formatted_mileage' => isset($record['Mileage']) ? number_format($record['Mileage']) : 'N/A',
-                'source' => $record['DataSource'] ?? 'Unknown',
-                'in_sequence' => $record['InSequence'] ?? true,
-                'is_anomaly' => !($record['InSequence'] ?? true),
-                'raw_mileage' => $record['Mileage'] ?? 0
-            ];
-            
-            // Добавляем информацию об аномалии
-            if (!$formatted_record['in_sequence']) {
-                $formatted_record['anomaly_info'] = $this->calculateAnomalyInfo($record, $history);
+        foreach ($this->mot_history['MotTestDetailsList'] as $record) {
+            // Пропускаем записи без показаний одометра
+            if (empty($record['OdometerReading']) || $record['OdometerReading'] === '0') {
+                continue;
             }
+            
+            $formatted_record = [
+                'date' => $this->formatDate($record['TestDate'] ?? ''),
+                'formatted_date' => $this->formatDate($record['TestDate'] ?? ''),
+                'mileage' => number_format($record['OdometerReading']),
+                'formatted_mileage' => number_format($record['OdometerReading']),
+                'source' => 'MOT Test',
+                'in_sequence' => true, // Будем вычислять позже
+                'is_anomaly' => false,
+                'raw_mileage' => (int)$record['OdometerReading'],
+                'test_passed' => $record['TestPassed'] ?? false,
+                'test_result' => $record['TestPassed'] ? 'Pass' : 'Fail'
+            ];
             
             $history[] = $formatted_record;
         }
@@ -97,6 +102,9 @@ class MileageProcessor {
         usort($history, function($a, $b) {
             return strtotime($b['date']) - strtotime($a['date']);
         });
+        
+        // Проверяем аномалии пробега
+        $this->detectMileageAnomalies($history);
         
         return $history;
     }
@@ -113,21 +121,31 @@ class MileageProcessor {
             'anomalies' => []
         ];
         
-        if (empty($this->mileage_data['MileageResultList'])) {
+        if (empty($this->mot_history['MotTestDetailsList'])) {
             return $chart_data;
         }
         
-        $sorted_records = $this->mileage_data['MileageResultList'];
+        $sorted_records = [];
+        
+        // Фильтруем записи с показаниями одометра
+        foreach ($this->mot_history['MotTestDetailsList'] as $record) {
+            if (!empty($record['OdometerReading']) && $record['OdometerReading'] !== '0') {
+                $sorted_records[] = $record;
+            }
+        }
         
         // Сортируем по дате
         usort($sorted_records, function($a, $b) {
-            return strtotime($a['DateRecorded']) - strtotime($b['DateRecorded']);
+            return strtotime($a['TestDate']) - strtotime($b['TestDate']);
         });
         
-        foreach ($sorted_records as $record) {
-            $chart_data['labels'][] = $this->formatDateForChart($record['DateRecorded'] ?? '');
-            $chart_data['mileage'][] = $record['Mileage'] ?? 0;
-            $chart_data['anomalies'][] = !($record['InSequence'] ?? true);
+        // Обнаруживаем аномалии
+        $anomalies = $this->detectChartAnomalies($sorted_records);
+        
+        foreach ($sorted_records as $index => $record) {
+            $chart_data['labels'][] = $this->formatDateForChart($record['TestDate'] ?? '');
+            $chart_data['mileage'][] = (int)$record['OdometerReading'];
+            $chart_data['anomalies'][] = $anomalies[$index] ?? false;
         }
         
         return $chart_data;
@@ -139,7 +157,18 @@ class MileageProcessor {
      * @return bool
      */
     public function hasMileageData() {
-        return !empty($this->mileage_data['MileageResultList']);
+        if (empty($this->mot_history['MotTestDetailsList'])) {
+            return false;
+        }
+        
+        // Проверяем, есть ли записи с показаниями одометра
+        foreach ($this->mot_history['MotTestDetailsList'] as $record) {
+            if (!empty($record['OdometerReading']) && $record['OdometerReading'] !== '0') {
+                return true;
+            }
+        }
+        
+        return false;
     }
     
     /**
@@ -280,5 +309,123 @@ class MileageProcessor {
         }
         
         return 'Anomaly';
+    }
+    
+    /**
+     * Конвертировать данные MOT в формат данных пробега
+     * 
+     * @return array
+     */
+    private function convertMotDataToMileageFormat() {
+        $converted_data = [
+            'MileageAnomalyDetected' => false,
+            'CalculatedAverageAnnualMileage' => 0,
+            'AverageMileageForAge' => 0,
+            'MileageResultList' => []
+        ];
+        
+        if (empty($this->mot_history['MotTestDetailsList'])) {
+            return $converted_data;
+        }
+        
+        $valid_records = [];
+        
+        // Фильтруем и конвертируем записи
+        foreach ($this->mot_history['MotTestDetailsList'] as $record) {
+            if (!empty($record['OdometerReading']) && $record['OdometerReading'] !== '0') {
+                $valid_records[] = [
+                    'DateRecorded' => $record['TestDate'],
+                    'Mileage' => (int)$record['OdometerReading'],
+                    'DataSource' => 'MOT Test',
+                    'InSequence' => true
+                ];
+            }
+        }
+        
+        // Сортируем по дате
+        usort($valid_records, function($a, $b) {
+            return strtotime($a['DateRecorded']) - strtotime($b['DateRecorded']);
+        });
+        
+        $converted_data['MileageResultList'] = $valid_records;
+        
+        // Вычисляем средний годовой пробег
+        if (count($valid_records) >= 2) {
+            $first_record = reset($valid_records);
+            $last_record = end($valid_records);
+            
+            $years_diff = (strtotime($last_record['DateRecorded']) - strtotime($first_record['DateRecorded'])) / (365.25 * 24 * 3600);
+            $mileage_diff = $last_record['Mileage'] - $first_record['Mileage'];
+            
+            if ($years_diff > 0) {
+                $converted_data['CalculatedAverageAnnualMileage'] = $mileage_diff / $years_diff;
+            }
+        }
+        
+        // Обнаруживаем аномалии
+        $converted_data['MileageAnomalyDetected'] = $this->detectAnomaliesInRecords($valid_records);
+        
+        return $converted_data;
+    }
+    
+    /**
+     * Обнаружить аномалии пробега в истории
+     * 
+     * @param array $history
+     */
+    private function detectMileageAnomalies(&$history) {
+        for ($i = 1; $i < count($history); $i++) {
+            $current = &$history[$i];
+            $previous = $history[$i - 1];
+            
+            // Проверяем, уменьшился ли пробег
+            if ($current['raw_mileage'] > $previous['raw_mileage']) {
+                $current['is_anomaly'] = true;
+                $current['in_sequence'] = false;
+                $current['anomaly_info'] = 'Mileage decreased by ' . number_format($current['raw_mileage'] - $previous['raw_mileage']);
+            }
+        }
+    }
+    
+    /**
+     * Обнаружить аномалии для графика
+     * 
+     * @param array $records
+     * @return array
+     */
+    private function detectChartAnomalies($records) {
+        $anomalies = [];
+        
+        for ($i = 0; $i < count($records); $i++) {
+            $anomalies[$i] = false;
+            
+            if ($i > 0) {
+                $current_mileage = (int)$records[$i]['OdometerReading'];
+                $previous_mileage = (int)$records[$i - 1]['OdometerReading'];
+                
+                // Аномалия если пробег уменьшился
+                if ($current_mileage < $previous_mileage) {
+                    $anomalies[$i] = true;
+                }
+            }
+        }
+        
+        return $anomalies;
+    }
+    
+    /**
+     * Обнаружить аномалии в записях
+     * 
+     * @param array $records
+     * @return bool
+     */
+    private function detectAnomaliesInRecords($records) {
+        for ($i = 1; $i < count($records); $i++) {
+            if ($records[$i]['Mileage'] < $records[$i - 1]['Mileage']) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 }

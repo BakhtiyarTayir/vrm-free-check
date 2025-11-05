@@ -129,6 +129,7 @@
             "Mark": 2,
             "StartDate": "2005-08-03T00:00:00Z",
             "EndDate": "2010-11-22T00:00:00Z",
+            "IntroductionDate": "2005-07-01T00:00:00Z",
             "CountryOfOrigin": "Spain",
             "VariantCode": 1
         },
@@ -251,16 +252,16 @@
         },
         "StatusCode": 0,
         "StatusMessage": "Success",
-        "DocumentVersion": 16,
-        "GeneratedAt": "2025-08-13T09:39:04.229Z"
+        "DocumentVersion": 24,
+        "GeneratedAt": "2025-10-14T11:25:53.995Z"
     },
     "VehicleImageDetails": {
         "VehicleImageList": {
             "ViewAngle": "Exterior_Angle270",
-            "ImageUrl": "https:\/\/vehicleimages.ukvehicledata.co.uk\/s3\/95B34DF231C26B5D271C831DD725FD994D613146920E86F6384F08C8C0657BC1841C3B902D2F3B6F9003C80DEF602D0E9FD2110E552E5380E84D2899849B1256AAFDD4F47AE871DD5B71C67B30A7FB83CC711261B4FB465CD41D2F20AD744FD9",
+            "ImageUrl": "https:\/\/vehicleimages.ukvehicledata.co.uk\/s3\/95B34DF231C26B5D271C831DD725FD994D613146920E86F6384F08C8C0657BC1841C3B902D2F3B6F9003C80DEF602D0E9FD2110E552E5380E84D2899849B1256B7586365DE9BCAFF489BDB04E718D8024E2C5B685CAB60D96EF685EFB63928A7",
             "Colour": "#212121",
             "Description": "Dark Grey",
-            "ExpiryDate": "2025-09-18T07:07:32Z"
+            "ExpiryDate": "2025-11-12T06:09:44Z"
         },
         "StatusCode": 0,
         "StatusMessage": "Success",
@@ -312,7 +313,7 @@
         "UpdateTimeStamp": "2021-07-08T10:12:39Z",
         "LatestTestDate": "2021-07-08T10:12:39Z",
         "MotDueDate": "2022-07-07T00:00:00Z",
-        "DaysSinceLastMot": 1525,
+        "DaysSinceLastMot": 1580,
         "FirstUsedDate": "2007-12-11T00:00:00Z",
         "Make": "SEAT",
         "Model": "LEON",
@@ -1103,25 +1104,25 @@
         "GeneratedAt": "2024-11-29T09:25:07.455Z"
     },
     "ValuationDetails": {
-        "ValuationTime": "2025-09-11T07:07:37.9753329Z",
-        "ValuationMileage": 223439,
+        "ValuationTime": "2025-11-05T06:09:45.8286525Z",
+        "ValuationMileage": 225198,
         "ValuationBook": "Direct",
         "VehicleDescription": "Seat Leon Stylance TDI TDI Stylance [Diesel \/ Manual]",
         "DateOfFirstRegistration": "2007-12-11T00:00:00Z",
         "ValuationFigures": {
             "OnTheRoad": 14430,
-            "DealerForecourt": 1005,
-            "TradeRetail": 868,
-            "PrivateClean": 699,
-            "PrivateAverage": 643,
-            "PartExchange": 664,
-            "Auction": 518,
-            "TradeAverage": 409,
-            "TradePoor": 352
+            "DealerForecourt": 993,
+            "TradeRetail": 858,
+            "PrivateClean": 691,
+            "PrivateAverage": 636,
+            "PartExchange": 656,
+            "Auction": 512,
+            "TradeAverage": 405,
+            "TradePoor": 348
         },
         "StatusCode": 0,
         "StatusMessage": "Success",
         "DocumentVersion": 1,
-        "GeneratedAt": "2025-09-07T02:51:51.762Z"
+        "GeneratedAt": "2025-11-02T01:42:57.625Z"
     }
 }

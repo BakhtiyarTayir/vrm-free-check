@@ -299,16 +299,6 @@ if (!isset($data) || empty($data)) {
                     
                     <div class="check-row">
                         <div class="check-label">
-                            <span class="check-name">VIN Check</span>
-                            <span class="check-info">ⓘ</span>
-                        </div>
-                        <div class="check-status">
-                            <span class="status-badge <?php echo esc_attr($extended_checks['vin_check']['class']); ?>" title="<?php echo esc_attr($extended_checks['vin_check']['message']); ?>"><?php echo esc_html($extended_checks['vin_check']['text']); ?></span>
-                        </div>
-                    </div>
-                    
-                    <div class="check-row">
-                        <div class="check-label">
                             <span class="check-name">Outstanding Finance</span>
                             <span class="check-info">ⓘ</span>
                         </div>
@@ -466,27 +456,6 @@ if (!isset($data) || empty($data)) {
                 <div class="manual-check-row">
                     <div class="manual-check-label">V5C logbook date</div>
                     <div class="manual-check-value"><?php echo esc_html($data['VehicleDetails']['VehicleHistory']['V5CDetails']['V5CIssueDate'] ?? 'Not Available'); ?></div>
-                </div>
-                
-                <div class="vin-check-section">
-                    <h4 class="vin-check-title">VIN check</h4>
-                    <p class="vin-check-description">Enter this vehicle's 17 digit Vehicle Identification Number (VIN) in the field below to see if it matches our records.</p>
-                    
-                    <div class="vin-input-container">
-                        <input type="text" class="vin-input" value="<?php 
-                            $vin = $data['VehicleDetails']['VehicleIdentification']['Vin'] ?? '';
-                            if (!empty($vin) && strlen($vin) >= 4) {
-                                echo esc_attr(str_repeat('*', strlen($vin) - 4) . substr($vin, -4));
-                            } else {
-                                echo '*************';
-                            }
-                        ?>" readonly>
-                        <button class="vin-check-button">Check</button>
-                    </div>
-                    
-                    <div class="vin-result">
-                        <span class="vin-success">VIN matched successfully.</span>
-                    </div>
                 </div>
             </div>
         </div>
@@ -910,7 +879,7 @@ if (!isset($data) || empty($data)) {
         </div>
         
         <div class="salvage-history-footer">
-            <a href="#" style="color: #dc3545; text-decoration: underline; font-size: 14px;">What is a Salvage Check?</a>
+        <?php echo full_check_link(); ?>
         </div>
     </div>
 
@@ -1531,9 +1500,12 @@ if (!isset($data) || empty($data)) {
     
     // Отладочная информация о данных
     error_log('Data keys: ' . print_r(array_keys($data), true));
-    error_log('MileageCheckDetails exists: ' . (isset($data['MileageCheckDetails']) ? 'yes' : 'no'));
-    if (isset($data['MileageCheckDetails'])) {
-        error_log('MileageCheckDetails: ' . print_r($data['MileageCheckDetails'], true));
+    error_log('MotHistoryDetails exists: ' . (isset($data['MotHistoryDetails']) ? 'yes' : 'no'));
+    if (isset($data['MotHistoryDetails']['MotTestDetailsList'])) {
+        error_log('MOT Test Records count: ' . count($data['MotHistoryDetails']['MotTestDetailsList']));
+        // Логируем только первые 2 записи для отладки
+        $sample_records = array_slice($data['MotHistoryDetails']['MotTestDetailsList'], 0, 2);
+        error_log('Sample MOT Records: ' . print_r($sample_records, true));
     }
     
     // Создаем экземпляр процессора пробега с передачей данных
@@ -2108,10 +2080,7 @@ if (!isset($data) || empty($data)) {
                 </div>
             </div>
             
-            <div class="insurance-row">
-                <div class="insurance-label">Insurance Status</div>
-                <div class="insurance-value insurance-check">Check if it's Insured</div>
-            </div>
+            
         </div>
     </div>
     <!-- End Insurance Block -->
@@ -2128,29 +2097,12 @@ if (!isset($data) || empty($data)) {
                 <div class="ulez-value"><?php echo esc_html($data['ModelDetails']['Emissions']['EuroStatus'] ?? $data['VDICheck']['EuroStatus'] ?? 'No data available'); ?></div>
             </div>
             
-            <div class="ulez-row">
-                <div class="ulez-label">ULEZ Status</div>
-                <div class="ulez-value ulez-check">Check ULEZ emissions</div>
-            </div>
+            
         </div>
     </div>
     <!-- End ULEZ Block -->
 
-    <!-- Instant Report Block -->
-    <div class="instant-report-block">
-        <div class="instant-report-header">
-            <h3 class="instant-report-title title-gray">Instant Report</h3>
-        </div>
-        <div class="instant-report-content">
-            <p class="instant-report-description">
-                Your report will be instantly available upon payment, and a PDF version will also be sent to the provided email address.
-            </p>
-            <p class="instant-report-contact">
-                If you have any questions then please <a href="#" class="contact-link">contact us</a> or email <a href="mailto:enquiries@fullcarchecks.co.uk" class="email-link">enquiries@fullcarchecks.co.uk</a>
-            </p>
-        </div>
-    </div>
-    <!-- End Instant Report Block -->
+    
 
 </div>
 
