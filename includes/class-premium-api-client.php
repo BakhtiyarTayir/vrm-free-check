@@ -27,8 +27,7 @@ class PremiumApiClient {
     ];
     
     public function __construct() {
-        //$this->api_key = get_option('vrm_check_api_key', 'AAEF08BA-E98B-42A0-BB63-FEE0492243A7');
-        $this->api_key = get_option('vrm_check_api_key', '15D0A432-A308-4B28-89B4-6E07F0C55DCE'); //demo data sandbox
+        $this->api_key = get_option('vrm_check_api_key', '');
         $this->api_url = 'https://uk.api.vehicledataglobal.com/r2/lookup';
         $this->base_client = new ApiClient();
         
@@ -74,7 +73,7 @@ class PremiumApiClient {
     
     /**
      * Выполняет HTTP запрос к указанному URL
-     * 
+     *  
      * @param string $url URL для запроса
      * @return array|false Декодированный JSON ответ или false при ошибке
      */
