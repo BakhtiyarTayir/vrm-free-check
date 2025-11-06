@@ -43,6 +43,14 @@ class VrmCheckPlugin {
             VRM_CHECK_PLUGIN_VERSION
         );
         
+        // Подключаем стили модального окна
+        wp_enqueue_style(
+            'vrm-modal-style',
+            VRM_CHECK_PLUGIN_URL . 'assets/css/vrm-modal.css',
+            array(),
+            VRM_CHECK_PLUGIN_VERSION
+        );
+        
         wp_enqueue_script(
             'vrm-check-script',
             VRM_CHECK_PLUGIN_URL . 'assets/js/vrm-check-script.js',

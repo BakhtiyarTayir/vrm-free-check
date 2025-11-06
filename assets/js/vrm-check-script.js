@@ -86,6 +86,186 @@ function isValidVRM(vrm) {
     });
 }
 
+function updateCreditsDisplay(credits) {
+    // Обновить отображение баланса кредитов
+    var creditsElement = jQuery('.user-credits-balance');
+    if (creditsElement.length) {
+        creditsElement.text(credits);
+        console.log('Credits updated:', credits);
+    }
+    
+    // Показать уведомление
+    if (credits > 0) {
+        console.log('Remaining credits:', credits);
+    } else {
+        console.log('No credits remaining');
+    }
+}
+
+// Функции для модального окна
+function showModal(options) {
+    var modal = jQuery('#vrm-modal');
+    
+    // Если модальное окно не существует, создаём его
+    if (modal.length === 0) {
+        jQuery('body').append(
+            '<div id="vrm-modal-overlay" class="vrm-modal-overlay">' +
+                '<div id="vrm-modal" class="vrm-modal">' +
+                    '<div class="vrm-modal-header">' +
+                        '<div class="vrm-modal-icon"></div>' +
+                        '<div class="vrm-modal-header-text">' +
+                            '<h3 class="vrm-modal-title"></h3>' +
+                            '<p class="vrm-modal-subtitle"></p>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="vrm-modal-body">' +
+                        '<p class="vrm-modal-message"></p>' +
+                    '</div>' +
+                    '<div class="vrm-modal-footer"></div>' +
+                '</div>' +
+            '</div>'
+        );
+        modal = jQuery('#vrm-modal');
+    }
+    
+    var overlay = jQuery('#vrm-modal-overlay');
+    
+    // Установить иконку
+    var icon = modal.find('.vrm-modal-icon');
+    icon.removeClass('warning error info');
+    icon.addClass(options.type || 'info');
+    icon.html(options.icon || '⚠️');
+    
+    // Установить заголовок и подзаголовок
+    modal.find('.vrm-modal-title').text(options.title || '');
+    modal.find('.vrm-modal-subtitle').text(options.subtitle || '');
+    
+    // Установить сообщение
+    modal.find('.vrm-modal-message').html(options.message || '');
+    
+    // Создать кнопки
+    var footer = modal.find('.vrm-modal-footer');
+    footer.empty();
+    
+    if (options.buttons && options.buttons.length > 0) {
+        options.buttons.forEach(function(button) {
+            var btnClass = 'vrm-modal-btn ' + (button.class || 'vrm-modal-btn-secondary');
+            var btn = jQuery('<button>')
+                .addClass(btnClass)
+                .attr('type', 'button')
+                .html(button.icon ? button.icon + ' ' + button.text : button.text)
+                .on('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Modal button clicked:', button.text);
+                    closeModal();
+                    if (button.action) {
+                        console.log('Executing button action');
+                        button.action();
+                    }
+                });
+            footer.append(btn);
+        });
+    }
+    
+    // Показать модальное окно
+    overlay.addClass('active');
+    
+    // Закрытие по клику на overlay
+    overlay.off('click').on('click', function(e) {
+        if (e.target === this) {
+            closeModal();
+        }
+    });
+    
+    // Закрытие по ESC
+    jQuery(document).off('keydown.modal').on('keydown.modal', function(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+}
+
+function closeModal() {
+    jQuery('#vrm-modal-overlay').removeClass('active');
+    jQuery(document).off('keydown.modal');
+}
+
+function showLoginModal(message, loginUrl, registerUrl) {
+    console.log('showLoginModal called', {
+        message: message,
+        loginUrl: loginUrl,
+        registerUrl: registerUrl
+    });
+    
+    var finalRegisterUrl = registerUrl || (loginUrl.replace('wp-login.php', 'my-account/'));
+    var finalLoginUrl = loginUrl.indexOf('my-account') > -1 ? loginUrl : loginUrl.replace('wp-login.php', 'my-account/');
+    
+    console.log('Final URLs:', {
+        register: finalRegisterUrl,
+        login: finalLoginUrl
+    });
+    
+    showModal({
+        type: 'warning',
+        icon: '🔐',
+        title: 'Login Required',
+        subtitle: 'Premium features require authentication',
+        message: message,
+        buttons: [
+            {
+                text: 'Register',
+                class: 'vrm-modal-btn-secondary',
+                icon: '📝',
+                action: function() {
+                    console.log('Register button action, redirecting to:', finalRegisterUrl);
+                    window.location.href = finalRegisterUrl;
+                }
+            },
+            {
+                text: 'Log In',
+                class: 'vrm-modal-btn-primary',
+                icon: '→',
+                action: function() {
+                    console.log('Login button action, redirecting to:', finalLoginUrl);
+                    window.location.href = finalLoginUrl;
+                }
+            }
+        ]
+    });
+}
+
+function showCreditsModal(message, shopUrl, currentCredits) {
+    var creditsInfo = currentCredits !== undefined 
+        ? '<div class="vrm-credits-info"><p><strong>Current Balance:</strong> ' + currentCredits + ' credits</p></div>'
+        : '';
+    
+    showModal({
+        type: 'warning',
+        icon: '💳',
+        title: 'Credits Required',
+        subtitle: 'Purchase credits to continue',
+        message: message + creditsInfo,
+        buttons: [
+            {
+                text: 'Maybe Later',
+                class: 'vrm-modal-btn-secondary',
+                action: function() {
+                    // Просто закрыть
+                }
+            },
+            {
+                text: 'Buy Credits',
+                class: 'vrm-modal-btn-success',
+                icon: '🛒',
+                action: function() {
+                    window.location.href = shopUrl;
+                }
+            }
+        ]
+    });
+}
+
 function performAjaxRequest(ajaxData, startTime, isPremium) {
     console.log('AJAX data:', ajaxData);
     
@@ -105,16 +285,37 @@ function performAjaxRequest(ajaxData, startTime, isPremium) {
             
             if (response.success) {
                 showResults(response.data.html);
+                
+                // Обновить баланс кредитов если есть
+                if (response.data.credits_remaining !== undefined) {
+                    updateCreditsDisplay(response.data.credits_remaining);
+                }
+                
                 if (response.data.cached) {
                     console.log('Results from cache');
                 }
             } else {
-                    console.error('VRM Check: Server returned error', {
-                        error: response.data.message,
-                        executionTime: executionTime + 'ms'
-                    });
-                    showError(response.data.message || 'An error occurred while checking the vehicle');
+                // Проверка требования авторизации
+                if (response.data.login_required) {
+                    console.log('Login required, showing login modal');
+                    showLoginModal(response.data.message, response.data.login_url, response.data.register_url);
+                    return;
                 }
+                
+                // Проверка требования кредитов
+                if (response.data.credits_required) {
+                    console.log('Credits required, showing credits modal');
+                    showCreditsModal(response.data.message, response.data.shop_url, 0);
+                    return;
+                }
+                
+                // Обычная ошибка
+                console.error('VRM Check: Server returned error', {
+                    error: response.data.message,
+                    executionTime: executionTime + 'ms'
+                });
+                showError(response.data.message || 'An error occurred while checking the vehicle');
+            }
         },
         error: function(xhr, status, error) {
             var executionTime = Date.now() - startTime;

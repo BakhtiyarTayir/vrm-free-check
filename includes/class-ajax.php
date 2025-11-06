@@ -76,7 +76,48 @@ class Ajax {
      */
     public function handle_vrm_check_premium() {
         try {
-            // Проверяем nonce для безопасности
+            // 1. Получаем VRM из запроса (нужно для сохранения в сессии)
+            $vrm_raw = isset($_POST['vrm']) ? sanitize_text_field($_POST['vrm']) : '';
+            
+            // 2. Проверка авторизации
+            if (!is_user_logged_in()) {
+                $this->logger->log('warning', 'Unauthorized premium check attempt', ['vrm' => $vrm_raw]);
+                
+                // Сохраняем VRM и текущую страницу в сессии для редиректа после логина
+                if (!session_id()) {
+                    session_start();
+                }
+                $_SESSION['vrm_check_pending'] = $vrm_raw;
+                $_SESSION['vrm_check_redirect'] = $_SERVER['HTTP_REFERER'] ?? home_url('/full-check-page/');
+                
+                // Используем WooCommerce My Account страницу
+                $myaccount_page_id = get_option('woocommerce_myaccount_page_id');
+                $myaccount_url = $myaccount_page_id ? get_permalink($myaccount_page_id) : wp_login_url(get_permalink());
+                
+                wp_send_json_error(array(
+                    'message' => __('Please log in to use premium vehicle checks.', 'vrm-check-plugin'),
+                    'login_required' => true,
+                    'login_url' => $myaccount_url,
+                    'register_url' => $myaccount_url
+                ));
+            }
+            
+            $user_id = get_current_user_id();
+            
+            // 3. Проверка кредитов
+            $credits = CreditsManager::get_user_credits($user_id);
+            $this->logger->log('info', 'User credits check', ['user_id' => $user_id, 'credits' => $credits]);
+            
+            if ($credits <= 0) {
+                $this->logger->log('warning', 'Insufficient credits', ['user_id' => $user_id]);
+                wp_send_json_error(array(
+                    'message' => __('Insufficient credits. Please purchase credits to continue.', 'vrm-check-plugin'),
+                    'credits_required' => true,
+                    'shop_url' => get_permalink(wc_get_page_id('shop'))
+                ));
+            }
+            
+            // 4. Проверяем nonce для безопасности
             $this->logger->log('info', 'Starting premium VRM check - nonce verification');
             if (!wp_verify_nonce($_POST['nonce'] ?? '', 'vrm_check_nonce')) {
                 $this->logger->log_error('Nonce verification failed', ['received_nonce' => $_POST['nonce'] ?? 'not provided']);
@@ -85,10 +126,10 @@ class Ajax {
                 ));
             }
             
-            // Получаем и валидируем VRM
+            // 5. Получаем и валидируем VRM
             $vrm = $this->validate_and_clean_vrm();
             
-            // Выполняем премиум API запрос
+            // 6. Выполняем премиум API запрос
             $this->logger->log('info', 'Starting premium API request for VRM: ' . $vrm);
             $result = $this->premium_api_client->get_vehicle_report($vrm);
             
@@ -109,14 +150,30 @@ class Ajax {
                 ));
             }
             
-            // Генерируем HTML из полученных данных
+            // 6. Списываем кредит
+            if (!CreditsManager::deduct_credit($user_id)) {
+                $this->logger->error('Failed to deduct credit', ['user_id' => $user_id]);
+                wp_send_json_error(array(
+                    'message' => __('Error processing credits. Please try again.', 'vrm-check-plugin')
+                ));
+            }
+            
+            // 7. Сохраняем в историю
+            $history_id = HistoryManager::save_check($user_id, $vrm, $result, 'premium', 5.00);
+            $this->logger->log('info', 'Check saved to history', ['history_id' => $history_id, 'user_id' => $user_id, 'vrm' => $vrm]);
+            
+            // 8. Генерируем HTML из полученных данных
             ob_start();
             $data = $result;
             include(plugin_dir_path(dirname(__FILE__)) . 'templates/premium-results-template.php');
             $html = ob_get_clean();
             
+            // 9. Возвращаем результат с обновлённым балансом
+            $remaining_credits = CreditsManager::get_user_credits($user_id);
             wp_send_json_success(array(
-                'html' => $html
+                'html' => $html,
+                'credits_remaining' => $remaining_credits,
+                'history_id' => $history_id
             ));
             
         } catch (Exception $e) {

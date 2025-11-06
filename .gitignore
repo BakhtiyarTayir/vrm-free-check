@@ -1,0 +1,35 @@
+# WordPress
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+*.log
+npm-debug.log*
+error_log
+
+# Dependencies
+node_modules/
+vendor/
+
+# Build files
+*.min.js
+*.min.css
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Documentation (exclude markdown files)
+*.md
+
+# Debug files
+debug_*.json

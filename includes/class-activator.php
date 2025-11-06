@@ -13,6 +13,9 @@ class Activator {
     public static function activate() {
         self::set_default_options();
         
+        // Создаём таблицы базы данных
+        Database::create_tables();
+        
         // Flush rewrite rules
         flush_rewrite_rules();
     }
@@ -21,8 +24,18 @@ class Activator {
      * Set default plugin options
      */
     private static function set_default_options() {
+        // API Key - без дефолтного значения
         if (get_option('vrm_check_api_key') === false) {
-            add_option('vrm_check_api_key', '15D0A432-A308-4B28-89B4-6E07F0C55DCE');
+            add_option('vrm_check_api_key', '');
+        }
+        
+        // Cache settings
+        if (get_option('vrm_check_cache_enabled') === false) {
+            add_option('vrm_check_cache_enabled', '1');
+        }
+        
+        if (get_option('vrm_check_cache_duration') === false) {
+            add_option('vrm_check_cache_duration', '1');
         }
     }
     

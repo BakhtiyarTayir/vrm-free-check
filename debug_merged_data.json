@@ -258,10 +258,10 @@
     "VehicleImageDetails": {
         "VehicleImageList": {
             "ViewAngle": "Exterior_Angle270",
-            "ImageUrl": "https:\/\/vehicleimages.ukvehicledata.co.uk\/s3\/95B34DF231C26B5D271C831DD725FD994D613146920E86F6384F08C8C0657BC1841C3B902D2F3B6F9003C80DEF602D0E9FD2110E552E5380E84D2899849B1256B7586365DE9BCAFF489BDB04E718D8024E2C5B685CAB60D96EF685EFB63928A7",
+            "ImageUrl": "https:\/\/vehicleimages.ukvehicledata.co.uk\/s3\/95B34DF231C26B5D271C831DD725FD994D613146920E86F6384F08C8C0657BC1841C3B902D2F3B6F9003C80DEF602D0E9FD2110E552E5380E84D2899849B1256B7586365DE9BCAFF489BDB04E718D802F9D36D279A89B878FD9A808FE3E9629B",
             "Colour": "#212121",
             "Description": "Dark Grey",
-            "ExpiryDate": "2025-11-12T06:09:44Z"
+            "ExpiryDate": "2025-11-12T11:09:35Z"
         },
         "StatusCode": 0,
         "StatusMessage": "Success",
@@ -313,7 +313,7 @@
         "UpdateTimeStamp": "2021-07-08T10:12:39Z",
         "LatestTestDate": "2021-07-08T10:12:39Z",
         "MotDueDate": "2022-07-07T00:00:00Z",
-        "DaysSinceLastMot": 1580,
+        "DaysSinceLastMot": 1581,
         "FirstUsedDate": "2007-12-11T00:00:00Z",
         "Make": "SEAT",
         "Model": "LEON",
@@ -1104,8 +1104,8 @@
         "GeneratedAt": "2024-11-29T09:25:07.455Z"
     },
     "ValuationDetails": {
-        "ValuationTime": "2025-11-05T06:09:45.8286525Z",
-        "ValuationMileage": 225198,
+        "ValuationTime": "2025-11-05T11:09:37.0104694Z",
+        "ValuationMileage": 225204,
         "ValuationBook": "Direct",
         "VehicleDescription": "Seat Leon Stylance TDI TDI Stylance [Diesel \/ Manual]",
         "DateOfFirstRegistration": "2007-12-11T00:00:00Z",
@@ -1114,7 +1114,7 @@
             "DealerForecourt": 993,
             "TradeRetail": 858,
             "PrivateClean": 691,
-            "PrivateAverage": 636,
+            "PrivateAverage": 635,
             "PartExchange": 656,
             "Auction": 512,
             "TradeAverage": 405,

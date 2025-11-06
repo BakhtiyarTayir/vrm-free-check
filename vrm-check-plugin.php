@@ -2,8 +2,8 @@
 /**
  * Plugin Name: VRM Check Plugin
  * Plugin URI: https://motcheck.org
- * Description: UK Vehicle Registration Mark (VRM) checker using Vehicle Data Global API. Provides comprehensive vehicle information including DVLA data, MOT history, tax status, and more.
- * Version: 1.0.2
+ * Description: UK Vehicle Registration Mark (VRM) checker using Vehicle Data Global API. Provides comprehensive vehicle information including DVLA data, MOT history, tax status, and more. Now with paid credits system!
+ * Version: 1.0.3
  * Author: MOT Check
  * License: GPL v2 or later
  * Text Domain: vrm-check-plugin
@@ -17,10 +17,14 @@ if (!defined('ABSPATH')) {
 // Define plugin constants
 define('VRM_CHECK_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('VRM_CHECK_PLUGIN_PATH', plugin_dir_path(__FILE__));
-define('VRM_CHECK_PLUGIN_VERSION', '1.0.0');
+define('VRM_CHECK_PLUGIN_VERSION', '1.0.3');
 
 // Include required files
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-logger.php';
+require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-database.php';
+require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-credits-manager.php';
+require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-history-manager.php';
+require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-login-redirect.php';
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-vrm-check-plugin.php';
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-admin.php';
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-ajax.php';
