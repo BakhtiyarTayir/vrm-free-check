@@ -426,8 +426,15 @@ class VRM_Report_Page {
                 <!-- Report Content -->
                 <div class="report-content">
                     <?php
-                    // Используем существующий template
-                    include VRM_CHECK_PLUGIN_PATH . 'templates/premium-results-template.php';
+                    // Выбираем шаблон в зависимости от типа проверки
+                    $vrm = $check->vrm;
+                    if ($check->check_type === 'basic') {
+                        // Для бесплатной проверки используем results-template.php
+                        include VRM_CHECK_PLUGIN_PATH . 'templates/results-template.php';
+                    } else {
+                        // Для платной проверки используем premium-results-template.php
+                        include VRM_CHECK_PLUGIN_PATH . 'templates/premium-results-template.php';
+                    }
                     ?>
                 </div>
             </div>
