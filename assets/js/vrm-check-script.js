@@ -43,6 +43,34 @@ function showResults(html) {
     hideLoading();
 }
 
+/**
+ * Показать модальное окно покупки проверки
+ */
+function showPurchaseCheckModal(message, shopUrl) {
+    showModal({
+        type: 'warning',
+        icon: '🛒',
+        title: 'No Checks Available',
+        subtitle: 'Purchase a VRM check to continue',
+        message: message || 'You need to purchase a VRM check to view the full vehicle report.',
+        buttons: [
+            {
+                text: 'Buy VRM Check (£9.99)',
+                class: 'vrm-modal-btn-primary',
+                icon: '💳',
+                action: function() {
+                    window.location.href = shopUrl || '/shop/';
+                }
+            },
+            {
+                text: 'Close',
+                class: 'vrm-modal-btn-secondary',
+                action: closeModal
+            }
+        ]
+    });
+}
+
 function showLoading() {
     jQuery('.vrm-basic-btn .vrm-btn-text').hide();
     jQuery('.vrm-basic-btn .vrm-btn-loading').show();
@@ -302,10 +330,45 @@ function performAjaxRequest(ajaxData, startTime, isPremium) {
                     return;
                 }
                 
-                // Проверка требования кредитов
+                // Проверка требования кредитов (старая система)
                 if (response.data.credits_required) {
                     console.log('Credits required, showing credits modal');
                     showCreditsModal(response.data.message, response.data.shop_url, 0);
+                    return;
+                }
+                
+                // Проверка требования проверок (новая система)
+                if (response.data.checks_required) {
+                    console.log('Checks required, showing purchase modal');
+                    showPurchaseCheckModal(response.data.message, response.data.shop_url);
+                    return;
+                }
+                
+                // Проверка уже существующей проверки
+                if (response.data.already_checked) {
+                    console.log('VRM already checked, redirecting to reports');
+                    showModal({
+                        type: 'info',
+                        icon: '✅',
+                        title: 'Already Checked',
+                        subtitle: 'This vehicle is in your reports',
+                        message: response.data.message,
+                        buttons: [
+                            {
+                                text: 'View Reports',
+                                class: 'vrm-modal-btn-primary',
+                                icon: '📊',
+                                action: function() {
+                                    window.location.href = response.data.redirect_url;
+                                }
+                            },
+                            {
+                                text: 'Close',
+                                class: 'vrm-modal-btn-secondary',
+                                action: closeModal
+                            }
+                        ]
+                    });
                     return;
                 }
                 

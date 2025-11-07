@@ -1,47 +1,47 @@
 {
     "VehicleDetails": {
-        "UkvdId": "V-VPLYWE",
+        "UkvdId": "V-BBBPKX",
         "VehicleIdentification": {
-            "Vrm": "KA57DPO",
+            "Vrm": "RE22MOA",
             "Vin": "Permission Required",
-            "VinLast5": "52405",
-            "DvlaMake": "SEAT",
-            "DvlaModel": "LEON STYLANCE TDI",
+            "VinLast5": "04189",
+            "DvlaMake": "KIA",
+            "DvlaModel": "XCEED 3 ISG",
             "DvlaWheelPlan": "2 AXLE RIGID BODY",
-            "DateFirstRegisteredInUk": "2007-12-11T00:00:00Z",
-            "DateFirstRegistered": "2007-12-11T00:00:00Z",
-            "DateOfManufacture": "2007-12-11T00:00:00Z",
-            "YearOfManufacture": 2007,
+            "DateFirstRegisteredInUk": "2022-04-29T00:00:00Z",
+            "DateFirstRegistered": "2022-04-29T00:00:00Z",
+            "DateOfManufacture": "2022-04-29T00:00:00Z",
+            "YearOfManufacture": 2022,
             "VehicleUsedBeforeFirstRegistration": false,
-            "EngineNumber": "BXE 697681",
+            "EngineNumber": "G4LHNZ111984",
             "PreviousVrmNi": "",
             "DvlaBodyType": "5 DOOR HATCHBACK",
-            "DvlaFuelType": "HEAVY OIL"
+            "DvlaFuelType": "PETROL"
         },
         "VehicleStatus": {
             "IsImported": false,
             "IsImportedFromNi": false,
             "IsImportedFromOutsideEu": false,
             "DateImported": null,
-            "CertificateOfDestructionIssued": true,
+            "CertificateOfDestructionIssued": false,
             "IsExported": false,
             "DateExported": null,
-            "IsScrapped": true,
+            "IsScrapped": false,
             "IsUnscrapped": false,
-            "DateScrapped": "2022-04-06T00:00:00Z",
+            "DateScrapped": null,
             "DvlaCherishedTransferMarker": false,
             "VehicleExciseDutyDetails": {
-                "DvlaCo2": 135,
-                "DvlaCo2Band": "E",
-                "DvlaBand": "E",
+                "DvlaCo2": 141,
+                "DvlaCo2Band": null,
+                "DvlaBand": null,
                 "VedRate": {
                     "FirstYear": {
                         "SixMonths": null,
-                        "TwelveMonths": null
+                        "TwelveMonths": 540
                     },
                     "PremiumVehicle": {
-                        "SixMonths": null,
-                        "TwelveMonths": null
+                        "SixMonths": 341,
+                        "TwelveMonths": 620
                     },
                     "Standard": {
                         "SixMonths": 107.25,
@@ -52,85 +52,75 @@
         },
         "VehicleHistory": {
             "ColourDetails": {
-                "CurrentColour": "GREY",
+                "CurrentColour": "BLACK",
                 "NumberOfColourChanges": 0,
-                "OriginalColour": "GREY",
+                "OriginalColour": "BLACK",
                 "PreviousColour": null,
                 "LatestColourChangeDate": null
             },
             "KeeperChangeList": [
                 {
-                    "NumberOfPreviousKeepers": 8,
-                    "KeeperStartDate": "2021-12-09T00:00:00Z",
-                    "PreviousKeeperDisposalDate": "2021-12-09T00:00:00Z"
+                    "NumberOfPreviousKeepers": 3,
+                    "KeeperStartDate": "2024-10-01T00:00:00Z",
+                    "PreviousKeeperDisposalDate": "2024-10-01T00:00:00Z"
                 },
                 {
-                    "NumberOfPreviousKeepers": 7,
-                    "KeeperStartDate": "2020-06-30T00:00:00Z",
-                    "PreviousKeeperDisposalDate": "2020-06-30T00:00:00Z"
+                    "NumberOfPreviousKeepers": 2,
+                    "KeeperStartDate": "2024-07-18T00:00:00Z",
+                    "PreviousKeeperDisposalDate": null
                 },
                 {
-                    "NumberOfPreviousKeepers": 6,
-                    "KeeperStartDate": "2020-05-04T00:00:00Z",
-                    "PreviousKeeperDisposalDate": "2020-05-04T00:00:00Z"
-                },
-                {
-                    "NumberOfPreviousKeepers": 5,
-                    "KeeperStartDate": "2019-11-01T00:00:00Z",
-                    "PreviousKeeperDisposalDate": "2019-11-01T00:00:00Z"
-                },
-                {
-                    "NumberOfPreviousKeepers": 4,
-                    "KeeperStartDate": "2018-09-28T00:00:00Z",
-                    "PreviousKeeperDisposalDate": "2018-09-08T00:00:00Z"
+                    "NumberOfPreviousKeepers": 1,
+                    "KeeperStartDate": "2023-02-11T00:00:00Z",
+                    "PreviousKeeperDisposalDate": "2022-10-29T00:00:00Z"
                 }
             ],
             "PlateChangeList": [],
             "V5cCertificateList": [
                 {
-                    "IssueDate": "2018-10-02T00:00:00Z"
+                    "IssueDate": "2022-04-29T00:00:00Z"
                 },
                 {
-                    "IssueDate": "2020-04-10T00:00:00Z"
+                    "IssueDate": "2022-10-27T00:00:00Z"
                 },
                 {
-                    "IssueDate": "2020-08-07T00:00:00Z"
+                    "IssueDate": "2023-02-13T00:00:00Z"
                 },
                 {
-                    "IssueDate": "2020-08-27T00:00:00Z"
+                    "IssueDate": "2024-07-29T00:00:00Z"
                 },
                 {
-                    "IssueDate": "2022-03-21T00:00:00Z"
+                    "IssueDate": "2024-10-22T00:00:00Z"
                 }
             ]
         },
         "DvlaTechnicalDetails": {
             "NumberOfSeats": 5,
-            "EngineCapacityCc": 1896,
-            "GrossWeightKg": null,
-            "MaxNetPowerKw": 77,
-            "MassInServiceKg": 1365,
+            "EngineCapacityCc": 1482,
+            "GrossWeightKg": 1840,
+            "MaxNetPowerKw": 117,
+            "MassInServiceKg": 1370,
             "PowerToWeightRatio": 0,
-            "MaxPermissibleBrakedTrailerMassKg": 1400,
-            "MaxPermissibleUnbrakedTrailerMassKg": 680
+            "MaxPermissibleBrakedTrailerMassKg": null,
+            "MaxPermissibleUnbrakedTrailerMassKg": null
         },
         "StatusCode": 0,
         "StatusMessage": "Success",
-        "DocumentVersion": 191,
-        "GeneratedAt": "2024-05-11T19:00:54.534Z"
+        "DocumentVersion": 306,
+        "GeneratedAt": "2025-10-04T08:27:49.791Z"
     },
     "ModelDetails": {
         "ModelIdentification": {
-            "Make": "Seat",
-            "Range": "Leon",
-            "Model": "Leon Stylance TDI",
-            "ModelVariant": "TDI Stylance",
-            "Series": "SE350",
-            "Mark": 2,
-            "StartDate": "2005-08-03T00:00:00Z",
-            "EndDate": "2010-11-22T00:00:00Z",
-            "IntroductionDate": "2005-07-01T00:00:00Z",
-            "CountryOfOrigin": "Spain",
+            "Make": "Kia",
+            "Range": "XCeed",
+            "Model": "XCeed 3 ISG",
+            "ModelVariant": "XCeed 3 ISG",
+            "Series": "CD",
+            "Mark": null,
+            "StartDate": "2021-02-05T00:00:00Z",
+            "EndDate": "2023-03-09T00:00:00Z",
+            "IntroductionDate": "2021-01-15T00:00:00Z",
+            "CountryOfOrigin": "Slovakia",
             "VariantCode": 1
         },
         "ModelClassification": {
@@ -151,686 +141,235 @@
         },
         "BodyDetails": {
             "BodyShape": null,
-            "BodyStyle": "Hatchback",
+            "BodyStyle": "SUV",
             "CabType": null,
-            "PlatformName": null,
-            "PlatformIsSharedAcrossModels": null,
-            "WheelbaseType": null,
+            "PlatformName": "K2",
+            "PlatformIsSharedAcrossModels": true,
+            "WheelbaseType": "Short Wheelbase",
             "NumberOfAxles": 2,
             "NumberOfDoors": 5,
             "NumberOfSeats": 5,
             "PayloadVolumeLitres": null,
-            "FuelTankCapacityLitres": 55
+            "FuelTankCapacityLitres": 50
         },
         "Dimensions": {
-            "HeightMm": 1458,
-            "LengthMm": 4315,
-            "WidthMm": 1768,
-            "WheelbaseLengthMm": 2578,
+            "HeightMm": 1495,
+            "LengthMm": 4395,
+            "WidthMm": 1826,
+            "WheelbaseLengthMm": 2650,
             "InternalLoadLengthMm": null
         },
         "Weights": {
-            "KerbWeightKg": 1290,
-            "GrossTrainWeightKg": null,
+            "KerbWeightKg": 1416,
+            "GrossTrainWeightKg": 2840,
             "UnladenWeightKg": null,
             "PayloadWeightKg": null,
-            "GrossVehicleWeightKg": 1868,
-            "GrossCombinedWeightKg": 1868
+            "GrossVehicleWeightKg": 1840,
+            "GrossCombinedWeightKg": 1840
         },
         "Powertrain": {
             "PowertrainType": "ICE",
-            "FuelType": "Diesel",
+            "FuelType": "Petrol",
             "IceDetails": {
                 "EngineFamily": null,
                 "EngineLocation": "Front",
-                "EngineDescription": "BKC-A",
-                "EngineManufacturer": "Seat",
+                "EngineDescription": "G4LH 1",
+                "EngineManufacturer": "Kia",
                 "FuelDelivery": null,
                 "Aspiration": "Turbocharged",
                 "CylinderArrangement": "Inline",
                 "NumberOfCylinders": 4,
-                "BoreMm": 80,
-                "StrokeMm": 96,
+                "BoreMm": 72,
+                "StrokeMm": 92,
                 "ValveGear": "DOHC",
-                "ValvesPerCylinder": 2,
-                "EngineCapacityCc": 1896,
-                "EngineCapacityLitres": 1.9
+                "ValvesPerCylinder": 4,
+                "EngineCapacityCc": 1482,
+                "EngineCapacityLitres": 1.5
             },
             "EvDetails": null,
             "Transmission": {
                 "TransmissionType": "Manual",
-                "NumberOfGears": 5,
+                "NumberOfGears": 6,
                 "DriveType": "4x2",
                 "DrivingAxle": "Front"
             }
         },
         "Safety": {
             "EuroNcap": {
-                "NcapStarRating": null,
-                "NcapChildPercent": null,
-                "NcapAdultPercent": null,
-                "NcapPedestrianPercent": null,
-                "NcapSafetyAssistPercent": null
+                "NcapStarRating": 4,
+                "NcapChildPercent": 85,
+                "NcapAdultPercent": 88,
+                "NcapPedestrianPercent": 52,
+                "NcapSafetyAssistPercent": 68
             }
         },
         "Emissions": {
-            "EuroStatus": "4",
+            "EuroStatus": "6d",
             "ManufacturerCo2": null,
             "SoundLevels": {
-                "StationaryDb": 80,
-                "EngineSpeedRpm": 3000,
-                "DriveByDb": 72
+                "StationaryDb": 76,
+                "EngineSpeedRpm": 3750,
+                "DriveByDb": 66
             }
         },
         "Performance": {
             "DragCoefficient": null,
             "Torque": {
-                "Nm": 250,
-                "LbFt": 184.5,
-                "Rpm": 1900
+                "Nm": 253,
+                "LbFt": 186.7,
+                "Rpm": 1500
             },
             "Power": {
-                "Bhp": 103.3,
-                "Ps": 104.7,
-                "Kw": 77,
-                "Rpm": 4000
+                "Bhp": 157.8,
+                "Ps": 160,
+                "Kw": 117.9,
+                "Rpm": 5500
             },
             "Statistics": {
-                "ZeroToSixtyMph": 11.3,
+                "ZeroToSixtyMph": 8.7,
                 "ZeroToOneHundredKph": null,
-                "MaxSpeedKph": 185,
-                "MaxSpeedMph": 115
+                "MaxSpeedKph": 208,
+                "MaxSpeedMph": 129
             },
             "FuelEconomy": {
-                "UrbanColdMpg": 44.1,
-                "ExtraUrbanMpg": 68.9,
-                "CombinedMpg": 57.7,
-                "UrbanColdL100Km": 6.4,
-                "ExtraUrbanL100Km": 4.1,
-                "CombinedL100Km": 4.9
+                "UrbanColdMpg": null,
+                "ExtraUrbanMpg": null,
+                "CombinedMpg": 44.8,
+                "UrbanColdL100Km": null,
+                "ExtraUrbanL100Km": null,
+                "CombinedL100Km": 6.3
             }
         },
         "StatusCode": 0,
         "StatusMessage": "Success",
-        "DocumentVersion": 24,
-        "GeneratedAt": "2025-10-14T11:25:53.995Z"
+        "DocumentVersion": 26,
+        "GeneratedAt": "2025-10-14T11:29:20.796Z"
     },
     "VehicleImageDetails": {
         "VehicleImageList": {
             "ViewAngle": "Exterior_Angle270",
-            "ImageUrl": "https:\/\/vehicleimages.ukvehicledata.co.uk\/s3\/95B34DF231C26B5D271C831DD725FD994D613146920E86F6384F08C8C0657BC1841C3B902D2F3B6F9003C80DEF602D0E9FD2110E552E5380E84D2899849B1256B7586365DE9BCAFF489BDB04E718D802F9D36D279A89B878FD9A808FE3E9629B",
-            "Colour": "#212121",
-            "Description": "Dark Grey",
-            "ExpiryDate": "2025-11-12T11:09:35Z"
+            "ImageUrl": "https:\/\/vehicleimages.ukvehicledata.co.uk\/s3\/95B34DF231C26B5D271C831DD725FD994D613146920E86F6384F08C8C0657BC14244960EB4D2FE88EFF9EC2FF3A16FBC62EB7F7E9C38940DD528946649F426A8203853CA0A4EB97975F40EC22F76D1255D2880BE63B69EC163E7471A6C929C04",
+            "Colour": "#000200",
+            "Description": "Black",
+            "ExpiryDate": "2025-11-13T14:18:45Z"
         },
         "StatusCode": 0,
         "StatusMessage": "Success",
         "DocumentVersion": 1,
-        "GeneratedAt": "2024-06-11T11:51:54.194Z"
+        "GeneratedAt": "2024-06-11T10:31:51.344Z"
     },
     "VehicleTaxDetails": {
-        "Vrm": null,
-        "Make": null,
-        "Co2Emissions": 0,
-        "MotStatus": null,
-        "YearOfManufacture": 0,
-        "TaxDueDate": null,
-        "TaxStatus": null,
+        "Vrm": "RE22MOA",
+        "Make": "KIA",
+        "Co2Emissions": 141,
+        "MotStatus": "No details held by DVLA",
+        "YearOfManufacture": 2022,
+        "TaxDueDate": "2025-07-01T00:00:00",
+        "TaxStatus": "Untaxed",
         "TaxIsCurrentlyValid": false,
-        "TaxDaysRemaining": null,
+        "TaxDaysRemaining": 0,
         "VehicleExciseDutyDetails": {
-            "DvlaCo2": null,
+            "DvlaCo2": 141,
             "DvlaCo2Band": null,
             "DvlaBand": null,
             "VedRate": {
                 "FirstYear": {
                     "SixMonths": null,
-                    "TwelveMonths": null
+                    "TwelveMonths": 540
                 },
                 "PremiumVehicle": {
-                    "SixMonths": null,
-                    "TwelveMonths": null
+                    "SixMonths": 341,
+                    "TwelveMonths": 620
                 },
                 "Standard": {
-                    "SixMonths": null,
-                    "TwelveMonths": null
+                    "SixMonths": 107.25,
+                    "TwelveMonths": 195
                 }
             }
         },
-        "StatusCode": 2,
-        "StatusMessage": "NoResultsFound",
+        "StatusCode": 0,
+        "StatusMessage": "Success",
         "DocumentVersion": 1
     },
     "VehicleCodes": {
-        "UkvdId": "V-VPLYWE",
-        "Uvc": "M-BVVQP",
+        "UkvdId": "V-BBBPKX",
+        "Uvc": "M-ESPWP",
         "StatusCode": 0,
         "StatusMessage": "Success",
         "DocumentVersion": 1
     },
     "MotHistoryDetails": {
-        "Vrm": "KA57DPO",
-        "UpdateTimeStamp": "2021-07-08T10:12:39Z",
-        "LatestTestDate": "2021-07-08T10:12:39Z",
-        "MotDueDate": "2022-07-07T00:00:00Z",
-        "DaysSinceLastMot": 1581,
-        "FirstUsedDate": "2007-12-11T00:00:00Z",
-        "Make": "SEAT",
-        "Model": "LEON",
-        "FuelType": "Diesel",
-        "Colour": "Grey",
-        "MotTestDetailsList": [
-            {
-                "TestDate": "2021-07-08T10:12:39Z",
-                "TestPassed": true,
-                "ExpiryDate": "2022-07-07T00:00:00Z",
-                "OdometerReading": "174611",
-                "OdometerUnit": "mi",
-                "OdometerResultType": "READ",
-                "TestNumber": "",
-                "DaysSinceLastTest": 1,
-                "DaysSinceLastPass": 458,
-                "DaysOutOfMot": 93,
-                "IsRetest": true,
-                "ExtensionInformation": null,
-                "AnnotationList": {
-                    "Type": "ADVISORY",
-                    "Text": "Offside Rear Service brake binding but not excessively (1.2.1 (f))",
-                    "IsDangerous": false
-                }
-            },
-            {
-                "TestDate": "2021-07-07T08:57:19Z",
-                "TestPassed": false,
-                "ExpiryDate": null,
-                "OdometerReading": "72666",
-                "OdometerUnit": "mi",
-                "OdometerResultType": "READ",
-                "TestNumber": "",
-                "DaysSinceLastTest": 457,
-                "DaysSinceLastPass": 457,
-                "DaysOutOfMot": 92,
-                "IsRetest": false,
-                "ExtensionInformation": null,
-                "AnnotationList": [
-                    {
-                        "Type": "MAJOR",
-                        "Text": "Nearside Front Position lamp not working (4.2.1 (a) (ii))",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "MAJOR",
-                        "Text": "Offside Front Position lamp not working (4.2.1 (a) (ii))",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "DANGEROUS",
-                        "Text": "Nearside Front Tyre tread depth below requirements of 1.6mm (5.2.3 (e))",
-                        "IsDangerous": true
-                    },
-                    {
-                        "Type": "MAJOR",
-                        "Text": "Offside Rear Anti-roll bar ball joint excessively worn (5.3.4 (a) (i))",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "ADVISORY",
-                        "Text": "Offside Rear Service brake binding but not excessively (1.2.1 (f))",
-                        "IsDangerous": false
-                    }
-                ]
-            },
-            {
-                "TestDate": "2020-04-06T14:30:19Z",
-                "TestPassed": true,
-                "ExpiryDate": "2021-04-05T00:00:00Z",
-                "OdometerReading": "157340",
-                "OdometerUnit": "mi",
-                "OdometerResultType": "READ",
-                "TestNumber": "",
-                "DaysSinceLastTest": 0,
-                "DaysSinceLastPass": 417,
-                "DaysOutOfMot": 52,
-                "IsRetest": true,
-                "ExtensionInformation": null,
-                "AnnotationList": [
-                    {
-                        "Type": "ADVISORY",
-                        "Text": "Nearside Front Tyre worn close to legal limit\/worn on edge (5.2.3 (e))",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "ADVISORY",
-                        "Text": "Offside Front Tyre worn close to legal limit\/worn on edge (5.2.3 (e))",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "ADVISORY",
-                        "Text": "Front Brake pad(s) wearing thin (1.1.13 (a) (ii))",
-                        "IsDangerous": false
-                    }
-                ]
-            },
-            {
-                "TestDate": "2020-04-06T14:30:18Z",
-                "TestPassed": false,
-                "ExpiryDate": null,
-                "OdometerReading": "157340",
-                "OdometerUnit": "mi",
-                "OdometerResultType": "READ",
-                "TestNumber": "",
-                "DaysSinceLastTest": 417,
-                "DaysSinceLastPass": 417,
-                "DaysOutOfMot": 52,
-                "IsRetest": false,
-                "ExtensionInformation": null,
-                "AnnotationList": [
-                    {
-                        "Type": "ADVISORY",
-                        "Text": "Nearside Front Tyre worn close to legal limit\/worn on edge (5.2.3 (e))",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "ADVISORY",
-                        "Text": "Offside Front Tyre worn close to legal limit\/worn on edge (5.2.3 (e))",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "PRS",
-                        "Text": "Nearside Headlamp aim projected beam image is obviously incorrect (4.1.2 (c))",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "ADVISORY",
-                        "Text": "Front Brake pad(s) wearing thin (1.1.13 (a) (ii))",
-                        "IsDangerous": false
-                    }
-                ]
-            },
-            {
-                "TestDate": "2019-02-14T09:41:11Z",
-                "TestPassed": true,
-                "ExpiryDate": "2020-02-19T00:00:00Z",
-                "OdometerReading": "150369",
-                "OdometerUnit": "mi",
-                "OdometerResultType": "READ",
-                "TestNumber": "",
-                "DaysSinceLastTest": 3,
-                "DaysSinceLastPass": 377,
-                "DaysOutOfMot": 12,
-                "IsRetest": true,
-                "ExtensionInformation": null,
-                "AnnotationList": {
-                    "Type": "ADVISORY",
-                    "Text": "Child Seat fitted not allowing full inspection of adult belt ()",
-                    "IsDangerous": false
-                }
-            },
-            {
-                "TestDate": "2019-02-11T12:12:00Z",
-                "TestPassed": false,
-                "ExpiryDate": null,
-                "OdometerReading": "150367",
-                "OdometerUnit": "mi",
-                "OdometerResultType": "READ",
-                "TestNumber": "",
-                "DaysSinceLastTest": 374,
-                "DaysSinceLastPass": 374,
-                "DaysOutOfMot": 9,
-                "IsRetest": false,
-                "ExtensionInformation": null,
-                "AnnotationList": [
-                    {
-                        "Type": "ADVISORY",
-                        "Text": "Child Seat fitted not allowing full inspection of adult belt ()",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "MINOR",
-                        "Text": "Registration plate lamp inoperative in the case of multiple lamps or light sources (4.7.1 (b) (i))",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "DANGEROUS",
-                        "Text": "Rear Brake pad(s) less than 1.5 mm thick (1.1.13 (a) (ii))",
-                        "IsDangerous": true
-                    },
-                    {
-                        "Type": "MAJOR",
-                        "Text": "Nearside Rear Coil spring fractured or broken (5.3.1 (b) (i))",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "MAJOR",
-                        "Text": "Offside Rear Shock absorbers has a serious fluid leak (5.3.2 (b))",
-                        "IsDangerous": false
-                    }
-                ]
-            },
-            {
-                "TestDate": "2018-02-02T18:07:14Z",
-                "TestPassed": true,
-                "ExpiryDate": "2019-02-19T00:00:00Z",
-                "OdometerReading": "135907",
-                "OdometerUnit": "mi",
-                "OdometerResultType": "READ",
-                "TestNumber": "",
-                "DaysSinceLastTest": 0,
-                "DaysSinceLastPass": 365,
-                "DaysOutOfMot": 0,
-                "IsRetest": true,
-                "ExtensionInformation": null,
-                "AnnotationList": [
-                    {
-                        "Type": "ADVISORY",
-                        "Text": "Nearside Headlamp deteriorated but light output not reduced (1.7.5a)",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "ADVISORY",
-                        "Text": "Offside Rear Shock absorber has a light misting of oil (2.7.3)",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "ADVISORY",
-                        "Text": "Offside Front Tyre worn close to the legal limit (4.1.E.1)",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "ADVISORY",
-                        "Text": "Nearside Rear position lamp(s) obscured but not more than 50% (1.1.A.3c)",
-                        "IsDangerous": false
-                    }
-                ]
-            },
-            {
-                "TestDate": "2018-02-02T11:28:11Z",
-                "TestPassed": false,
-                "ExpiryDate": null,
-                "OdometerReading": "135907",
-                "OdometerUnit": "mi",
-                "OdometerResultType": "READ",
-                "TestNumber": "",
-                "DaysSinceLastTest": 365,
-                "DaysSinceLastPass": 365,
-                "DaysOutOfMot": 0,
-                "IsRetest": false,
-                "ExtensionInformation": null,
-                "AnnotationList": [
-                    {
-                        "Type": "ADVISORY",
-                        "Text": "Nearside Headlamp deteriorated but light output not reduced (1.7.5a)",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "ADVISORY",
-                        "Text": "Offside Rear Shock absorber has a light misting of oil (2.7.3)",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "FAIL",
-                        "Text": "Nearside Rear Shock absorber has a serious fluid leak (2.7.3)",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "ADVISORY",
-                        "Text": "Offside Front Tyre worn close to the legal limit (4.1.E.1)",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "FAIL",
-                        "Text": "Registration plate lamp not working (1.1.C.1d)",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "ADVISORY",
-                        "Text": "Nearside Rear position lamp(s) obscured but not more than 50% (1.1.A.3c)",
-                        "IsDangerous": false
-                    }
-                ]
-            },
-            {
-                "TestDate": "2017-02-02T15:13:51Z",
-                "TestPassed": true,
-                "ExpiryDate": "2018-02-19T00:00:00Z",
-                "OdometerReading": "114248",
-                "OdometerUnit": "mi",
-                "OdometerResultType": "READ",
-                "TestNumber": "",
-                "DaysSinceLastTest": 376,
-                "DaysSinceLastPass": 376,
-                "DaysOutOfMot": 11,
-                "IsRetest": false,
-                "ExtensionInformation": null,
-                "AnnotationList": []
-            },
-            {
-                "TestDate": "2016-01-23T13:47:45Z",
-                "TestPassed": true,
-                "ExpiryDate": "2017-02-19T00:00:00Z",
-                "OdometerReading": "91622",
-                "OdometerUnit": "mi",
-                "OdometerResultType": "READ",
-                "TestNumber": "",
-                "DaysSinceLastTest": 0,
-                "DaysSinceLastPass": 337,
-                "DaysOutOfMot": 0,
-                "IsRetest": true,
-                "ExtensionInformation": null,
-                "AnnotationList": {
-                    "Type": "ADVISORY",
-                    "Text": "Offside Rear Shock absorber has a light misting of oil (2.7.3)",
-                    "IsDangerous": false
-                }
-            },
-            {
-                "TestDate": "2016-01-23T11:51:09Z",
-                "TestPassed": false,
-                "ExpiryDate": null,
-                "OdometerReading": "91607",
-                "OdometerUnit": "mi",
-                "OdometerResultType": "READ",
-                "TestNumber": "",
-                "DaysSinceLastTest": 337,
-                "DaysSinceLastPass": 337,
-                "DaysOutOfMot": 0,
-                "IsRetest": false,
-                "ExtensionInformation": null,
-                "AnnotationList": [
-                    {
-                        "Type": "FAIL",
-                        "Text": "Nearside Front Tyre tread depth below requirements of 1.6mm  205\/55 16 (4.1.E.1)",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "FAIL",
-                        "Text": "Nearside rear brake binding (3.7.B.1)",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "ADVISORY",
-                        "Text": "Offside Rear Shock absorber has a light misting of oil (2.7.3)",
-                        "IsDangerous": false
-                    }
-                ]
-            },
-            {
-                "TestDate": "2015-02-20T10:11:07Z",
-                "TestPassed": true,
-                "ExpiryDate": "2016-02-19T00:00:00Z",
-                "OdometerReading": "72526",
-                "OdometerUnit": "mi",
-                "OdometerResultType": "READ",
-                "TestNumber": "",
-                "DaysSinceLastTest": 1,
-                "DaysSinceLastPass": 447,
-                "DaysOutOfMot": 82,
-                "IsRetest": true,
-                "ExtensionInformation": null,
-                "AnnotationList": {
-                    "Type": "USER ENTERED",
-                    "Text": "Under-trays fitted obscuring some underside components",
-                    "IsDangerous": false
-                }
-            },
-            {
-                "TestDate": "2015-02-19T17:00:47Z",
-                "TestPassed": false,
-                "ExpiryDate": null,
-                "OdometerReading": "72526",
-                "OdometerUnit": "mi",
-                "OdometerResultType": "READ",
-                "TestNumber": "",
-                "DaysSinceLastTest": 446,
-                "DaysSinceLastPass": 446,
-                "DaysOutOfMot": 81,
-                "IsRetest": false,
-                "ExtensionInformation": null,
-                "AnnotationList": [
-                    {
-                        "Type": "FAIL",
-                        "Text": "Offside Front Tyre tread depth below requirements of 1.6mm (4.1.E.1)",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "USER ENTERED",
-                        "Text": "Under-trays fitted obscuring some underside components",
-                        "IsDangerous": false
-                    }
-                ]
-            },
-            {
-                "TestDate": "2013-11-30T10:50:03Z",
-                "TestPassed": true,
-                "ExpiryDate": "2014-12-11T00:00:00Z",
-                "OdometerReading": "63936",
-                "OdometerUnit": "mi",
-                "OdometerResultType": "READ",
-                "TestNumber": "",
-                "DaysSinceLastTest": 0,
-                "DaysSinceLastPass": 355,
-                "DaysOutOfMot": 0,
-                "IsRetest": true,
-                "ExtensionInformation": null,
-                "AnnotationList": {
-                    "Type": "ADVISORY",
-                    "Text": "Rear Brake pad(s) wearing thin (3.5.1g)",
-                    "IsDangerous": false
-                }
-            },
-            {
-                "TestDate": "2013-11-30T10:50:03Z",
-                "TestPassed": false,
-                "ExpiryDate": null,
-                "OdometerReading": "63936",
-                "OdometerUnit": "mi",
-                "OdometerResultType": "READ",
-                "TestNumber": "",
-                "DaysSinceLastTest": 355,
-                "DaysSinceLastPass": 355,
-                "DaysOutOfMot": 0,
-                "IsRetest": false,
-                "ExtensionInformation": null,
-                "AnnotationList": [
-                    {
-                        "Type": "PRS",
-                        "Text": "Offside Registration plate lamp not working (1.1.C.1d)",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "PRS",
-                        "Text": "Nearside Headlamp aim too high (1.8)",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "PRS",
-                        "Text": "Offside Headlamp aim too high (1.8)",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "PRS",
-                        "Text": "Nearside Front Tyre tread depth below requirements of 1.6mm (4.1.E.1)",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "ADVISORY",
-                        "Text": "Rear Brake pad(s) wearing thin (3.5.1g)",
-                        "IsDangerous": false
-                    }
-                ]
-            },
-            {
-                "TestDate": "2012-12-10T12:07:35Z",
-                "TestPassed": true,
-                "ExpiryDate": "2013-12-11T00:00:00Z",
-                "OdometerReading": "56306",
-                "OdometerUnit": "mi",
-                "OdometerResultType": "READ",
-                "TestNumber": "",
-                "DaysSinceLastTest": 369,
-                "DaysSinceLastPass": 369,
-                "DaysOutOfMot": 4,
-                "IsRetest": false,
-                "ExtensionInformation": null,
-                "AnnotationList": []
-            },
-            {
-                "TestDate": "2011-12-07T12:12:26Z",
-                "TestPassed": true,
-                "ExpiryDate": "2012-12-11T00:00:00Z",
-                "OdometerReading": "48462",
-                "OdometerUnit": "mi",
-                "OdometerResultType": "READ",
-                "TestNumber": "",
-                "DaysSinceLastTest": 387,
-                "DaysSinceLastPass": 387,
-                "DaysOutOfMot": 22,
-                "IsRetest": false,
-                "ExtensionInformation": null,
-                "AnnotationList": [
-                    {
-                        "Type": "ADVISORY",
-                        "Text": "Nearside Front Tyre worn close to the legal limit (4.1.E.1)",
-                        "IsDangerous": false
-                    },
-                    {
-                        "Type": "ADVISORY",
-                        "Text": "Offside Front Tyre worn close to the legal limit (4.1.E.1)",
-                        "IsDangerous": false
-                    }
-                ]
-            },
-            {
-                "TestDate": "2010-11-15T12:08:33Z",
-                "TestPassed": true,
-                "ExpiryDate": "2011-12-11T00:00:00Z",
-                "OdometerReading": "42730",
-                "OdometerUnit": "mi",
-                "OdometerResultType": "READ",
-                "TestNumber": "",
-                "DaysSinceLastTest": null,
-                "DaysSinceLastPass": null,
-                "DaysOutOfMot": null,
-                "IsRetest": false,
-                "ExtensionInformation": null,
-                "AnnotationList": []
-            }
-        ],
+        "Vrm": "RE22MOA",
+        "UpdateTimeStamp": "2025-11-06T14:18:47.2573697Z",
+        "LatestTestDate": null,
+        "MotDueDate": null,
+        "DaysSinceLastMot": null,
+        "FirstUsedDate": "2022-04-29T00:00:00",
+        "Make": "KIA",
+        "Model": "XCEED 3 ISG",
+        "FuelType": "Petrol",
+        "Colour": "Black",
+        "MotTestDetailsList": [],
         "StatusCode": 0,
         "StatusMessage": "Success",
-        "DocumentVersion": 18
+        "DocumentVersion": 1
     },
     "SpecAndOptionsDetails": {
-        "Make": "Seat",
-        "Model": "Leon Stylance TDI",
-        "YearOfManufacture": "2007",
+        "Make": "Kia",
+        "Model": "XCeed 3 ISG",
+        "YearOfManufacture": "2022",
         "FactoryEquipmentList": [
+            {
+                "Type": "Item",
+                "Fitment": "Option",
+                "Category": "Paint and Trim",
+                "Name": "Metallic Paint",
+                "Description": "Premium Paint",
+                "Price": 580,
+                "PackageContentList": []
+            },
             {
                 "Type": "Item",
                 "Fitment": "Standard",
                 "Category": "Audio and Communications",
-                "Name": "CD Equipment inc Multimedia",
-                "Description": "Radio\/Single CD+8 Speakers+Strng Wh Ctrl",
+                "Name": "DAB Radio - Digital Audio Broadcasting",
+                "Description": "DAB Radio",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Audio and Communications",
+                "Name": "Radio Equipment inc Multimedia",
+                "Description": "7-Speaker Audio System",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Audio and Communications",
+                "Name": "Radio Equipment inc Multimedia",
+                "Description": "USB",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Audio and Communications",
+                "Name": "Satellite Navigation",
+                "Description": "10.25 Touchscreen Satellite Navigation",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Audio and Communications",
+                "Name": "Telephone Equipment",
+                "Description": "Bluetooth+Voice Recognition+Music Stream",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -839,7 +378,7 @@
                 "Fitment": "Standard",
                 "Category": "Exterior Features",
                 "Name": "Central Locking",
-                "Description": "Remote Central Locking",
+                "Description": "Smart Key With Motion Sensor",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -847,17 +386,8 @@
                 "Type": "Item",
                 "Fitment": "Standard",
                 "Category": "Exterior Features",
-                "Name": "Electric Door Mirrors",
-                "Description": "Elec Adjust Mirrors",
-                "Price": null,
-                "PackageContentList": []
-            },
-            {
-                "Type": "Item",
-                "Fitment": "Standard",
-                "Category": "Exterior Features",
-                "Name": "Electric Door Mirrors",
-                "Description": "Electrically Adjustable Heated Mirrors",
+                "Name": "Electric Folding Door Mirrors",
+                "Description": "Elec Adjustable+Heated+Folding Mirrors",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -866,7 +396,7 @@
                 "Fitment": "Standard",
                 "Category": "Exterior Features",
                 "Name": "Front Foglights",
-                "Description": "Front Foglamps",
+                "Description": "Projection Front Fog Lights",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -875,7 +405,34 @@
                 "Fitment": "Standard",
                 "Category": "Exterior Features",
                 "Name": "High Level Brake Light",
-                "Description": "High Level Brake Light",
+                "Description": "LED High-Mounted Brake Light",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Exterior Features",
+                "Name": "Rear Parking Sensors",
+                "Description": "Rear Parking Sensors",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Exterior Features",
+                "Name": "Rear Parking Sensors",
+                "Description": "Reversing Camera System",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Exterior Features",
+                "Name": "Roof Rails\/Rack",
+                "Description": "Silver Roof Rails",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -884,7 +441,7 @@
                 "Fitment": "Standard",
                 "Category": "Interior Features",
                 "Name": "Adjustable Steering Column",
-                "Description": "Height Adjustable Steering Wheel",
+                "Description": "Tilt Telescopic Adjustable Steering Whl",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -893,7 +450,7 @@
                 "Fitment": "Standard",
                 "Category": "Interior Features",
                 "Name": "Air Conditioning - front",
-                "Description": "2 Zone Climate Control",
+                "Description": "Automatic Air Conditioning",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -902,7 +459,7 @@
                 "Fitment": "Standard",
                 "Category": "Interior Features",
                 "Name": "All Round Electric Windows",
-                "Description": "Electric Windows",
+                "Description": "All Rnd Elct Wndws+Frnt Auto Up+Dwn Fnct",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -911,25 +468,7 @@
                 "Fitment": "Standard",
                 "Category": "Interior Features",
                 "Name": "Cruise Control",
-                "Description": "Cruise Control",
-                "Price": null,
-                "PackageContentList": []
-            },
-            {
-                "Type": "Item",
-                "Fitment": "Standard",
-                "Category": "Interior Features",
-                "Name": "Driver's Seat Adjustment (manual)",
-                "Description": "Height Adjustable Driver Seat",
-                "Price": null,
-                "PackageContentList": []
-            },
-            {
-                "Type": "Item",
-                "Fitment": "Standard",
-                "Category": "Interior Features",
-                "Name": "Electric Front Windows",
-                "Description": "Electric Front Windows",
+                "Description": "Cruise Control + Speed Limiter",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -938,7 +477,7 @@
                 "Fitment": "Standard",
                 "Category": "Interior Features",
                 "Name": "Outside Temp Gauge",
-                "Description": "Exterior Temperature Gauge",
+                "Description": "External Temperature Display",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -947,7 +486,25 @@
                 "Fitment": "Standard",
                 "Category": "Interior Features",
                 "Name": "Rear Head Restraints",
-                "Description": "Rear Headrest",
+                "Description": "All Round Height Adjustable Head Rests",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Interior Features",
+                "Name": "Seats - Heated Front",
+                "Description": "Heated Front Seats",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Interior Features",
+                "Name": "Seats -Elec Adj Driver + Front Passenger",
+                "Description": "Power Lumbar Support-Driver+Frnt Pasngr",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -956,7 +513,7 @@
                 "Fitment": "Standard",
                 "Category": "Interior Features",
                 "Name": "Split Rear Seat\/Thru Load Facility",
-                "Description": "Split Folding Rear Seats",
+                "Description": "60:40 Split Folding Rear Seat",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -965,7 +522,25 @@
                 "Fitment": "Standard",
                 "Category": "Mechanical Features",
                 "Name": "Power Steering",
-                "Description": "Power Steering",
+                "Description": "Motor Driven Power Steering",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Mechanical Features",
+                "Name": "Start\/Stop Engine Technology",
+                "Description": "Intelligent Stop And Go",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Mechanical Features",
+                "Name": "Suspension",
+                "Description": "Front + Rear Suspension",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -974,16 +549,7 @@
                 "Fitment": "Standard",
                 "Category": "Mechanical Features",
                 "Name": "Traction Control",
-                "Description": "ESP + EBA With Tyre Pressure Monitor Sys",
-                "Price": null,
-                "PackageContentList": []
-            },
-            {
-                "Type": "Item",
-                "Fitment": "Standard",
-                "Category": "Mechanical Features",
-                "Name": "Traction Control",
-                "Description": "Traction Control",
+                "Description": "ESC+VSM+HAC",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -992,7 +558,7 @@
                 "Fitment": "Standard",
                 "Category": "Other",
                 "Name": "Mechanical Warranty",
-                "Description": "3 Year \/ 60000 Mile Warranty",
+                "Description": "7 Years\/100000 Miles Warranty",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -1010,7 +576,7 @@
                 "Fitment": "Standard",
                 "Category": "Paint and Trim",
                 "Name": "Upholstery (all except full leather)",
-                "Description": "Stylance Upholstery",
+                "Description": "Black Cloth Seat\/Black Faux Lthr Bolster",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -1019,7 +585,7 @@
                 "Fitment": "Standard",
                 "Category": "Safety & Security Features",
                 "Name": "Airbags (side\/lateral etc)",
-                "Description": "Curtain Airbag",
+                "Description": "Twin Curtain Airbags",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -1028,7 +594,16 @@
                 "Fitment": "Standard",
                 "Category": "Safety & Security Features",
                 "Name": "Airbags (side\/lateral etc)",
-                "Description": "Side Airbags",
+                "Description": "Twin Front Airbags",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Safety & Security Features",
+                "Name": "Airbags (side\/lateral etc)",
+                "Description": "Twin Side Arbags  Front",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -1037,7 +612,7 @@
                 "Fitment": "Standard",
                 "Category": "Safety & Security Features",
                 "Name": "Anti-lock Brakes",
-                "Description": "ABS",
+                "Description": "ABS + EBD + BAS",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -1046,7 +621,7 @@
                 "Fitment": "Standard",
                 "Category": "Safety & Security Features",
                 "Name": "Driver Airbag",
-                "Description": "Driver Airbag",
+                "Description": "Drivers Airbag",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -1055,7 +630,7 @@
                 "Fitment": "Standard",
                 "Category": "Safety & Security Features",
                 "Name": "Immobiliser",
-                "Description": "Immobiliser",
+                "Description": "Enginge Immobiliser + Deadlocks",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -1072,8 +647,44 @@
                 "Type": "Item",
                 "Fitment": "Standard",
                 "Category": "Safety & Security Features",
+                "Name": "Safety and Driver Assistance",
+                "Description": "Driver Attention Alert",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Safety & Security Features",
+                "Name": "Safety and Driver Assistance",
+                "Description": "Forward Collision Avoidance Assist-City",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Safety & Security Features",
+                "Name": "Safety and Driver Assistance",
+                "Description": "Frwrd Collsn Avoidance Asst-Pedst+Cyclst",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Safety & Security Features",
+                "Name": "Safety and Driver Assistance",
+                "Description": "Lane-Keeping Assist(LKA)",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Safety & Security Features",
                 "Name": "Vehicle Security",
-                "Description": "Alarm",
+                "Description": "Alarm System",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -1082,47 +693,36 @@
                 "Fitment": "Standard",
                 "Category": "Wheels",
                 "Name": "Alloy Wheels",
-                "Description": "16in Fabula Alloys",
+                "Description": "18in Alloys",
                 "Price": null,
                 "PackageContentList": []
-            },
-            {
-                "Type": "Package",
-                "Fitment": "Standard",
-                "Category": "Interior Features",
-                "Name": "Cruise Control",
-                "Description": "Cruise Control",
-                "Price": null,
-                "PackageContentList": {
-                    "Description": "Cruise Control"
-                }
             }
         ],
         "StatusCode": 0,
         "StatusMessage": "Success",
         "DocumentVersion": 1,
-        "GeneratedAt": "2024-11-29T09:25:07.455Z"
+        "GeneratedAt": "2024-11-30T18:02:08.646Z"
     },
     "ValuationDetails": {
-        "ValuationTime": "2025-11-05T11:09:37.0104694Z",
-        "ValuationMileage": 225204,
+        "ValuationTime": "2025-11-06T14:18:48.1964423Z",
+        "ValuationMileage": 41203,
         "ValuationBook": "Direct",
-        "VehicleDescription": "Seat Leon Stylance TDI TDI Stylance [Diesel \/ Manual]",
-        "DateOfFirstRegistration": "2007-12-11T00:00:00Z",
+        "VehicleDescription": "Kia XCeed 3 ISG XCeed 3 ISG [Petrol \/ Manual]",
+        "DateOfFirstRegistration": "2022-04-29T00:00:00Z",
         "ValuationFigures": {
-            "OnTheRoad": 14430,
-            "DealerForecourt": 993,
-            "TradeRetail": 858,
-            "PrivateClean": 691,
-            "PrivateAverage": 635,
-            "PartExchange": 656,
-            "Auction": 512,
-            "TradeAverage": 405,
-            "TradePoor": 348
+            "OnTheRoad": 24755,
+            "DealerForecourt": 13180,
+            "TradeRetail": 12669,
+            "PrivateClean": 11728,
+            "PrivateAverage": 11596,
+            "PartExchange": 11546,
+            "Auction": 11531,
+            "TradeAverage": 11006,
+            "TradePoor": 10215
         },
         "StatusCode": 0,
         "StatusMessage": "Success",
         "DocumentVersion": 1,
-        "GeneratedAt": "2025-11-02T01:42:57.625Z"
+        "GeneratedAt": "2025-11-02T02:09:16.145Z"
     }
 }

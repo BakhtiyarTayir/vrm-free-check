@@ -104,20 +104,46 @@ class Ajax {
             
             $user_id = get_current_user_id();
             
-            // 3. Проверка кредитов
-            $credits = CreditsManager::get_user_credits($user_id);
-            $this->logger->log('info', 'User credits check', ['user_id' => $user_id, 'credits' => $credits]);
+            // 3. Проверка на существование VRM в истории
+            $existing_check = HistoryManager::get_user_check_by_vrm($user_id, $vrm_raw);
             
-            if ($credits <= 0) {
-                $this->logger->log('warning', 'Insufficient credits', ['user_id' => $user_id]);
+            if ($existing_check) {
+                $this->logger->log('info', 'VRM already checked, redirecting to reports', [
+                    'user_id' => $user_id,
+                    'vrm' => $vrm_raw,
+                    'check_id' => $existing_check->id
+                ]);
+                
+                // Перенаправляем на страницу My Reports
+                $myaccount_page_id = get_option('woocommerce_myaccount_page_id');
+                $reports_url = $myaccount_page_id ? get_permalink($myaccount_page_id) . 'vrm-reports/' : home_url('/my-reports/');
+                
                 wp_send_json_error(array(
-                    'message' => __('Insufficient credits. Please purchase credits to continue.', 'vrm-check-plugin'),
-                    'credits_required' => true,
-                    'shop_url' => get_permalink(wc_get_page_id('shop'))
+                    'message' => __('This vehicle has already been checked. Redirecting to your reports...', 'vrm-check-plugin'),
+                    'already_checked' => true,
+                    'redirect_url' => $reports_url,
+                    'check_id' => $existing_check->id
                 ));
             }
             
-            // 4. Проверяем nonce для безопасности
+            // 4. Проверка доступных проверок
+            $checks = \VrmCheckPlugin\OrderManager::get_user_checks($user_id);
+            $this->logger->log('info', 'User checks available', ['user_id' => $user_id, 'checks' => $checks]);
+            
+            if ($checks <= 0) {
+                $this->logger->log('warning', 'No checks available', ['user_id' => $user_id]);
+                
+                // Получаем URL товара VRM Check
+                $product_url = get_permalink(\VrmCheckPlugin\OrderManager::VRM_CHECK_PRODUCT_ID);
+                
+                wp_send_json_error(array(
+                    'message' => __('You have no VRM checks available. Please purchase a check to continue.', 'vrm-check-plugin'),
+                    'checks_required' => true,
+                    'shop_url' => $product_url ? $product_url : get_permalink(wc_get_page_id('shop'))
+                ));
+            }
+            
+            // 5. Проверяем nonce для безопасности
             $this->logger->log('info', 'Starting premium VRM check - nonce verification');
             if (!wp_verify_nonce($_POST['nonce'] ?? '', 'vrm_check_nonce')) {
                 $this->logger->log_error('Nonce verification failed', ['received_nonce' => $_POST['nonce'] ?? 'not provided']);
@@ -126,10 +152,10 @@ class Ajax {
                 ));
             }
             
-            // 5. Получаем и валидируем VRM
+            // 6. Получаем и валидируем VRM
             $vrm = $this->validate_and_clean_vrm();
             
-            // 6. Выполняем премиум API запрос
+            // 7. Выполняем премиум API запрос
             $this->logger->log('info', 'Starting premium API request for VRM: ' . $vrm);
             $result = $this->premium_api_client->get_vehicle_report($vrm);
             
@@ -150,17 +176,17 @@ class Ajax {
                 ));
             }
             
-            // 6. Списываем кредит
-            if (!CreditsManager::deduct_credit($user_id)) {
-                $this->logger->error('Failed to deduct credit', ['user_id' => $user_id]);
+            // 6. Сохраняем в историю
+            $history_id = HistoryManager::save_check($user_id, $vrm, $result, 'premium', 9.99);
+            $this->logger->log('info', 'Check saved to history', ['history_id' => $history_id, 'user_id' => $user_id, 'vrm' => $vrm]);
+            
+            // 7. Используем одну проверку
+            if (!\VrmCheckPlugin\OrderManager::use_check($user_id, $vrm, $history_id)) {
+                $this->logger->error('Failed to use check', ['user_id' => $user_id]);
                 wp_send_json_error(array(
-                    'message' => __('Error processing credits. Please try again.', 'vrm-check-plugin')
+                    'message' => __('Error processing check. Please contact support.', 'vrm-check-plugin')
                 ));
             }
-            
-            // 7. Сохраняем в историю
-            $history_id = HistoryManager::save_check($user_id, $vrm, $result, 'premium', 5.00);
-            $this->logger->log('info', 'Check saved to history', ['history_id' => $history_id, 'user_id' => $user_id, 'vrm' => $vrm]);
             
             // 8. Генерируем HTML из полученных данных
             ob_start();
@@ -169,10 +195,10 @@ class Ajax {
             $html = ob_get_clean();
             
             // 9. Возвращаем результат с обновлённым балансом
-            $remaining_credits = CreditsManager::get_user_credits($user_id);
+            $remaining_checks = \VrmCheckPlugin\OrderManager::get_user_checks($user_id);
             wp_send_json_success(array(
                 'html' => $html,
-                'credits_remaining' => $remaining_credits,
+                'checks_remaining' => $remaining_checks,
                 'history_id' => $history_id
             ));
             

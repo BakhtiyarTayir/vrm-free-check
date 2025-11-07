@@ -25,6 +25,10 @@ require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-database.php';
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-credits-manager.php';
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-history-manager.php';
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-login-redirect.php';
+require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-history-shortcode.php';
+require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-woocommerce-integration.php';
+require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-report-page.php';
+require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-order-manager.php';
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-vrm-check-plugin.php';
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-admin.php';
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-ajax.php';
@@ -44,5 +48,20 @@ function vrm_check_plugin_init() {
     
     // Initialize AJAX handler
     new VrmCheckPlugin\Ajax();
+    
+    // Initialize Report Page
+    VRM_Report_Page::init();
+    
+    // Initialize Order Manager
+    VrmCheckPlugin\OrderManager::init();
+    
+    // Initialize WooCommerce Integration
+    VRM_WooCommerce_Integration::init();
+    
+    // Initialize History Shortcode
+    VRM_History_Shortcode::init();
+    
+    // Initialize Login Redirect
+    VRM_Login_Redirect::init();
 }
 add_action('plugins_loaded', 'vrm_check_plugin_init');

@@ -56,21 +56,61 @@ class HistoryManager {
      * Получить историю проверок пользователя
      * 
      * @param int $user_id ID пользователя
-     * @param int $limit Лимит записей
-     * @param int $offset Смещение
+     * @param array|int $args Массив параметров или лимит (для обратной совместимости)
+     * @param int $offset Смещение (если $args это число)
      * @return array Массив проверок
      */
-    public static function get_user_history($user_id, $limit = 20, $offset = 0) {
+    public static function get_user_history($user_id, $args = array(), $offset = 0) {
         global $wpdb;
         $table = $wpdb->prefix . 'vrm_check_history';
         
-        return $wpdb->get_results($wpdb->prepare(
-            "SELECT id, vrm, check_type, cost, created_at, order_id
+        // Поддержка старого формата (limit, offset)
+        if (is_numeric($args)) {
+            $limit = (int)$args;
+        } else {
+            // Новый формат с массивом параметров
+            $defaults = array(
+                'limit' => 20,
+                'offset' => 0,
+                'check_type' => '', // premium, basic или пусто для всех
+                'order_by' => 'created_at',
+                'order' => 'DESC'
+            );
+            $args = wp_parse_args($args, $defaults);
+            $limit = (int)$args['limit'];
+            $offset = (int)$args['offset'];
+        }
+        
+        $query = $wpdb->prepare(
+            "SELECT id, vrm, check_type, api_data, cost, created_at, order_id
              FROM $table 
              WHERE user_id = %d 
              ORDER BY created_at DESC 
              LIMIT %d OFFSET %d",
             $user_id, $limit, $offset
+        );
+        
+        return $wpdb->get_results($query);
+    }
+    
+    /**
+     * Получить проверку пользователя по VRM
+     * 
+     * @param int $user_id ID пользователя
+     * @param string $vrm VRM номер
+     * @return object|null Данные проверки или null если не найдено
+     */
+    public static function get_user_check_by_vrm($user_id, $vrm) {
+        global $wpdb;
+        $table = $wpdb->prefix . 'vrm_check_history';
+        
+        return $wpdb->get_row($wpdb->prepare(
+            "SELECT id, vrm, check_type, api_data, cost, created_at, order_id
+             FROM $table 
+             WHERE user_id = %d AND vrm = %s
+             ORDER BY created_at DESC
+             LIMIT 1",
+            $user_id, strtoupper(trim($vrm))
         ));
     }
     

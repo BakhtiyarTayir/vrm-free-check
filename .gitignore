@@ -31,5 +31,7 @@ vendor/
 # Documentation (exclude markdown files)
 *.md
 
+*.txt
+
 # Debug files
 debug_*.json
