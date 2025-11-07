@@ -53,6 +53,27 @@ class Ajax {
                 ));
             }
             
+            // Сохраняем бесплатную проверку в историю (если пользователь авторизован)
+            if (is_user_logged_in()) {
+                $user_id = get_current_user_id();
+                $check_id = HistoryManager::save_check(
+                    $user_id,
+                    $vrm,
+                    $result['data'],
+                    'basic',  // Тип проверки: basic (бесплатная)
+                    0,        // Стоимость: 0
+                    null      // Order ID: null (бесплатная)
+                );
+                
+                if ($check_id) {
+                    $this->logger->log('info', 'Free check saved to history', array(
+                        'check_id' => $check_id,
+                        'user_id' => $user_id,
+                        'vrm' => $vrm
+                    ));
+                }
+            }
+            
             // Генерируем HTML из полученных данных
             ob_start();
             $data = $result['data'];

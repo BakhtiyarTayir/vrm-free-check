@@ -69,16 +69,17 @@ class VRM_WooCommerce_Integration {
      * Добавить пункты меню
      */
     public static function add_menu_items($items) {
-        // Вставляем "My Reports" и "New Check" после "Dashboard"
+        // Вставляем "My Reports", "New Check" и "Free Check" после "Dashboard"
         $new_items = array();
         
         foreach ($items as $key => $value) {
             $new_items[$key] = $value;
             
-            // После Dashboard добавляем My Reports и New Check
+            // После Dashboard добавляем My Reports, New Check и Free Check
             if ($key === 'dashboard') {
                 $new_items['vrm-reports'] = __('My Reports', 'vrm-check-plugin');
                 $new_items['new-check'] = __('New Check', 'vrm-check-plugin');
+                $new_items['free-check'] = __('Free Check', 'vrm-check-plugin');
             }
         }
         
@@ -126,12 +127,16 @@ class VRM_WooCommerce_Integration {
     }
     
     /**
-     * Изменить URL для пункта меню New Check
+     * Изменить URL для пунктов меню New Check и Free Check
      */
     public static function custom_endpoint_url($url, $endpoint, $value, $permalink) {
         // Для new-check возвращаем прямую ссылку на full-check-page
         if ($endpoint === 'new-check') {
             return home_url('/full-check-page/');
+        }
+        // Для free-check возвращаем прямую ссылку на free-check-2
+        if ($endpoint === 'free-check') {
+            return home_url('/free-check-2/');
         }
         return $url;
     }
