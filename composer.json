@@ -1,0 +1,19 @@
+{
+    "name": "motcheck/vrm-check-plugin",
+    "description": "VRM Check Plugin with PDF generation",
+    "type": "wordpress-plugin",
+    "require": {
+        "php": ">=7.4",
+        "mpdf/mpdf": "^8.2.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "VrmCheckPlugin\\": "includes/"
+        }
+    },
+    "config": {
+        "platform": {
+            "php": "8.2.0"
+        }
+    }
+}

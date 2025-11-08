@@ -443,8 +443,30 @@ class VRM_Report_Page {
         
         <script>
             function downloadPDF(checkId) {
-                alert('PDF download functionality will be implemented soon. Check ID: ' + checkId);
-                // TODO: Implement PDF generation
+                // Создаем форму для скачивания PDF
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '<?php echo admin_url('admin-ajax.php'); ?>';
+                form.target = '_blank';
+                
+                // Добавляем параметры
+                const params = {
+                    action: 'vrm_download_report',
+                    check_id: checkId,
+                    nonce: '<?php echo wp_create_nonce('vrm_history_nonce'); ?>'
+                };
+                
+                for (const key in params) {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = key;
+                    input.value = params[key];
+                    form.appendChild(input);
+                }
+                
+                document.body.appendChild(form);
+                form.submit();
+                document.body.removeChild(form);
             }
         </script>
         

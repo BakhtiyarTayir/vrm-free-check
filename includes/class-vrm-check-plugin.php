@@ -51,6 +51,14 @@ class VrmCheckPlugin {
             VRM_CHECK_PLUGIN_VERSION
         );
         
+        // Подключаем стили для кнопки Buy Now
+        wp_enqueue_style(
+            'vrm-buy-now-style',
+            VRM_CHECK_PLUGIN_URL . 'assets/css/buy-now-button.css',
+            array(),
+            VRM_CHECK_PLUGIN_VERSION
+        );
+        
         wp_enqueue_script(
             'vrm-check-script',
             VRM_CHECK_PLUGIN_URL . 'assets/js/vrm-check-script.js',

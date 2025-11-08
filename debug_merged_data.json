@@ -1,22 +1,22 @@
 {
     "VehicleDetails": {
-        "UkvdId": "V-BBBPKX",
+        "UkvdId": "V-BBBLVQ",
         "VehicleIdentification": {
-            "Vrm": "RE22MOA",
+            "Vrm": "SD22SYA",
             "Vin": "Permission Required",
-            "VinLast5": "04189",
+            "VinLast5": "32678",
             "DvlaMake": "KIA",
-            "DvlaModel": "XCEED 3 ISG",
+            "DvlaModel": "NIRO 2 HEV S-A",
             "DvlaWheelPlan": "2 AXLE RIGID BODY",
-            "DateFirstRegisteredInUk": "2022-04-29T00:00:00Z",
-            "DateFirstRegistered": "2022-04-29T00:00:00Z",
-            "DateOfManufacture": "2022-04-29T00:00:00Z",
+            "DateFirstRegisteredInUk": "2022-04-28T00:00:00Z",
+            "DateFirstRegistered": "2022-04-28T00:00:00Z",
+            "DateOfManufacture": "2022-04-28T00:00:00Z",
             "YearOfManufacture": 2022,
             "VehicleUsedBeforeFirstRegistration": false,
-            "EngineNumber": "G4LHNZ111984",
+            "EngineNumber": "G4LEMS816102",
             "PreviousVrmNi": "",
-            "DvlaBodyType": "5 DOOR HATCHBACK",
-            "DvlaFuelType": "PETROL"
+            "DvlaBodyType": "ESTATE",
+            "DvlaFuelType": "HYBRID ELECTRIC"
         },
         "VehicleStatus": {
             "IsImported": false,
@@ -31,13 +31,13 @@
             "DateScrapped": null,
             "DvlaCherishedTransferMarker": false,
             "VehicleExciseDutyDetails": {
-                "DvlaCo2": 141,
+                "DvlaCo2": 110,
                 "DvlaCo2Band": null,
                 "DvlaBand": null,
                 "VedRate": {
                     "FirstYear": {
                         "SixMonths": null,
-                        "TwelveMonths": 540
+                        "TwelveMonths": 390
                     },
                     "PremiumVehicle": {
                         "SixMonths": 341,
@@ -52,75 +52,54 @@
         },
         "VehicleHistory": {
             "ColourDetails": {
-                "CurrentColour": "BLACK",
+                "CurrentColour": "WHITE",
                 "NumberOfColourChanges": 0,
-                "OriginalColour": "BLACK",
+                "OriginalColour": "WHITE",
                 "PreviousColour": null,
                 "LatestColourChangeDate": null
             },
-            "KeeperChangeList": [
-                {
-                    "NumberOfPreviousKeepers": 3,
-                    "KeeperStartDate": "2024-10-01T00:00:00Z",
-                    "PreviousKeeperDisposalDate": "2024-10-01T00:00:00Z"
-                },
-                {
-                    "NumberOfPreviousKeepers": 2,
-                    "KeeperStartDate": "2024-07-18T00:00:00Z",
-                    "PreviousKeeperDisposalDate": null
-                },
-                {
-                    "NumberOfPreviousKeepers": 1,
-                    "KeeperStartDate": "2023-02-11T00:00:00Z",
-                    "PreviousKeeperDisposalDate": "2022-10-29T00:00:00Z"
-                }
-            ],
+            "KeeperChangeList": {
+                "NumberOfPreviousKeepers": 1,
+                "KeeperStartDate": "2023-09-11T00:00:00Z",
+                "PreviousKeeperDisposalDate": "2023-07-07T00:00:00Z"
+            },
             "PlateChangeList": [],
             "V5cCertificateList": [
                 {
-                    "IssueDate": "2022-04-29T00:00:00Z"
+                    "IssueDate": "2022-04-28T00:00:00Z"
                 },
                 {
-                    "IssueDate": "2022-10-27T00:00:00Z"
-                },
-                {
-                    "IssueDate": "2023-02-13T00:00:00Z"
-                },
-                {
-                    "IssueDate": "2024-07-29T00:00:00Z"
-                },
-                {
-                    "IssueDate": "2024-10-22T00:00:00Z"
+                    "IssueDate": "2023-09-13T00:00:00Z"
                 }
             ]
         },
         "DvlaTechnicalDetails": {
             "NumberOfSeats": 5,
-            "EngineCapacityCc": 1482,
-            "GrossWeightKg": 1840,
-            "MaxNetPowerKw": 117,
-            "MassInServiceKg": 1370,
+            "EngineCapacityCc": 1580,
+            "GrossWeightKg": 1930,
+            "MaxNetPowerKw": 77,
+            "MassInServiceKg": 1490,
             "PowerToWeightRatio": 0,
             "MaxPermissibleBrakedTrailerMassKg": null,
             "MaxPermissibleUnbrakedTrailerMassKg": null
         },
         "StatusCode": 0,
         "StatusMessage": "Success",
-        "DocumentVersion": 306,
-        "GeneratedAt": "2025-10-04T08:27:49.791Z"
+        "DocumentVersion": 274,
+        "GeneratedAt": "2024-05-15T17:16:11.121Z"
     },
     "ModelDetails": {
         "ModelIdentification": {
             "Make": "Kia",
-            "Range": "XCeed",
-            "Model": "XCeed 3 ISG",
-            "ModelVariant": "XCeed 3 ISG",
-            "Series": "CD",
-            "Mark": null,
-            "StartDate": "2021-02-05T00:00:00Z",
-            "EndDate": "2023-03-09T00:00:00Z",
-            "IntroductionDate": "2021-01-15T00:00:00Z",
-            "CountryOfOrigin": "Slovakia",
+            "Range": "Niro",
+            "Model": "Niro 2 HEV Semi-Auto",
+            "ModelVariant": "2",
+            "Series": "DE",
+            "Mark": 1,
+            "StartDate": "2019-06-30T00:00:00Z",
+            "EndDate": "2023-01-26T00:00:00Z",
+            "IntroductionDate": "2019-05-10T00:00:00Z",
+            "CountryOfOrigin": "South Korea",
             "VariantCode": 1
         },
         "ModelClassification": {
@@ -143,52 +122,52 @@
             "BodyShape": null,
             "BodyStyle": "SUV",
             "CabType": null,
-            "PlatformName": "K2",
+            "PlatformName": "E-GMP",
             "PlatformIsSharedAcrossModels": true,
             "WheelbaseType": "Short Wheelbase",
             "NumberOfAxles": 2,
             "NumberOfDoors": 5,
             "NumberOfSeats": 5,
             "PayloadVolumeLitres": null,
-            "FuelTankCapacityLitres": 50
+            "FuelTankCapacityLitres": 45
         },
         "Dimensions": {
-            "HeightMm": 1495,
-            "LengthMm": 4395,
-            "WidthMm": 1826,
-            "WheelbaseLengthMm": 2650,
+            "HeightMm": 1560,
+            "LengthMm": 4375,
+            "WidthMm": 1805,
+            "WheelbaseLengthMm": 2700,
             "InternalLoadLengthMm": null
         },
         "Weights": {
-            "KerbWeightKg": 1416,
-            "GrossTrainWeightKg": 2840,
+            "KerbWeightKg": 1490,
+            "GrossTrainWeightKg": 3230,
             "UnladenWeightKg": null,
             "PayloadWeightKg": null,
-            "GrossVehicleWeightKg": 1840,
-            "GrossCombinedWeightKg": 1840
+            "GrossVehicleWeightKg": 1930,
+            "GrossCombinedWeightKg": 1930
         },
         "Powertrain": {
-            "PowertrainType": "ICE",
-            "FuelType": "Petrol",
+            "PowertrainType": "FHEV",
+            "FuelType": "Petrol\/Electric",
             "IceDetails": {
                 "EngineFamily": null,
                 "EngineLocation": "Front",
-                "EngineDescription": "G4LH 1",
+                "EngineDescription": null,
                 "EngineManufacturer": "Kia",
                 "FuelDelivery": null,
-                "Aspiration": "Turbocharged",
+                "Aspiration": "Naturally Aspirated",
                 "CylinderArrangement": "Inline",
                 "NumberOfCylinders": 4,
                 "BoreMm": 72,
-                "StrokeMm": 92,
+                "StrokeMm": 97,
                 "ValveGear": "DOHC",
                 "ValvesPerCylinder": 4,
-                "EngineCapacityCc": 1482,
-                "EngineCapacityLitres": 1.5
+                "EngineCapacityCc": 1580,
+                "EngineCapacityLitres": 1.6
             },
             "EvDetails": null,
             "Transmission": {
-                "TransmissionType": "Manual",
+                "TransmissionType": "Semi Automatic",
                 "NumberOfGears": 6,
                 "DriveType": "4x2",
                 "DrivingAxle": "Front"
@@ -197,85 +176,85 @@
         "Safety": {
             "EuroNcap": {
                 "NcapStarRating": 4,
-                "NcapChildPercent": 85,
-                "NcapAdultPercent": 88,
-                "NcapPedestrianPercent": 52,
-                "NcapSafetyAssistPercent": 68
+                "NcapChildPercent": 80,
+                "NcapAdultPercent": 83,
+                "NcapPedestrianPercent": 57,
+                "NcapSafetyAssistPercent": 59
             }
         },
         "Emissions": {
             "EuroStatus": "6d",
-            "ManufacturerCo2": null,
+            "ManufacturerCo2": 86,
             "SoundLevels": {
-                "StationaryDb": 76,
+                "StationaryDb": 80,
                 "EngineSpeedRpm": 3750,
-                "DriveByDb": 66
+                "DriveByDb": 72
             }
         },
         "Performance": {
             "DragCoefficient": null,
             "Torque": {
-                "Nm": 253,
-                "LbFt": 186.7,
-                "Rpm": 1500
+                "Nm": 147,
+                "LbFt": 108.5,
+                "Rpm": 4000
             },
             "Power": {
-                "Bhp": 157.8,
-                "Ps": 160,
-                "Kw": 117.9,
-                "Rpm": 5500
+                "Bhp": 139,
+                "Ps": 140.9,
+                "Kw": 103.7,
+                "Rpm": 5700
             },
             "Statistics": {
-                "ZeroToSixtyMph": 8.7,
+                "ZeroToSixtyMph": 11.5,
                 "ZeroToOneHundredKph": null,
-                "MaxSpeedKph": 208,
-                "MaxSpeedMph": 129
+                "MaxSpeedKph": 162,
+                "MaxSpeedMph": 101
             },
             "FuelEconomy": {
-                "UrbanColdMpg": null,
-                "ExtraUrbanMpg": null,
-                "CombinedMpg": 44.8,
-                "UrbanColdL100Km": null,
-                "ExtraUrbanL100Km": null,
-                "CombinedL100Km": 6.3
+                "UrbanColdMpg": 83.1,
+                "ExtraUrbanMpg": 70.6,
+                "CombinedMpg": 58.9,
+                "UrbanColdL100Km": 3.4,
+                "ExtraUrbanL100Km": 4,
+                "CombinedL100Km": 4.8
             }
         },
         "StatusCode": 0,
         "StatusMessage": "Success",
         "DocumentVersion": 26,
-        "GeneratedAt": "2025-10-14T11:29:20.796Z"
+        "GeneratedAt": "2025-10-14T11:38:07.775Z"
     },
     "VehicleImageDetails": {
         "VehicleImageList": {
             "ViewAngle": "Exterior_Angle270",
-            "ImageUrl": "https:\/\/vehicleimages.ukvehicledata.co.uk\/s3\/95B34DF231C26B5D271C831DD725FD994D613146920E86F6384F08C8C0657BC14244960EB4D2FE88EFF9EC2FF3A16FBC62EB7F7E9C38940DD528946649F426A8203853CA0A4EB97975F40EC22F76D1255D2880BE63B69EC163E7471A6C929C04",
-            "Colour": "#000200",
-            "Description": "Black",
-            "ExpiryDate": "2025-11-13T14:18:45Z"
+            "ImageUrl": "https:\/\/vehicleimages.ukvehicledata.co.uk\/s3\/95B34DF231C26B5D271C831DD725FD994D613146920E86F6384F08C8C0657BC19E741F0F5A8AF863121C98714F6B23DAF930EA587EA3C2ECFFB1848ACE211C6CF666405A1DDFB8FED3CC9CAB3403B3BF38123BC76F3133324EB833A27959BEA3",
+            "Colour": "#FDFFFA",
+            "Description": "White",
+            "ExpiryDate": "2025-11-15T18:29:32Z"
         },
         "StatusCode": 0,
         "StatusMessage": "Success",
         "DocumentVersion": 1,
-        "GeneratedAt": "2024-06-11T10:31:51.344Z"
+        "GeneratedAt": "2024-06-11T11:49:00.981Z"
     },
     "VehicleTaxDetails": {
-        "Vrm": "RE22MOA",
+        "Vrm": "SD22SYA",
         "Make": "KIA",
-        "Co2Emissions": 141,
-        "MotStatus": "No details held by DVLA",
+        "Co2Emissions": 110,
+        "MotStatus": "Valid",
         "YearOfManufacture": 2022,
-        "TaxDueDate": "2025-07-01T00:00:00",
-        "TaxStatus": "Untaxed",
-        "TaxIsCurrentlyValid": false,
-        "TaxDaysRemaining": 0,
+        "TaxDueDate": "2026-09-01T00:00:00",
+        "TaxStatus": "Taxed",
+        "TaxIsCurrentlyValid": true,
+        "TaxDaysRemaining": 296,
         "VehicleExciseDutyDetails": {
-            "DvlaCo2": 141,
+            "DvlaCo2": 110,
             "DvlaCo2Band": null,
             "DvlaBand": null,
             "VedRate": {
                 "FirstYear": {
                     "SixMonths": null,
-                    "TwelveMonths": 540
+                    "TwelveMonths": 390
                 },
                 "PremiumVehicle": {
                     "SixMonths": 341,
@@ -292,31 +271,45 @@
         "DocumentVersion": 1
     },
     "VehicleCodes": {
-        "UkvdId": "V-BBBPKX",
-        "Uvc": "M-ESPWP",
+        "UkvdId": "V-BBBLVQ",
+        "Uvc": "M-RFFLT",
         "StatusCode": 0,
         "StatusMessage": "Success",
         "DocumentVersion": 1
     },
     "MotHistoryDetails": {
-        "Vrm": "RE22MOA",
-        "UpdateTimeStamp": "2025-11-06T14:18:47.2573697Z",
-        "LatestTestDate": null,
-        "MotDueDate": null,
-        "DaysSinceLastMot": null,
-        "FirstUsedDate": "2022-04-29T00:00:00",
+        "Vrm": "SD22SYA",
+        "UpdateTimeStamp": "2025-04-25T18:19:43.368Z",
+        "LatestTestDate": "2025-04-25T14:10:27Z",
+        "MotDueDate": "2026-04-27T00:00:00Z",
+        "DaysSinceLastMot": 197,
+        "FirstUsedDate": "2022-04-28T01:00:00Z",
         "Make": "KIA",
-        "Model": "XCEED 3 ISG",
-        "FuelType": "Petrol",
-        "Colour": "Black",
-        "MotTestDetailsList": [],
+        "Model": "NIRO",
+        "FuelType": "Hybrid Electric (Clean)",
+        "Colour": "White",
+        "MotTestDetailsList": {
+            "TestDate": "2025-04-25T14:10:27Z",
+            "TestPassed": true,
+            "ExpiryDate": "2026-04-27T00:00:00Z",
+            "OdometerReading": "18074",
+            "OdometerUnit": "mi",
+            "OdometerResultType": "READ",
+            "TestNumber": "",
+            "DaysSinceLastTest": null,
+            "DaysSinceLastPass": null,
+            "DaysOutOfMot": null,
+            "IsRetest": false,
+            "ExtensionInformation": null,
+            "AnnotationList": []
+        },
         "StatusCode": 0,
         "StatusMessage": "Success",
         "DocumentVersion": 1
     },
     "SpecAndOptionsDetails": {
         "Make": "Kia",
-        "Model": "XCeed 3 ISG",
+        "Model": "Niro 2 HEV Semi-Auto",
         "YearOfManufacture": "2022",
         "FactoryEquipmentList": [
             {
@@ -325,7 +318,7 @@
                 "Category": "Paint and Trim",
                 "Name": "Metallic Paint",
                 "Description": "Premium Paint",
-                "Price": 580,
+                "Price": 595,
                 "PackageContentList": []
             },
             {
@@ -333,7 +326,7 @@
                 "Fitment": "Standard",
                 "Category": "Audio and Communications",
                 "Name": "DAB Radio - Digital Audio Broadcasting",
-                "Description": "DAB Radio",
+                "Description": "DAB Radio With MP3 Compatibility",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -342,7 +335,7 @@
                 "Fitment": "Standard",
                 "Category": "Audio and Communications",
                 "Name": "Radio Equipment inc Multimedia",
-                "Description": "7-Speaker Audio System",
+                "Description": "6 Speakers Audio System",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -351,7 +344,7 @@
                 "Fitment": "Standard",
                 "Category": "Audio and Communications",
                 "Name": "Radio Equipment inc Multimedia",
-                "Description": "USB",
+                "Description": "USB Port",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -359,8 +352,8 @@
                 "Type": "Item",
                 "Fitment": "Standard",
                 "Category": "Audio and Communications",
-                "Name": "Satellite Navigation",
-                "Description": "10.25 Touchscreen Satellite Navigation",
+                "Name": "Radio only",
+                "Description": "8in Touchscreen Display Radio",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -369,7 +362,7 @@
                 "Fitment": "Standard",
                 "Category": "Audio and Communications",
                 "Name": "Telephone Equipment",
-                "Description": "Bluetooth+Voice Recognition+Music Stream",
+                "Description": "Bluetooth + Music Streaming",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -378,7 +371,7 @@
                 "Fitment": "Standard",
                 "Category": "Exterior Features",
                 "Name": "Central Locking",
-                "Description": "Smart Key With Motion Sensor",
+                "Description": "Remote Central Locking-Fold Away Key",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -387,7 +380,7 @@
                 "Fitment": "Standard",
                 "Category": "Exterior Features",
                 "Name": "Electric Folding Door Mirrors",
-                "Description": "Elec Adjustable+Heated+Folding Mirrors",
+                "Description": "Elect Foldng Adjstble Heatd Door Mirrors",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -396,7 +389,7 @@
                 "Fitment": "Standard",
                 "Category": "Exterior Features",
                 "Name": "Front Foglights",
-                "Description": "Projection Front Fog Lights",
+                "Description": "Front Fog Lights",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -405,7 +398,7 @@
                 "Fitment": "Standard",
                 "Category": "Exterior Features",
                 "Name": "High Level Brake Light",
-                "Description": "LED High-Mounted Brake Light",
+                "Description": "High level Brake Light",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -432,7 +425,7 @@
                 "Fitment": "Standard",
                 "Category": "Exterior Features",
                 "Name": "Roof Rails\/Rack",
-                "Description": "Silver Roof Rails",
+                "Description": "Roof Rails",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -441,7 +434,7 @@
                 "Fitment": "Standard",
                 "Category": "Interior Features",
                 "Name": "Adjustable Steering Column",
-                "Description": "Tilt Telescopic Adjustable Steering Whl",
+                "Description": "Tilt\/Telescopic Steering Wheel Adjustmnt",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -450,7 +443,7 @@
                 "Fitment": "Standard",
                 "Category": "Interior Features",
                 "Name": "Air Conditioning - front",
-                "Description": "Automatic Air Conditioning",
+                "Description": "Dual Auto Air Conditioning",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -459,7 +452,16 @@
                 "Fitment": "Standard",
                 "Category": "Interior Features",
                 "Name": "All Round Electric Windows",
-                "Description": "All Rnd Elct Wndws+Frnt Auto Up+Dwn Fnct",
+                "Description": "All Round Elc Wndws+Drvrs AU Up\/Down Fun",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Interior Features",
+                "Name": "Charging Cable",
+                "Description": "Type2 To Type2 Charging Cable-5m Length",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -468,7 +470,7 @@
                 "Fitment": "Standard",
                 "Category": "Interior Features",
                 "Name": "Cruise Control",
-                "Description": "Cruise Control + Speed Limiter",
+                "Description": "Smart Cruise Control With Stop-Go",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -476,8 +478,8 @@
                 "Type": "Item",
                 "Fitment": "Standard",
                 "Category": "Interior Features",
-                "Name": "Outside Temp Gauge",
-                "Description": "External Temperature Display",
+                "Name": "Driver's Seat Adjustment (manual)",
+                "Description": "Manual Driver Seat Height Adjuster",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -494,26 +496,8 @@
                 "Type": "Item",
                 "Fitment": "Standard",
                 "Category": "Interior Features",
-                "Name": "Seats - Heated Front",
-                "Description": "Heated Front Seats",
-                "Price": null,
-                "PackageContentList": []
-            },
-            {
-                "Type": "Item",
-                "Fitment": "Standard",
-                "Category": "Interior Features",
-                "Name": "Seats -Elec Adj Driver + Front Passenger",
-                "Description": "Power Lumbar Support-Driver+Frnt Pasngr",
-                "Price": null,
-                "PackageContentList": []
-            },
-            {
-                "Type": "Item",
-                "Fitment": "Standard",
-                "Category": "Interior Features",
                 "Name": "Split Rear Seat\/Thru Load Facility",
-                "Description": "60:40 Split Folding Rear Seat",
+                "Description": "60\/40 Split Folding 2nd Row Seats",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -523,15 +507,6 @@
                 "Category": "Mechanical Features",
                 "Name": "Power Steering",
                 "Description": "Motor Driven Power Steering",
-                "Price": null,
-                "PackageContentList": []
-            },
-            {
-                "Type": "Item",
-                "Fitment": "Standard",
-                "Category": "Mechanical Features",
-                "Name": "Start\/Stop Engine Technology",
-                "Description": "Intelligent Stop And Go",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -549,7 +524,7 @@
                 "Fitment": "Standard",
                 "Category": "Mechanical Features",
                 "Name": "Traction Control",
-                "Description": "ESC+VSM+HAC",
+                "Description": "Electronic Stability Control",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -576,7 +551,7 @@
                 "Fitment": "Standard",
                 "Category": "Paint and Trim",
                 "Name": "Upholstery (all except full leather)",
-                "Description": "Black Cloth Seat\/Black Faux Lthr Bolster",
+                "Description": "Cloth Upholstery",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -585,7 +560,16 @@
                 "Fitment": "Standard",
                 "Category": "Safety & Security Features",
                 "Name": "Airbags (side\/lateral etc)",
-                "Description": "Twin Curtain Airbags",
+                "Description": "Driver Knee Airbag",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Safety & Security Features",
+                "Name": "Airbags (side\/lateral etc)",
+                "Description": "Twin Curtain Airbags With Roll-over Snsr",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -603,7 +587,7 @@
                 "Fitment": "Standard",
                 "Category": "Safety & Security Features",
                 "Name": "Airbags (side\/lateral etc)",
-                "Description": "Twin Side Arbags  Front",
+                "Description": "Twin Side Airbags",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -612,7 +596,7 @@
                 "Fitment": "Standard",
                 "Category": "Safety & Security Features",
                 "Name": "Anti-lock Brakes",
-                "Description": "ABS + EBD + BAS",
+                "Description": "ABS+Brake Assist",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -630,7 +614,7 @@
                 "Fitment": "Standard",
                 "Category": "Safety & Security Features",
                 "Name": "Immobiliser",
-                "Description": "Enginge Immobiliser + Deadlocks",
+                "Description": "Engine Immobiliser",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -648,7 +632,7 @@
                 "Fitment": "Standard",
                 "Category": "Safety & Security Features",
                 "Name": "Safety and Driver Assistance",
-                "Description": "Driver Attention Alert",
+                "Description": "Emergency Stop Signalling",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -657,7 +641,7 @@
                 "Fitment": "Standard",
                 "Category": "Safety & Security Features",
                 "Name": "Safety and Driver Assistance",
-                "Description": "Forward Collision Avoidance Assist-City",
+                "Description": "Forward Collision Avoidance Assist FCA",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -666,7 +650,7 @@
                 "Fitment": "Standard",
                 "Category": "Safety & Security Features",
                 "Name": "Safety and Driver Assistance",
-                "Description": "Frwrd Collsn Avoidance Asst-Pedst+Cyclst",
+                "Description": "Lane Following Assist 1.0",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -675,7 +659,16 @@
                 "Fitment": "Standard",
                 "Category": "Safety & Security Features",
                 "Name": "Safety and Driver Assistance",
-                "Description": "Lane-Keeping Assist(LKA)",
+                "Description": "Lane Keep Assist System",
+                "Price": null,
+                "PackageContentList": []
+            },
+            {
+                "Type": "Item",
+                "Fitment": "Standard",
+                "Category": "Safety & Security Features",
+                "Name": "Safety and Driver Assistance",
+                "Description": "Lane Keeping Assist+Driver Attention Ast",
                 "Price": null,
                 "PackageContentList": []
             },
@@ -693,7 +686,7 @@
                 "Fitment": "Standard",
                 "Category": "Wheels",
                 "Name": "Alloy Wheels",
-                "Description": "18in Alloys",
+                "Description": "16in Alloys",
                 "Price": null,
                 "PackageContentList": []
             }
@@ -701,28 +694,28 @@
         "StatusCode": 0,
         "StatusMessage": "Success",
         "DocumentVersion": 1,
-        "GeneratedAt": "2024-11-30T18:02:08.646Z"
+        "GeneratedAt": "2024-12-01T00:22:55.637Z"
     },
     "ValuationDetails": {
-        "ValuationTime": "2025-11-06T14:18:48.1964423Z",
-        "ValuationMileage": 41203,
+        "ValuationTime": "2025-11-08T18:29:34.4171556Z",
+        "ValuationMileage": 24384,
         "ValuationBook": "Direct",
-        "VehicleDescription": "Kia XCeed 3 ISG XCeed 3 ISG [Petrol \/ Manual]",
-        "DateOfFirstRegistration": "2022-04-29T00:00:00Z",
+        "VehicleDescription": "Kia Niro 2 HEV Semi-Auto 2 [Petrol\/Electric \/ Semi Automatic]",
+        "DateOfFirstRegistration": "2022-04-28T00:00:00Z",
         "ValuationFigures": {
-            "OnTheRoad": 24755,
-            "DealerForecourt": 13180,
-            "TradeRetail": 12669,
-            "PrivateClean": 11728,
-            "PrivateAverage": 11596,
-            "PartExchange": 11546,
-            "Auction": 11531,
-            "TradeAverage": 11006,
-            "TradePoor": 10215
+            "OnTheRoad": 25705,
+            "DealerForecourt": 17141,
+            "TradeRetail": 16476,
+            "PrivateClean": 15252,
+            "PrivateAverage": 15080,
+            "PartExchange": 15015,
+            "Auction": 14996,
+            "TradeAverage": 14313,
+            "TradePoor": 13284
         },
         "StatusCode": 0,
         "StatusMessage": "Success",
         "DocumentVersion": 1,
-        "GeneratedAt": "2025-11-02T02:09:16.145Z"
+        "GeneratedAt": "2025-11-02T02:28:09.049Z"
     }
 }

@@ -28,6 +28,7 @@ require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-login-redirect.php';
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-history-shortcode.php';
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-woocommerce-integration.php';
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-report-page.php';
+require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-pdf-generator.php';
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-order-manager.php';
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-vrm-check-plugin.php';
 require_once VRM_CHECK_PLUGIN_PATH . 'includes/class-admin.php';
@@ -63,5 +64,8 @@ function vrm_check_plugin_init() {
     
     // Initialize Login Redirect
     VRM_Login_Redirect::init();
+    
+    // Initialize PDF Generator
+    VRM_PDF_Generator::init();
 }
 add_action('plugins_loaded', 'vrm_check_plugin_init');

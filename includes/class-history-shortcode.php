@@ -253,6 +253,18 @@ class VRM_History_Shortcode {
         }
         
         // Проверяем разные структуры API ответа
+        
+        // Для basic проверок (простая структура)
+        if (isset($api_data['make']) || isset($api_data['registration'])) {
+            return array(
+                'make' => $api_data['make'] ?? 'Unknown',
+                'model' => $api_data['model'] ?? 'Unknown', 
+                'year' => $api_data['year'] ?? 'Unknown',
+                'color' => $api_data['colour'] ?? 'Unknown'
+            );
+        }
+        
+        // Для premium проверок (сложная структура VehicleDetails)
         $vehicle_details = $api_data['VehicleDetails'] ?? $api_data;
         $vehicle_id = $vehicle_details['VehicleIdentification'] ?? array();
         $vehicle_history = $vehicle_details['VehicleHistory'] ?? array();

@@ -46,7 +46,13 @@ function showResults(html) {
 /**
  * Показать модальное окно покупки проверки
  */
-function showPurchaseCheckModal(message, shopUrl) {
+function showPurchaseCheckModal(message, shopUrl, vrm) {
+    // Сохраняем VRM в сессии для использования после покупки
+    if (vrm) {
+        sessionStorage.setItem('pending_vrm_check', vrm);
+        console.log('VRM saved for purchase:', vrm);
+    }
+    
     showModal({
         type: 'warning',
         icon: '🛒',
@@ -55,11 +61,12 @@ function showPurchaseCheckModal(message, shopUrl) {
         message: message || 'You need to purchase a VRM check to view the full vehicle report.',
         buttons: [
             {
-                text: 'Buy VRM Check (£9.99)',
+                text: 'Buy Now (£9.99)',
                 class: 'vrm-modal-btn-primary',
                 icon: '💳',
                 action: function() {
-                    window.location.href = shopUrl || '/shop/';
+                    // Прямой переход на checkout с товаром
+                    buyVrmCheckDirectly();
                 }
             },
             {
@@ -68,6 +75,46 @@ function showPurchaseCheckModal(message, shopUrl) {
                 action: closeModal
             }
         ]
+    });
+}
+
+/**
+ * Прямая покупка VRM проверки без корзины
+ */
+function buyVrmCheckDirectly() {
+    // Показываем загрузку
+    showModal({
+        type: 'loading',
+        icon: '⏳',
+        title: 'Processing...',
+        message: 'Adding VRM check to cart and redirecting to checkout...'
+    });
+    
+    // Получаем сохранённый VRM из sessionStorage
+    var vrm = sessionStorage.getItem('pending_vrm_check') || '';
+    
+    // AJAX запрос для добавления товара и перехода на checkout
+    jQuery.ajax({
+        url: vrm_check_ajax.ajax_url,
+        type: 'POST',
+        data: {
+            action: 'vrm_buy_direct',
+            vrm: vrm,
+            nonce: vrm_check_ajax.nonce
+        },
+        success: function(response) {
+            if (response.success && response.data.checkout_url) {
+                // Перенаправляем на checkout
+                window.location.href = response.data.checkout_url;
+            } else {
+                closeModal();
+                alert('Error: ' + (response.data.message || 'Could not process purchase'));
+            }
+        },
+        error: function() {
+            closeModal();
+            alert('Error: Could not connect to server');
+        }
     });
 }
 
@@ -340,7 +387,9 @@ function performAjaxRequest(ajaxData, startTime, isPremium) {
                 // Проверка требования проверок (новая система)
                 if (response.data.checks_required) {
                     console.log('Checks required, showing purchase modal');
-                    showPurchaseCheckModal(response.data.message, response.data.shop_url);
+                    // Передаем VRM из ajaxData
+                    var vrm = ajaxData.vrm || '';
+                    showPurchaseCheckModal(response.data.message, response.data.shop_url, vrm);
                     return;
                 }
                 

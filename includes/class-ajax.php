@@ -24,6 +24,10 @@ class Ajax {
         add_action('wp_ajax_nopriv_vrm_check', array($this, 'handle_vrm_check'));
         add_action('wp_ajax_vrm_check_premium', array($this, 'handle_vrm_check_premium'));
         add_action('wp_ajax_nopriv_vrm_check_premium', array($this, 'handle_vrm_check_premium'));
+        
+        // Регистрируем обработчик для прямой покупки
+        add_action('wp_ajax_vrm_buy_direct', array($this, 'handle_buy_direct'));
+        add_action('wp_ajax_nopriv_vrm_buy_direct', array($this, 'handle_buy_direct'));
     }
     
     /**
@@ -277,6 +281,133 @@ class Ajax {
             }
         }
         
+        return false;
+    }
+    
+    /**
+     * Обработчик прямой покупки VRM проверки
+     */
+    public function handle_buy_direct() {
+        try {
+            // Проверяем nonce
+            if (!wp_verify_nonce($_POST['nonce'] ?? '', 'vrm_check_nonce')) {
+                wp_send_json_error(array(
+                    'message' => __('Security check failed.', 'vrm-check-plugin')
+                ));
+            }
+            
+            // Проверяем авторизацию
+            if (!is_user_logged_in()) {
+                wp_send_json_error(array(
+                    'message' => __('Please log in to purchase VRM checks.', 'vrm-check-plugin'),
+                    'login_required' => true,
+                    'login_url' => wp_login_url()
+                ));
+            }
+            
+            // Получаем VRM из POST (если передан)
+            $vrm = sanitize_text_field($_POST['vrm'] ?? '');
+            
+            // Сохраняем VRM в сессии
+            if (!session_id()) {
+                session_start();
+            }
+            
+            if ($vrm) {
+                $_SESSION['pending_vrm_check'] = $vrm;
+            }
+            
+            // Проверяем, что WooCommerce загружен
+            if (!function_exists('WC') || !WC()) {
+                wp_send_json_error(array(
+                    'message' => __('WooCommerce is not available.', 'vrm-check-plugin')
+                ));
+            }
+            
+            // Находим товар VRM Check
+            $product_id = $this->find_vrm_check_product();
+            if (!$product_id) {
+                // Отладочная информация
+                error_log('VRM Check product search failed');
+                
+                wp_send_json_error(array(
+                    'message' => __('VRM Check product not found. Please contact support.', 'vrm-check-plugin')
+                ));
+            }
+            
+            // Логируем успешный поиск
+            error_log('VRM Check product found: ID ' . $product_id);
+            
+            // Очищаем корзину
+            WC()->cart->empty_cart();
+            
+            // Добавляем товар в корзину
+            $cart_item_key = WC()->cart->add_to_cart($product_id, 1);
+            
+            if (!$cart_item_key) {
+                wp_send_json_error(array(
+                    'message' => __('Could not add VRM Check to cart.', 'vrm-check-plugin')
+                ));
+            }
+            
+            // Возвращаем URL для checkout
+            wp_send_json_success(array(
+                'message' => __('VRM Check added to cart successfully.', 'vrm-check-plugin'),
+                'checkout_url' => wc_get_checkout_url()
+            ));
+            
+        } catch (Exception $e) {
+            $this->logger->log_error('Direct buy error', ['error' => $e->getMessage()]);
+            wp_send_json_error(array(
+                'message' => __('An error occurred. Please try again.', 'vrm-check-plugin')
+            ));
+        }
+    }
+    
+    /**
+     * Найти товар VRM Check
+     */
+    private function find_vrm_check_product() {
+        // Прямая проверка известного ID
+        $product_id = 1054;
+        $post = get_post($product_id);
+        
+        if ($post && $post->post_type === 'product' && $post->post_status === 'publish') {
+            error_log('VRM Check product found by ID: ' . $product_id);
+            return $product_id;
+        }
+        
+        // Если прямой ID не работает, ищем через WP_Query
+        global $wpdb;
+        
+        $product_id = $wpdb->get_var($wpdb->prepare(
+            "SELECT ID FROM {$wpdb->posts} 
+             WHERE post_type = 'product' 
+             AND post_status = 'publish' 
+             AND post_title LIKE %s 
+             LIMIT 1",
+            '%VRM%'
+        ));
+        
+        if ($product_id) {
+            error_log('VRM Check product found by title search: ' . $product_id);
+            return intval($product_id);
+        }
+        
+        // Последняя попытка - любой опубликованный товар
+        $product_id = $wpdb->get_var(
+            "SELECT ID FROM {$wpdb->posts} 
+             WHERE post_type = 'product' 
+             AND post_status = 'publish' 
+             LIMIT 1"
+        );
+        
+        if ($product_id) {
+            error_log('Fallback: Using any available product: ' . $product_id);
+            return intval($product_id);
+        }
+        
+        error_log('No products found at all');
         return false;
     }
 
